@@ -11,6 +11,7 @@
         <module>common-redisson</module>
         <module>common-elasticsearch</module>
         <module>common-task</module>
+        <module>service-member</module>
     </modules>
 
     <parent>

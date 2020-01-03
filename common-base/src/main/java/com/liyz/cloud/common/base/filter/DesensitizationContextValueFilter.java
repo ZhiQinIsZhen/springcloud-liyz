@@ -3,7 +3,6 @@ package com.liyz.cloud.common.base.filter;
 import com.alibaba.fastjson.serializer.BeanContext;
 import com.alibaba.fastjson.serializer.ContextValueFilter;
 import com.liyz.cloud.common.base.annotation.Desensitization;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -13,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
  * @version 1.0.0
  * @date 2019/8/15 9:27
  */
-@Slf4j
 public class DesensitizationContextValueFilter implements ContextValueFilter {
 
     @Override
