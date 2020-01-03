@@ -8,6 +8,9 @@
         <module>common-dao</module>
         <module>common-security</module>
         <module>common-controller</module>
+        <module>common-redisson</module>
+        <module>common-elasticsearch</module>
+        <module>common-task</module>
     </modules>
 
     <parent>
@@ -46,6 +49,9 @@
         <swagger.version>2.9.2</swagger.version>
         <swagger.others.version>1.5.23</swagger.others.version>
         <swagger.xiaoymin.version>1.9.5</swagger.xiaoymin.version>
+        <redisson.version>3.11.1</redisson.version>
+        <elasticsearch.version>7.1.1</elasticsearch.version>
+        <elasticjob.version>2.1.5</elasticjob.version>
     </properties>
 
     <dependencies>
@@ -189,6 +195,46 @@
                         <groupId>org.javassist</groupId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>javassist</artifactId>
+                        <groupId>org.javassist</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- es -->
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <!-- job -->
+            <dependency>
+                <groupId>com.dangdang</groupId>
+                <artifactId>elastic-job-lite-core</artifactId>
+                <version>${elasticjob.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.guava</groupId>
+                        <artifactId>guava</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.dangdang</groupId>
+                <artifactId>elastic-job-lite-spring</artifactId>
+                <version>${elasticjob.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
