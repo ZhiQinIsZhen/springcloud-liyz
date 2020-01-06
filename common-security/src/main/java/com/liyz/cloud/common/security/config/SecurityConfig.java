@@ -2,6 +2,7 @@ package com.liyz.cloud.common.security.config;
 
 import com.alibaba.fastjson.JSONArray;
 import com.liyz.cloud.common.security.core.JwtAuthenticationEntryPoint;
+import com.liyz.cloud.common.security.core.RestfulAccessDeniedHandler;
 import com.liyz.cloud.common.security.filter.JwtAuthenticationTokenFilter;
 import com.liyz.cloud.common.security.util.JwtAuthenticationUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         log.info("免鉴权api:{}", JSONArray.toJSONString(strings));
         http
                 //由于使用的是JWT，我们这里不需要csrf，并配置entryPoint
-                .csrf().disable().exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint()).and()
+                .csrf()
+                .disable()
+                .exceptionHandling()
+                .accessDeniedHandler(restfulAccessDeniedHandler())
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint()).and()
                 //基于token，所以不需要session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
@@ -76,5 +81,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().cacheControl().and()
                 //spring security上使用ifame时候允许跨域
                 .frameOptions().sameOrigin();
+    }
+
+    @Bean
+    public RestfulAccessDeniedHandler restfulAccessDeniedHandler() {
+        return new RestfulAccessDeniedHandler();
     }
 }
