@@ -1,4 +1,4 @@
-package com.liyz.cloud.service.member.bo;
+package com.liyz.cloud.common.model.bo.member;
 
 import lombok.Data;
 
