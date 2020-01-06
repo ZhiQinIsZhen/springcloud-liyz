@@ -11,7 +11,7 @@ import springfox.documentation.service.Contact;
  * @version 1.0.0
  * @date 2019/9/7 18:45
  */
-public class SwaggerBaseConfigurer {
+public class SwaggerBaseConfig {
 
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()

@@ -12,6 +12,7 @@
         <module>common-elasticsearch</module>
         <module>common-task</module>
         <module>service-member</module>
+        <module>api-web</module>
     </modules>
 
     <parent>

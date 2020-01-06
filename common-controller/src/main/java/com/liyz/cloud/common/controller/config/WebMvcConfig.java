@@ -32,7 +32,7 @@ import java.util.List;
  */
 @ConditionalOnExpression("${use.fastjson}")
 @Configuration
-public class WebMvcConfigurer extends WebMvcConfigurationSupport {
+public class WebMvcConfig extends WebMvcConfigurationSupport {
 
     @Value("${swagger.doc}")
     private Boolean swagger;

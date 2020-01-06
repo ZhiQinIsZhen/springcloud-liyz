@@ -1,4 +1,4 @@
-package com.liyz.cloud.common.base.util;
+package com.liyz.cloud.common.base.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
  * @date 2019/8/16 16:33
  */
 @Configuration
-public class RestTemplateUtil {
+public class RestTemplateConfig {
 
     @Bean
     public RestTemplate restTemplate(ClientHttpRequestFactory factory){

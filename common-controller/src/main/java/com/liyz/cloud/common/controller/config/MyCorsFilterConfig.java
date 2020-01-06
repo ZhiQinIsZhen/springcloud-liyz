@@ -18,9 +18,9 @@ import org.springframework.web.filter.CorsFilter;
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class MyCorsFilter extends CorsFilter {
+public class MyCorsFilterConfig extends CorsFilter {
 
-    public MyCorsFilter() {
+    public MyCorsFilterConfig() {
         super(configurationSource());
     }
 
