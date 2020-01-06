@@ -1,4 +1,4 @@
-package com.liyz.cloud.service.member.constant;
+package com.liyz.cloud.common.model.constant.member;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

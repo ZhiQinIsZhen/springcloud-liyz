@@ -13,6 +13,7 @@
         <module>common-task</module>
         <module>service-member</module>
         <module>api-web</module>
+        <module>common-model</module>
     </modules>
 
     <parent>

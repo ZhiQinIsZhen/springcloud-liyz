@@ -21,7 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwaggerBootstrapUI
 @EnableSwagger2
 @Configuration
-public class SwaggerConfigurer extends SwaggerBaseConfig {
+public class SwaggerConfig extends SwaggerBaseConfig {
 
     @Bean
     public Docket createAuthApi() {

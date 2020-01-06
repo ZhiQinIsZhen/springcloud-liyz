@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @date 2019/9/7 17:44
  */
 @Configuration
-public class JwtBeansConfigurer {
+public class JwtBeansConfig {
 
     @Autowired
     RemoteJwtUserService remoteJwtUserService;

@@ -1,4 +1,4 @@
-package com.liyz.cloud.service.member.constant;
+package com.liyz.cloud.common.model.constant.member;
 
 import com.liyz.cloud.common.base.enums.ServiceCodeEnum;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
  * @date 2019/9/7 15:01
  */
 @AllArgsConstructor
-public enum  MemberServiceCodeEnum implements ServiceCodeEnum {
+public enum MemberServiceCodeEnum implements ServiceCodeEnum {
 
     MobileExsist("20001", "手机号已存在"),
     EmailExsist("20002", "邮箱号已存在")

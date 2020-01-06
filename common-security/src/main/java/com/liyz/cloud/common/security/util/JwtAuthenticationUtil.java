@@ -1,6 +1,7 @@
 package com.liyz.cloud.common.security.util;
 
 import com.alibaba.fastjson.JSON;
+import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.enums.CommonCodeEnum;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 import com.liyz.cloud.common.base.util.SpringContextUtil;

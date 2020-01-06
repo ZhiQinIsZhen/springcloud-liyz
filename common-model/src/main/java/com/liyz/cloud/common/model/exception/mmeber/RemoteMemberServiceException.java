@@ -1,4 +1,4 @@
-package com.liyz.cloud.service.member.exception;
+package com.liyz.cloud.common.model.exception.mmeber;
 
 import com.liyz.cloud.common.base.enums.ServiceCodeEnum;
 import com.liyz.cloud.common.base.exception.RemoteServiceException;
