@@ -7,7 +7,9 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.alibaba.fastjson.support.springfox.SwaggerJsonSerializer;
 import com.liyz.cloud.common.base.filter.DesensitizationContextValueFilter;
+import com.liyz.cloud.common.base.remote.LoginInfoService;
 import com.liyz.cloud.common.controller.resolver.LoginUserArgumentResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +39,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Value("${swagger.doc}")
     private Boolean swagger;
 
+    @Autowired
+    LoginInfoService loginInfoService;
+
     /**
      * 允许加载本地静态资源
      *
@@ -53,7 +58,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new LoginUserArgumentResolver());
+        argumentResolvers.add(new LoginUserArgumentResolver(loginInfoService));
     }
 
     /**

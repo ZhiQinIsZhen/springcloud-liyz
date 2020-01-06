@@ -1,5 +1,6 @@
-package com.liyz.cloud.common.security.util;
+package com.liyz.cloud.common.controller.util;
 
+import com.liyz.cloud.common.base.remote.LoginInfoService;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
  * @date 2019/9/7 17:54
  */
 @Service
-public class LoginInfoUtil {
+public class LoginInfoUtil implements LoginInfoService {
 
     private ThreadLocal<JwtUserBO> userBOContainer = new ThreadLocal<>();
 
@@ -20,6 +21,7 @@ public class LoginInfoUtil {
      *
      * @return JwtUserBO
      */
+    @Override
     public JwtUserBO getUser() {
         return userBOContainer.get();
     }
@@ -29,6 +31,7 @@ public class LoginInfoUtil {
      *
      * @param user JwtUserBO
      */
+    @Override
     public void setUser(JwtUserBO user) {
         this.userBOContainer.set(user);
     }

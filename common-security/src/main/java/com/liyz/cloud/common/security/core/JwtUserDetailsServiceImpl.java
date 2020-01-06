@@ -1,9 +1,9 @@
 package com.liyz.cloud.common.security.core;
 
+import com.liyz.cloud.common.base.remote.LoginInfoService;
 import com.liyz.cloud.common.base.remote.RemoteJwtUserService;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 import com.liyz.cloud.common.security.util.JwtAuthenticationUtil;
-import com.liyz.cloud.common.security.util.LoginInfoUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +22,7 @@ import java.util.Objects;
 public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
     private RemoteJwtUserService remoteJwtUserService;
-    private LoginInfoUtil loginInfoUtil;
+    private LoginInfoService loginInfoService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -30,7 +30,7 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
         if (Objects.isNull(jwtUserBO)) {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
         }
-        loginInfoUtil.setUser(jwtUserBO);
+        loginInfoService.setUser(jwtUserBO);
         return JwtAuthenticationUtil.create(jwtUserBO);
     }
 }

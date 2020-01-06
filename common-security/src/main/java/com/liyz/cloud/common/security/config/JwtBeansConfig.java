@@ -1,8 +1,8 @@
 package com.liyz.cloud.common.security.config;
 
+import com.liyz.cloud.common.base.remote.LoginInfoService;
 import com.liyz.cloud.common.base.remote.RemoteJwtUserService;
 import com.liyz.cloud.common.security.core.JwtUserDetailsServiceImpl;
-import com.liyz.cloud.common.security.util.LoginInfoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +25,7 @@ public class JwtBeansConfig {
     RemoteJwtUserService remoteJwtUserService;
 
     @Autowired
-    LoginInfoUtil loginInfoUtil;
+    LoginInfoService loginInfoService;
 
     @Bean
     @ConditionalOnMissingBean(PasswordEncoder.class)
@@ -36,6 +36,6 @@ public class JwtBeansConfig {
     @Bean
     @ConditionalOnMissingBean(UserDetailsService.class)
     public UserDetailsService userDetailsService() {
-        return new JwtUserDetailsServiceImpl(remoteJwtUserService, loginInfoUtil);
+        return new JwtUserDetailsServiceImpl(remoteJwtUserService, loginInfoService);
     }
 }

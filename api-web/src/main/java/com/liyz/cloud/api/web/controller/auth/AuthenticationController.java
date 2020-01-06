@@ -5,11 +5,11 @@ import com.liyz.cloud.api.web.feign.member.FeignUserInfoService;
 import com.liyz.cloud.api.web.vo.auth.LoginVO;
 import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.enums.CommonCodeEnum;
+import com.liyz.cloud.common.base.remote.LoginInfoService;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 import com.liyz.cloud.common.base.util.CommonConverterUtil;
 import com.liyz.cloud.common.controller.annotation.Limit;
 import com.liyz.cloud.common.controller.annotation.Limits;
-import com.liyz.cloud.common.controller.annotation.LoginUser;
 import com.liyz.cloud.common.controller.constant.LimitType;
 import com.liyz.cloud.common.controller.util.HttpRequestUtil;
 import com.liyz.cloud.common.model.bo.member.LoginUserInfoBO;
@@ -17,7 +17,6 @@ import com.liyz.cloud.common.model.constant.member.MemberEnum;
 import com.liyz.cloud.common.security.annotation.Anonymous;
 import com.liyz.cloud.common.security.util.JwtAuthenticationUtil;
 import com.liyz.cloud.common.security.util.JwtTokenAnalysisUtil;
-import com.liyz.cloud.common.security.util.LoginInfoUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -65,15 +64,14 @@ public class AuthenticationController {
     @Autowired
     JwtTokenAnalysisUtil jwtTokenAnalysisUtil;
     @Autowired
-    LoginInfoUtil loginInfoUtil;
+    LoginInfoService loginInfoService;
     @Autowired
     FeignUserInfoService feignUserInfoService;
 
     @Limits(value = {@Limit(count = 10, type = LimitType.IP), @Limit(count = 10)})
     @Anonymous
     @PostMapping("/login")
-    public Result<LoginVO> login(@Validated({LoginDTO.Login.class}) @RequestBody
-                                             LoginDTO loginDTO, @LoginUser JwtUserBO loginUser) {
+    public Result<LoginVO> login(@Validated({LoginDTO.Login.class}) @RequestBody LoginDTO loginDTO) {
         HttpServletRequest httpServletRequest = HttpRequestUtil.getRequest();
         LiteDeviceResolver resolver = new LiteDeviceResolver();
         Device device = resolver.resolveDevice(httpServletRequest);
@@ -106,7 +104,7 @@ public class AuthenticationController {
         }else{
             deviceEnum = MemberEnum.DeviceEnum.WEB;
         }
-        JwtUserBO userInfo = loginInfoUtil.getUser();
+        JwtUserBO userInfo = loginInfoService.getUser();
         LoginUserInfoBO downLineBO = new LoginUserInfoBO();
         downLineBO.setUserId(userInfo.getUserId());
         downLineBO.setDeviceEnum(deviceEnum);
