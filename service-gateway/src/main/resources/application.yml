@@ -27,7 +27,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8080/eureka/
+      defaultZone: http://localhost:8096/eureka/
   instance:
     health-check-url-path: /actuator/health
 #一下配置，在生产环境注意，选择性配置
