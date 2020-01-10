@@ -15,6 +15,7 @@
         <module>api-web</module>
         <module>common-model</module>
         <module>service-monitor</module>
+        <module>service-gateway</module>
     </modules>
 
     <parent>

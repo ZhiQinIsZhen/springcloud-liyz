@@ -52,14 +52,17 @@ public class RemoteUserInfoService {
         if (Objects.isNull(userInfoDO)) {
             throw new RemoteMemberServiceException(CommonCodeEnum.NoData);
         }
-        return CommonConverterUtil.beanConverter(userInfoDO, UserInfoBO.class);
+        return CommonConverterUtil.beanCopy(userInfoDO, UserInfoBO.class);
     }
 
     public PageInfo<UserInfoBO> pageList(Integer page, Integer size) {
+        if (!Objects.isNull(page)) {
+            throw new RemoteMemberServiceException(CommonCodeEnum.NoData);
+        }
         PageHelper.startPage(page, size);
         List<UserInfoDO> doList = userInfoService.listAll();
         PageInfo<UserInfoDO> doPageInfo = new PageInfo<>(doList);
-        PageInfo<UserInfoBO> boPageInfo = CommonConverterUtil.PageConverter(doPageInfo, UserInfoBO.class);
+        PageInfo<UserInfoBO> boPageInfo = CommonConverterUtil.PageTransform(doPageInfo, UserInfoBO.class);
         return boPageInfo;
     }
 

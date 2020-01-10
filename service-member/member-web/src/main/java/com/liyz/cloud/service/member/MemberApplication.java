@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import tk.mybatis.spring.annotation.MapperScan;
 
@@ -16,9 +17,10 @@ import tk.mybatis.spring.annotation.MapperScan;
  */
 @EnableEurekaClient
 @EnableDiscoveryClient
+@EnableFeignClients
 @EnableScheduling
 @MapperScan(basePackages = {"com.liyz.cloud.service.member.dao"})
-@SpringBootApplication(scanBasePackages = {"com.liyz.cloud.common", "com.liyz.cloud.service.member"})
+@SpringBootApplication(scanBasePackages = {"com.liyz", "com.liyz.cloud.service.member"})
 public class MemberApplication {
 
     public static void main(String[] args) {
