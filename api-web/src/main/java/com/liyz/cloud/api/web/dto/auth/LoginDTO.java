@@ -1,5 +1,6 @@
 package com.liyz.cloud.api.web.dto.auth;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -15,6 +16,7 @@ import java.io.Serializable;
  * @version 1.0.0
  * @date 2019/9/7 19:16
  */
+@ApiModel(value = "LoginDTO", description = "登陆请求数据")
 @Data
 public class LoginDTO implements Serializable {
     private static final long serialVersionUID = 8763053903614783354L;

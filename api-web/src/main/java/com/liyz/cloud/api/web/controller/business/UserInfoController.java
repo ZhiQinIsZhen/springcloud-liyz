@@ -52,6 +52,7 @@ public class UserInfoController {
         return Result.success(CommonConverterUtil.beanCopy(jwtUserBO, UserInfoVO.class));
     }
 
+    @ApiOperation(value = "获取登陆的用户ID", notes = "获取登陆的用户ID")
     @GetMapping("/id")
     @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
             paramType = "header")
@@ -59,6 +60,7 @@ public class UserInfoController {
         return Result.success(Objects.isNull(jwtUserBO) ? null : jwtUserBO.getUserId());
     }
 
+    @ApiOperation(value = "分页查询用户信息", notes = "分页查询用户信息")
     @GetMapping("/page")
     @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
             paramType = "header")

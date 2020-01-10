@@ -18,6 +18,7 @@ import com.liyz.cloud.common.security.annotation.Anonymous;
 import com.liyz.cloud.common.security.util.JwtAuthenticationUtil;
 import com.liyz.cloud.common.security.util.JwtTokenAnalysisUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +69,7 @@ public class AuthenticationController {
     @Autowired
     FeignUserInfoService feignUserInfoService;
 
+    @ApiOperation(value = "登陆", notes = "登陆")
     @Limits(value = {@Limit(count = 10, type = LimitType.IP), @Limit(count = 10)})
     @Anonymous
     @PostMapping("/login")
