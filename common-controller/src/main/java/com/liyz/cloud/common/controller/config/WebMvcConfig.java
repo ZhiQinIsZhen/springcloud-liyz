@@ -102,6 +102,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         fastMediaTypes.add(MediaType.TEXT_MARKDOWN);
         fastMediaTypes.add(MediaType.TEXT_PLAIN);
         fastMediaTypes.add(MediaType.TEXT_XML);
+        fastMediaTypes.add(new MediaType("application", "vnd.spring-boot.actuator.v3+json"));
         return fastMediaTypes;
     }
 }

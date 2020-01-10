@@ -15,8 +15,8 @@ public class SwaggerBaseConfig {
 
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("SpringBoot-Dubbo-Application-API")
-                .description("一个dubbo基于springboot的项目")
+                .title("SpringCloud-Application-API")
+                .description("分布式SpringCloud项目")
                 .termsOfServiceUrl("http://127.0.0.1:8093/")
                 .contact(new Contact("liyangzhen", "https://github.com/ZhiQinIsZhen", "liyangzhen0114@foxmail.com"))
                 .version("1.0")

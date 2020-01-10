@@ -3,6 +3,7 @@ package com.liyz.cloud.common.security.filter;
 import com.liyz.cloud.common.security.util.JwtAuthenticationUtil;
 import com.liyz.cloud.common.security.util.JwtTokenAnalysisUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mobile.device.Device;
@@ -22,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.Objects;
 
 /**
@@ -55,26 +57,29 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = httpServletRequest.getHeader(this.tokenHeader);
-        if (authHeader != null && authHeader.startsWith(tokenHead)) {
-            final String authToken = authHeader.substring(tokenHead.length());
-            String username = jwtTokenAnalysisUtil.getUsernameFromToken(authToken);
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-                if (Objects.isNull(userDetails)) {
+        if (StringUtils.isNotBlank(authHeader)) {
+            authHeader = URLDecoder.decode(authHeader, "UTF-8");
+            if (authHeader.startsWith(tokenHead)) {
+                final String authToken = authHeader.substring(tokenHead.length());
+                String username = jwtTokenAnalysisUtil.getUsernameFromToken(authToken);
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+                    if (Objects.isNull(userDetails)) {
+                        JwtAuthenticationUtil.authFail(httpServletResponse);
+                        return;
+                    }
+                    Device device = new LiteDeviceResolver().resolveDevice(httpServletRequest);
+                    if (jwtTokenAnalysisUtil.validateToken(authToken, userDetails, device)) {
+                        UsernamePasswordAuthenticationToken authentication =
+                                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                        logger.info("authenticated user " + username + ", setting security context");
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
+                } else {
                     JwtAuthenticationUtil.authFail(httpServletResponse);
                     return;
                 }
-                Device device = new LiteDeviceResolver().resolveDevice(httpServletRequest);
-                if (jwtTokenAnalysisUtil.validateToken(authToken, userDetails, device)) {
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                    logger.info("authenticated user " + username + ", setting security context");
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
-            } else {
-                JwtAuthenticationUtil.authFail(httpServletResponse);
-                return;
             }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);

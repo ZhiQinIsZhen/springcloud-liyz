@@ -51,7 +51,7 @@ public class SwaggerConfig extends SwaggerBaseConfig {
                 .apiInfo(apiInfo())
                 .protocols(Sets.newHashSet("https", "http"))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.liyz.cloud.api.web.controller.error"))
+                .apis(RequestHandlerSelectors.basePackage("com.liyz.cloud.common.controller.error"))
                 .paths(PathSelectors.any())
                 .build().groupName("错误-API");
     }

@@ -10,16 +10,14 @@ import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 import com.liyz.cloud.common.base.util.CommonConverterUtil;
 import com.liyz.cloud.common.controller.annotation.LoginUser;
 import com.liyz.cloud.common.model.bo.member.UserInfoBO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Objects;
 
@@ -46,18 +44,24 @@ public class UserInfoController {
     @Autowired
     FeignUserInfoService feignUserInfoService;
 
+    @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
+            paramType = "header")
     @ApiOperation(value = "获取登陆的用户信息", notes = "获取登陆的用户信息")
     @GetMapping("/info")
-    public Result<UserInfoVO> info(@LoginUser JwtUserBO jwtUserBO) {
+    public Result<UserInfoVO> info(@ApiIgnore @LoginUser JwtUserBO jwtUserBO) {
         return Result.success(CommonConverterUtil.beanCopy(jwtUserBO, UserInfoVO.class));
     }
 
     @GetMapping("/id")
-    public Result<Long> id(@LoginUser JwtUserBO jwtUserBO) {
+    @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
+            paramType = "header")
+    public Result<Long> id(@ApiIgnore @LoginUser JwtUserBO jwtUserBO) {
         return Result.success(Objects.isNull(jwtUserBO) ? null : jwtUserBO.getUserId());
     }
 
     @GetMapping("/page")
+    @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String",
+            paramType = "header")
     public PageResult<UserInfoVO> page(@Validated({PageBaseDTO.Page.class}) PageBaseDTO pageBaseDTO) {
         if (Objects.isNull(pageBaseDTO)) {
             pageBaseDTO = new PageBaseDTO();

@@ -1,4 +1,4 @@
-package com.liyz.cloud.api.web.controller.error;
+package com.liyz.cloud.common.controller.error;
 
 import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.enums.CommonCodeEnum;
