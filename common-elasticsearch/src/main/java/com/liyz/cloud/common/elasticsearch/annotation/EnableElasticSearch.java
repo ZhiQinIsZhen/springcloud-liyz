@@ -15,8 +15,8 @@ import java.lang.annotation.Target;
  * @version 1.0.0
  * @date 2019/9/16 14:41
  */
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Import({ElasticsearchImportSelector.class})
+//@Target({ElementType.TYPE})
+//@Retention(RetentionPolicy.RUNTIME)
+//@Import({ElasticsearchImportSelector.class})
 public @interface EnableElasticSearch {
 }
