@@ -12,6 +12,14 @@
     <artifactId>elasticsearch-dao</artifactId>
     <packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.liyz.cloud</groupId>
+            <artifactId>common-elasticsearch</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

@@ -3,11 +3,13 @@ package com.liyz.cloud.common.base.util;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.liyz.cloud.common.base.cglib.PageImplCopier;
 import com.liyz.cloud.common.base.cglib.PageInfoCopier;
 import com.liyz.cloud.common.base.cglib.SimpleBeanCopier;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.PageImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -130,6 +132,20 @@ public final class CommonConverterUtil {
         simpleBeanCopier.setTargetClass(targetClass);
         simpleBeanCopier.init();
         return PageInfoCopier.transform(sourcePage, simpleBeanCopier);
+    }
+
+    public static <T,Y> PageImpl<Y> PageTransform(PageImpl<T> sourcePage, Class<Y> targetClass) {
+        if (sourcePage == null) {
+            return null;
+        }
+        if (sourcePage.getTotalElements() == 0) {
+            return beanCopy(sourcePage, PageImpl.class);
+        }
+        SimpleBeanCopier simpleBeanCopier = getClone();
+        simpleBeanCopier.setSourceClass(sourcePage.getContent().get(0).getClass());
+        simpleBeanCopier.setTargetClass(targetClass);
+        simpleBeanCopier.init();
+        return PageImplCopier.transform(sourcePage, simpleBeanCopier);
     }
 
     /**

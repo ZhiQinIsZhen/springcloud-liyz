@@ -1,5 +1,8 @@
 package com.liyz.cloud.common.base.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +24,8 @@ import java.util.Objects;
  * @version 1.0.0
  * @date 2019/7/12 16:18
  */
-public class DateUtil {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class DateUtil {
 
     /**
      * 年月日格式匹配符（预置），详情请参阅{@link SimpleDateFormat}
