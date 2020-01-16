@@ -17,6 +17,7 @@
         <module>service-monitor</module>
         <module>service-gateway</module>
         <module>service-registry</module>
+        <module>service-elasticsearch</module>
     </modules>
 
     <parent>

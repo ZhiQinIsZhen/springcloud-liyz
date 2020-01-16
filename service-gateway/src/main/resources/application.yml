@@ -1,5 +1,5 @@
 server:
-  port: 9095
+  port: 8052
   tomcat:
     uri-encoding: UTF-8
 spring:
@@ -19,7 +19,7 @@ spring:
             lower-case-service-id: true
         routes:
           - id: header_route
-            uri: http://localhost:8093
+            uri: http://localhost:8053
             predicates:
             - Header=Authorization, .*?
 
@@ -27,7 +27,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8096/eureka/
+      defaultZone: http://localhost:8050/eureka/
   instance:
     health-check-url-path: /actuator/health
 #一下配置，在生产环境注意，选择性配置
