@@ -3,6 +3,7 @@ package com.liyz.cloud.service.es.remote;
 import com.liyz.cloud.common.base.util.CommonConverterUtil;
 import com.liyz.cloud.common.base.util.PageImplUtil;
 import com.liyz.cloud.common.model.bo.elasticsearch.RiskConsensusBO;
+import com.liyz.cloud.common.model.bo.elasticsearch.RiskConsensusPageQueryBO;
 import com.liyz.cloud.common.model.bo.page.PageBaseBO;
 import com.liyz.cloud.service.es.model.EsRiskConsensusDO;
 import com.liyz.cloud.service.es.service.RiskConsensusService;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 注释:
@@ -48,5 +50,22 @@ public class RemoteRiskConsensusService {
         Page<EsRiskConsensusDO> doPage = riskConsensusService.search(pageBaseBO);
         PageImpl<EsRiskConsensusDO> implDoPage = PageImplUtil.toPageImpl(doPage);
         return CommonConverterUtil.PageTransform(implDoPage, RiskConsensusBO.class);
+    }
+
+    public PageImpl<RiskConsensusBO> search(RiskConsensusPageQueryBO queryBO) {
+        Page<EsRiskConsensusDO> doPage = riskConsensusService.search(queryBO);
+        PageImpl<EsRiskConsensusDO> implDoPage = PageImplUtil.toPageImpl(doPage);
+        return CommonConverterUtil.PageTransform(implDoPage, RiskConsensusBO.class);
+    }
+
+    public PageImpl<RiskConsensusBO> searchForHighlight(RiskConsensusPageQueryBO queryBO) {
+        Page<EsRiskConsensusDO> doPage = riskConsensusService.searchForHighlight(queryBO);
+        PageImpl<EsRiskConsensusDO> implDoPage = PageImplUtil.toPageImpl(doPage);
+        return CommonConverterUtil.PageTransform(implDoPage, RiskConsensusBO.class);
+    }
+
+    public Map<String,Object> aggregateForSentimentType(RiskConsensusPageQueryBO queryBO) {
+        Map<String,Object> map = riskConsensusService.aggregateForSentimentType(queryBO);
+        return map;
     }
 }
