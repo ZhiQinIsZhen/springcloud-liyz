@@ -24,5 +24,5 @@ public class NearByVO implements Serializable {
 
     private String sex;
 
-    private Date creteTime;
+    private Date createTime;
 }

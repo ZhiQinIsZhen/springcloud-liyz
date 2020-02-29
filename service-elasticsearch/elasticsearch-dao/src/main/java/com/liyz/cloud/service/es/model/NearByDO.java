@@ -35,5 +35,5 @@ public class NearByDO implements Serializable {
     private String sex;
 
     @Field(format = DateFormat.date_time)
-    private Date creteTime;
+    private Date createTime;
 }

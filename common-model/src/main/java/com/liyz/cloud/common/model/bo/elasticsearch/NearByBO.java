@@ -24,5 +24,5 @@ public class NearByBO implements Serializable {
 
     private String sex;
 
-    private Date creteTime;
+    private Date createTime;
 }

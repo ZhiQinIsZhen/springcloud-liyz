@@ -28,7 +28,7 @@ public class EsRiskConsensusDO implements Serializable {
     @Field(analyzer = "ik_max_word",type = FieldType.Text)
     private String content;
 
-    @Field(format = DateFormat.date_hour_minute_second)
+    @Field(format = DateFormat.date_time)
     private Date createTime;
 
     @Field(analyzer = "ik_max_word",type = FieldType.Text)
