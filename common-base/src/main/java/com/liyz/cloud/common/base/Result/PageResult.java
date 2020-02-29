@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.liyz.cloud.common.base.enums.CommonCodeEnum;
 import com.liyz.cloud.common.base.enums.ServiceCodeEnum;
 import lombok.Data;
+import org.springframework.data.domain.PageImpl;
 
 import java.io.Serializable;
 import java.util.List;
@@ -40,6 +41,10 @@ public class PageResult<T> implements Serializable {
         return new PageResult<>(data);
     }
 
+    public static <T> PageResult<T> success(PageImpl<T> data) {
+        return new PageResult<>(data);
+    }
+
     public static <T> PageResult<T> error(String code, String message) {
         return new PageResult<T>(code, message);
     }
@@ -56,6 +61,18 @@ public class PageResult<T> implements Serializable {
         this.hasNextPage = isNull ? false : data.isHasNextPage();
         this.pageNum = isNull ? 0 : data.getPageNum();
         this.pageSize = isNull ? 0 : data.getPageSize();
+        this.code = CommonCodeEnum.success.getCode();
+        this.message = CommonCodeEnum.success.getMessage();
+    }
+
+    public PageResult(PageImpl<T> data) {
+        boolean isNull = data == null;
+        this.setData(isNull ? Lists.newArrayList() : data.getContent());
+        this.total = isNull ? 0L : data.getTotalElements();
+        this.pages = isNull ? 0 : data.getTotalPages();
+        this.hasNextPage = isNull ? false : data.hasNext();
+        this.pageNum = isNull ? 0 : data.getNumber();
+        this.pageSize = isNull ? 0 : data.getSize();
         this.code = CommonCodeEnum.success.getCode();
         this.message = CommonCodeEnum.success.getMessage();
     }

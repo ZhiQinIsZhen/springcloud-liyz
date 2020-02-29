@@ -66,4 +66,15 @@ public class SwaggerConfig extends SwaggerBaseConfig {
                 .paths(PathSelectors.any())
                 .build().groupName("文件服务-API");
     }
+
+    @Bean
+    public Docket createEsApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .protocols(Sets.newHashSet("https", "http"))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.liyz.cloud.api.web.controller.es"))
+                .paths(PathSelectors.any())
+                .build().groupName("ES-API");
+    }
 }

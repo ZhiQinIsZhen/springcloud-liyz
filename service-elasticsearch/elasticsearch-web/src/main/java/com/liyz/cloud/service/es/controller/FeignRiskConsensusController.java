@@ -1,8 +1,11 @@
 package com.liyz.cloud.service.es.controller;
 
+import com.liyz.cloud.common.base.Result.Result;
+import com.liyz.cloud.common.model.bo.elasticsearch.NearByBO;
 import com.liyz.cloud.common.model.bo.elasticsearch.RiskConsensusBO;
 import com.liyz.cloud.common.model.bo.elasticsearch.RiskConsensusPageQueryBO;
 import com.liyz.cloud.common.model.bo.page.PageBaseBO;
+import com.liyz.cloud.service.es.remote.RemoteNearByService;
 import com.liyz.cloud.service.es.remote.RemoteRiskConsensusService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +30,13 @@ public class FeignRiskConsensusController {
 
     @Autowired
     RemoteRiskConsensusService remoteRiskConsensusService;
+    @Autowired
+    RemoteNearByService remoteNearByService;
 
     @PostMapping(value = "/save", consumes = "application/json")
-    public int save(@RequestBody RiskConsensusBO riskConsensusBO) {
-        return remoteRiskConsensusService.save(riskConsensusBO);
+    public Result<Integer> save(@RequestBody RiskConsensusBO riskConsensusBO) {
+        int count = remoteRiskConsensusService.save(riskConsensusBO);
+        return Result.success(count);
     }
 
     @PostMapping(value = "/saveList", consumes = "application/json")
@@ -51,6 +57,11 @@ public class FeignRiskConsensusController {
     @GetMapping(value = "/search")
     public PageImpl<RiskConsensusBO> search(PageBaseBO pageBaseBO) {
         return remoteRiskConsensusService.search(pageBaseBO);
+    }
+
+    @GetMapping(value = "/search/near")
+    public PageImpl<NearByBO> searchNear(PageBaseBO pageBaseBO) {
+        return remoteNearByService.search(pageBaseBO);
     }
 
     @GetMapping(value = "/searchForCondition")
