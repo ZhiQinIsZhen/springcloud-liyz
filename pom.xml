@@ -57,7 +57,7 @@
         <swagger.others.version>1.5.23</swagger.others.version>
         <swagger.xiaoymin.version>1.9.5</swagger.xiaoymin.version>
         <redisson.version>3.11.1</redisson.version>
-        <elasticsearch.version>7.1.1</elasticsearch.version>
+        <!--<elasticsearch.version>7.1.1</elasticsearch.version>-->
         <elasticjob.version>2.1.5</elasticjob.version>
         <admin-starter-server.version>2.2.1</admin-starter-server.version>
         <admin-starter-client.version>2.2.1</admin-starter-client.version>
@@ -218,16 +218,16 @@
                 </exclusions>
             </dependency>
             <!-- es -->
-            <dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>elasticsearch-rest-high-level-client</artifactId>
-                <version>${elasticsearch.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.elasticsearch</groupId>
-                <artifactId>elasticsearch</artifactId>
-                <version>${elasticsearch.version}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.elasticsearch.client</groupId>-->
+                <!--<artifactId>elasticsearch-rest-high-level-client</artifactId>-->
+                <!--<version>${elasticsearch.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.elasticsearch</groupId>-->
+                <!--<artifactId>elasticsearch</artifactId>-->
+                <!--<version>${elasticsearch.version}</version>-->
+            <!--</dependency>-->
             <!-- job -->
             <dependency>
                 <groupId>com.dangdang</groupId>
