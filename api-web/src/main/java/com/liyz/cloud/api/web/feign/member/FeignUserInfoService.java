@@ -1,6 +1,7 @@
 package com.liyz.cloud.api.web.feign.member;
 
-import com.github.pagehelper.PageInfo;
+import com.liyz.cloud.common.base.Result.PageResult;
+import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 import com.liyz.cloud.common.model.bo.member.LoginUserInfoBO;
 import com.liyz.cloud.common.model.bo.member.UserInfoBO;
@@ -24,15 +25,15 @@ import java.util.Date;
 public interface FeignUserInfoService {
 
     @GetMapping(value = "/member/getByLoginName")
-    JwtUserBO getByLoginName(@NotBlank LoginUserInfoBO loginUserInfoBO);
+    Result<JwtUserBO> getByLoginName(@NotBlank LoginUserInfoBO loginUserInfoBO);
 
     @PostMapping(value = "/member/kickDownLine", consumes = "application/json")
-    Date kickDownLine(@RequestBody LoginUserInfoBO downLineBO);
+    Result<Date> kickDownLine(@RequestBody LoginUserInfoBO downLineBO);
 
     @GetMapping("/member/getByUserId")
-    UserInfoBO getByUserId(@RequestParam(value = "userId", required = false) Long userId);
+    Result<UserInfoBO> getByUserId(@RequestParam(value = "userId", required = false) Long userId);
 
     @GetMapping("/member/page")
-    PageInfo<UserInfoBO> pageList(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-                                  @RequestParam(value = "size", required = false, defaultValue = "10") Integer size);
+    PageResult<UserInfoBO> pageList(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+                                    @RequestParam(value = "size", required = false, defaultValue = "10") Integer size);
 }

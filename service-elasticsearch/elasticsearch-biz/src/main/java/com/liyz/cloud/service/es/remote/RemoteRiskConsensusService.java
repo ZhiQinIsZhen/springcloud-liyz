@@ -65,7 +65,6 @@ public class RemoteRiskConsensusService {
     }
 
     public Map<String,Object> aggregateForSentimentType(RiskConsensusPageQueryBO queryBO) {
-        Map<String,Object> map = riskConsensusService.aggregateForSentimentType(queryBO);
-        return map;
+        return riskConsensusService.aggregateForSentimentType(queryBO);
     }
 }

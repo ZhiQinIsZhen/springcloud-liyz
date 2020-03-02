@@ -20,7 +20,7 @@ public class RiskConsensusBO implements Serializable {
 
     private String content;
 
-    private Date createTime;
+    private String createTime;
 
     private String finalTitle;
 
@@ -28,7 +28,7 @@ public class RiskConsensusBO implements Serializable {
 
     private String pickedAbstract;
 
-    private Date publishTime;
+    private String publishTime;
 
     private String remark;
 

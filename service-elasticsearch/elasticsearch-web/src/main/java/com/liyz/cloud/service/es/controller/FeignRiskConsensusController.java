@@ -1,11 +1,10 @@
 package com.liyz.cloud.service.es.controller;
 
+import com.liyz.cloud.common.base.Result.PageResult;
 import com.liyz.cloud.common.base.Result.Result;
-import com.liyz.cloud.common.model.bo.elasticsearch.NearByBO;
 import com.liyz.cloud.common.model.bo.elasticsearch.RiskConsensusBO;
 import com.liyz.cloud.common.model.bo.elasticsearch.RiskConsensusPageQueryBO;
 import com.liyz.cloud.common.model.bo.page.PageBaseBO;
-import com.liyz.cloud.service.es.remote.RemoteNearByService;
 import com.liyz.cloud.service.es.remote.RemoteRiskConsensusService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,6 @@ public class FeignRiskConsensusController {
 
     @Autowired
     RemoteRiskConsensusService remoteRiskConsensusService;
-    @Autowired
-    RemoteNearByService remoteNearByService;
 
     @PostMapping(value = "/save", consumes = "application/json")
     public Result<Integer> save(@RequestBody RiskConsensusBO riskConsensusBO) {
@@ -54,28 +51,26 @@ public class FeignRiskConsensusController {
         remoteRiskConsensusService.delete(list.stream().map(RiskConsensusBO::getId).collect(Collectors.toList()));
     }
 
-    @GetMapping(value = "/search")
-    public PageImpl<RiskConsensusBO> search(PageBaseBO pageBaseBO) {
-        return remoteRiskConsensusService.search(pageBaseBO);
-    }
-
-    @GetMapping(value = "/search/near")
-    public PageImpl<NearByBO> searchNear(PageBaseBO pageBaseBO) {
-        return remoteNearByService.search(pageBaseBO);
+    @PostMapping(value = "/search", consumes = "application/json")
+    public PageResult<RiskConsensusBO> search(PageBaseBO pageBaseBO) {
+        PageImpl<RiskConsensusBO> implBoPage = remoteRiskConsensusService.search(pageBaseBO);
+        return PageResult.success(implBoPage);
     }
 
     @GetMapping(value = "/searchForCondition")
-    public PageImpl<RiskConsensusBO> searchForCondition(RiskConsensusPageQueryBO queryBO) {
-        return remoteRiskConsensusService.search(queryBO);
+    public PageResult<RiskConsensusBO> searchForCondition(RiskConsensusPageQueryBO queryBO) {
+        PageImpl<RiskConsensusBO> implBoPage = remoteRiskConsensusService.search(queryBO);
+        return PageResult.success(implBoPage);
     }
 
     @GetMapping(value = "/searchForHighlight")
-    public PageImpl<RiskConsensusBO> searchForHighlight(RiskConsensusPageQueryBO queryBO) {
-        return remoteRiskConsensusService.searchForHighlight(queryBO);
+    public PageResult<RiskConsensusBO> searchForHighlight(RiskConsensusPageQueryBO queryBO) {
+        PageImpl<RiskConsensusBO> implBoPage = remoteRiskConsensusService.searchForHighlight(queryBO);
+        return PageResult.success(implBoPage);
     }
 
     @GetMapping(value = "/aggregateForSentimentType")
-    public Map<String,Object> aggregateForSentimentType(RiskConsensusPageQueryBO queryBO) {
-        return remoteRiskConsensusService.aggregateForSentimentType(queryBO);
+    public Result<Map<String,Object>> aggregateForSentimentType(RiskConsensusPageQueryBO queryBO) {
+        return Result.success(remoteRiskConsensusService.aggregateForSentimentType(queryBO));
     }
 }

@@ -56,9 +56,6 @@ public class RemoteUserInfoService {
     }
 
     public PageInfo<UserInfoBO> pageList(Integer page, Integer size) {
-        if (!Objects.isNull(page)) {
-            throw new RemoteMemberServiceException(CommonCodeEnum.NoData);
-        }
         PageHelper.startPage(page, size);
         List<UserInfoDO> doList = userInfoService.listAll();
         PageInfo<UserInfoDO> doPageInfo = new PageInfo<>(doList);

@@ -1,6 +1,5 @@
 package com.liyz.cloud.api.web.controller.business;
 
-import com.github.pagehelper.PageInfo;
 import com.liyz.cloud.api.web.dto.page.PageBaseDTO;
 import com.liyz.cloud.api.web.feign.member.FeignUserInfoService;
 import com.liyz.cloud.api.web.vo.business.UserInfoVO;
@@ -68,8 +67,7 @@ public class UserInfoController {
         if (Objects.isNull(pageBaseDTO)) {
             pageBaseDTO = new PageBaseDTO();
         }
-        PageInfo<UserInfoBO> boPageInfo = feignUserInfoService.pageList(pageBaseDTO.getPageNum(), pageBaseDTO.getPageSize());
-        PageInfo<UserInfoVO> voPageInfo = CommonConverterUtil.PageTransform(boPageInfo, UserInfoVO.class);
-        return PageResult.success(voPageInfo);
+        PageResult<UserInfoBO> boPageInfo = feignUserInfoService.pageList(pageBaseDTO.getPageNum(), pageBaseDTO.getPageSize());
+        return CommonConverterUtil.PageTransform(boPageInfo, UserInfoVO.class);
     }
 }

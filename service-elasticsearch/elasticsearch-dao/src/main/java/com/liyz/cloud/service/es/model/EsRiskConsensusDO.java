@@ -18,7 +18,7 @@ import java.util.Date;
  * @date 2020/1/13 11:31
  */
 @Data
-@Document(indexName = "risk_consensus", type = "doc")
+@Document(indexName = "risk_consensus", type = "_doc")
 public class EsRiskConsensusDO implements Serializable {
     private static final long serialVersionUID = -879485120284773650L;
 
@@ -28,8 +28,7 @@ public class EsRiskConsensusDO implements Serializable {
     @Field(analyzer = "ik_max_word",type = FieldType.Text)
     private String content;
 
-//    @Field(format = DateFormat.date_hour_minute_second)
-//    private Date createTime;
+    private String createTime;
 
     @Field(analyzer = "ik_max_word",type = FieldType.Text)
     private String finalTitle;
@@ -40,14 +39,15 @@ public class EsRiskConsensusDO implements Serializable {
     @Field(analyzer = "ik_max_word",type = FieldType.Text)
     private String pickedAbstract;
 
-//    @Field(format = DateFormat.date_hour_minute_second)
-    private Date publishTime;
+    private String publishTime;
 
     @Field(analyzer = "ik_max_word",type = FieldType.Text)
     private String remark;
 
+    @Field(type = FieldType.Float)
     private Double sentimentScore;
 
+    @Field(type = FieldType.Integer)
     private Integer sentimentType;
 
     @Field(type = FieldType.Keyword)

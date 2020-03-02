@@ -1,5 +1,6 @@
 package com.liyz.cloud.common.base.remote;
 
+import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 
 /**
@@ -11,5 +12,5 @@ import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
  */
 public interface RemoteJwtUserService {
 
-    JwtUserBO getByLoginName(String loginName);
+    Result<JwtUserBO> getByLoginName(String loginName);
 }

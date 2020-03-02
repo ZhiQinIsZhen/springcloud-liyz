@@ -1,6 +1,7 @@
 package com.liyz.cloud.api.web.feign.member.impl;
 
 import com.liyz.cloud.api.web.feign.member.FeignUserInfoService;
+import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.remote.RemoteJwtUserService;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 import com.liyz.cloud.common.model.bo.member.LoginUserInfoBO;
@@ -21,7 +22,7 @@ public class RemoteJwtUserServiceImpl implements RemoteJwtUserService {
     FeignUserInfoService feignUserInfoService;
 
     @Override
-    public JwtUserBO getByLoginName(String loginName) {
+    public Result<JwtUserBO> getByLoginName(String loginName) {
         LoginUserInfoBO loginUserInfoBO = new LoginUserInfoBO();
         loginUserInfoBO.setLoginName(loginName);
         return feignUserInfoService.getByLoginName(loginUserInfoBO);

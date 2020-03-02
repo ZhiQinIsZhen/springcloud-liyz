@@ -4,7 +4,7 @@ server:
     uri-encoding: UTF-8
 spring:
   application:
-    name: service-gateway
+    name: gateway-service
   http:
     encoding:
       force: true

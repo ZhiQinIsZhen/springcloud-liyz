@@ -53,6 +53,8 @@ public class PageResult<T> implements Serializable {
         return new PageResult<T>(codeEnum.getCode(), codeEnum.getMessage());
     }
 
+    public PageResult() {}
+
     public PageResult(PageInfo<T> data) {
         boolean isNull = data == null;
         this.setData(isNull ? Lists.newArrayList() : data.getList());

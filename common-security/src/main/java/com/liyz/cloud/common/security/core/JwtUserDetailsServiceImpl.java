@@ -1,5 +1,7 @@
 package com.liyz.cloud.common.security.core;
 
+import com.liyz.cloud.common.base.Result.Result;
+import com.liyz.cloud.common.base.enums.CommonCodeEnum;
 import com.liyz.cloud.common.base.remote.LoginInfoService;
 import com.liyz.cloud.common.base.remote.RemoteJwtUserService;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
@@ -26,7 +28,11 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        JwtUserBO jwtUserBO = remoteJwtUserService.getByLoginName(username);
+        Result<JwtUserBO> result = remoteJwtUserService.getByLoginName(username);
+        JwtUserBO jwtUserBO = null;
+        if (CommonCodeEnum.success.getCode().equals(result.getCode())) {
+            jwtUserBO = result.getData();
+        }
         if (Objects.isNull(jwtUserBO)) {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
         }

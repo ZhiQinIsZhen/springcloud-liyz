@@ -27,6 +27,8 @@ public class Result<T> implements Serializable {
     @JSONField(ordinal = 3)
     private T data;
 
+    public Result() {}
+
     public Result(String code, String message) {
         this.code = code;
         this.message = message;

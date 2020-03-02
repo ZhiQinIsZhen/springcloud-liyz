@@ -110,12 +110,16 @@ public class AuthenticationController {
         LoginUserInfoBO downLineBO = new LoginUserInfoBO();
         downLineBO.setUserId(userInfo.getUserId());
         downLineBO.setDeviceEnum(deviceEnum);
-        Date date = feignUserInfoService.kickDownLine(downLineBO);
+        Result<Date> result = feignUserInfoService.kickDownLine(downLineBO);
+        Date date = null;
+        if (CommonCodeEnum.success.getCode().equals(result.getCode())) {
+            date = result.getData();
+        }
         final UserDetails userDetails = JwtAuthenticationUtil.create(userInfo);
         final String token = jwtTokenAnalysisUtil.generateToken(userDetails, device, date, userInfo.getUserId());
         Date expirationDateFromToken = jwtTokenAnalysisUtil.getExpirationDateFromToken(token);
         Long expirationDate = expirationDateFromToken.getTime();
-        LoginVO loginVO = CommonConverterUtil.beanConverter(userInfo, LoginVO.class);
+        LoginVO loginVO = CommonConverterUtil.beanCopy(userInfo, LoginVO.class);
         loginVO.setExpirationDate(expirationDate);
         loginVO.setToken(token);
         return loginVO;

@@ -1,6 +1,8 @@
 package com.liyz.cloud.service.member.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.liyz.cloud.common.base.Result.PageResult;
+import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 import com.liyz.cloud.common.model.bo.member.LoginUserInfoBO;
 import com.liyz.cloud.common.model.bo.member.UserInfoBO;
@@ -31,26 +33,27 @@ public class FeignUserInfoController {
     RemoteUserInfoService remoteUserInfoService;
 
     @PostMapping(value = "/getByLoginName", consumes = "application/json")
-    public JwtUserBO getByLoginName(@Validated(LoginUserInfoBO.Auth.class) @RequestBody LoginUserInfoBO loginUserInfoBO) {
-        return remoteUserInfoService.getByLoginName(loginUserInfoBO.getLoginName());
+    public Result<JwtUserBO> getByLoginName(@Validated(LoginUserInfoBO.Auth.class) @RequestBody LoginUserInfoBO loginUserInfoBO) {
+        return Result.success(remoteUserInfoService.getByLoginName(loginUserInfoBO.getLoginName()));
     }
 
     @PostMapping(value = "/kickDownLine", consumes = "application/json")
-    public Date kickDownLine(@Validated(LoginUserInfoBO.KickDown.class) @RequestBody LoginUserInfoBO downLineBO) {
-        return remoteUserInfoService.kickDownLine(downLineBO.getUserId(), downLineBO.getDeviceEnum());
+    public Result<Date> kickDownLine(@Validated(LoginUserInfoBO.KickDown.class) @RequestBody LoginUserInfoBO downLineBO) {
+        return Result.success(remoteUserInfoService.kickDownLine(downLineBO.getUserId(), downLineBO.getDeviceEnum()));
     }
 
     @GetMapping("/getByUserId")
-    public UserInfoBO getByUserId(@RequestParam(required = false) Long userId) {
+    public Result<UserInfoBO> getByUserId(@RequestParam(required = false) Long userId) {
         if (Objects.isNull(userId)) {
-            return null;
+            return Result.success();
         }
-        return remoteUserInfoService.getByUserId(userId);
+        return Result.success(remoteUserInfoService.getByUserId(userId));
     }
 
     @GetMapping("/page")
-    public PageInfo<UserInfoBO> pageList(@RequestParam(required = false, defaultValue = "1") Integer page,
-                                         @RequestParam(required = false, defaultValue = "10") Integer size) {
-        return remoteUserInfoService.pageList(page, size);
+    public PageResult<UserInfoBO> pageList(@RequestParam(required = false, defaultValue = "1") Integer page,
+                                           @RequestParam(required = false, defaultValue = "10") Integer size) {
+        PageInfo<UserInfoBO> pageInfo = remoteUserInfoService.pageList(page, size);
+        return PageResult.success(pageInfo);
     }
 }
