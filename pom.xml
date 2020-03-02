@@ -34,39 +34,32 @@
     <description>this is project what is all projects's parent</description>
 
     <properties>
-        <java.version>1.8</java.version>
-        <file.encoding>UTF-8</file.encoding>
-        <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
-
-        <compiler.version>3.8.1</compiler.version>
-        <lombok.version>1.18.10</lombok.version>
-        <guava.version>28.1-jre</guava.version>
-        <commons.lang3.version>3.9</commons.lang3.version>
-        <fastjson.version>1.2.62</fastjson.version>
+        <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
+        <!-- 工具 -->
+        <guava.version>28.2-jre</guava.version>
+        <fastjson.version>1.2.66</fastjson.version>
         <apollo.version>1.5.1</apollo.version>
+
         <pagehelper.version>5.1.11</pagehelper.version>
         <pagehelper.auto.version>1.2.13</pagehelper.auto.version>
         <cglib.version>3.3.0</cglib.version>
         <mybatis.version>2.1.1</mybatis.version>
         <tk.mybatis.version>2.1.5</tk.mybatis.version>
-        <HikariCP.version>3.4.1</HikariCP.version>
-        <mysql.version>8.0.18</mysql.version>
         <device.version>1.1.5.RELEASE</device.version>
         <jjwt.version>0.9.0</jjwt.version>
         <swagger.version>2.9.2</swagger.version>
         <swagger.others.version>1.5.23</swagger.others.version>
         <swagger.xiaoymin.version>1.9.5</swagger.xiaoymin.version>
-        <redisson.version>3.11.1</redisson.version>
+        <redisson.version>3.12.3</redisson.version>
         <elasticjob.version>2.1.5</elasticjob.version>
-        <admin-starter-server.version>2.2.1</admin-starter-server.version>
-        <admin-starter-client.version>2.2.1</admin-starter-client.version>
+        <admin-starter-server.version>2.2.2</admin-starter-server.version>
+        <admin-starter-client.version>2.2.2</admin-starter-client.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -78,19 +71,9 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons.lang3.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -136,17 +119,6 @@
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
                 <version>${cglib.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.zaxxer</groupId>
-                <artifactId>HikariCP</artifactId>
-                <version>${HikariCP.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.mobile</groupId>
@@ -252,11 +224,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${compiler.version}</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <encoding>${file.encoding}</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
             <plugin>
