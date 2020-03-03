@@ -35,25 +35,29 @@
 
     <properties>
         <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
-        <!-- 工具 -->
+        <!-- tools -->
         <guava.version>28.2-jre</guava.version>
         <fastjson.version>1.2.66</fastjson.version>
         <apollo.version>1.5.1</apollo.version>
-
-        <pagehelper.version>5.1.11</pagehelper.version>
-        <pagehelper.auto.version>1.2.13</pagehelper.auto.version>
-        <cglib.version>3.3.0</cglib.version>
+        <!-- sql -->
         <mybatis.version>2.1.1</mybatis.version>
         <tk.mybatis.version>2.1.5</tk.mybatis.version>
+        <pagehelper.version>5.1.11</pagehelper.version>
+        <pagehelper.auto.version>1.2.13</pagehelper.auto.version>
+        <!-- token -->
         <device.version>1.1.5.RELEASE</device.version>
         <jjwt.version>0.9.0</jjwt.version>
+        <!-- swagger -->
         <swagger.version>2.9.2</swagger.version>
         <swagger.others.version>1.5.23</swagger.others.version>
         <swagger.xiaoymin.version>1.9.5</swagger.xiaoymin.version>
-        <redisson.version>3.12.3</redisson.version>
-        <elasticjob.version>2.1.5</elasticjob.version>
+        <!-- admin -->
         <admin-starter-server.version>2.2.2</admin-starter-server.version>
         <admin-starter-client.version>2.2.2</admin-starter-client.version>
+
+        <cglib.version>3.3.0</cglib.version>
+        <redisson.version>3.12.3</redisson.version>
+        <elasticjob.version>2.1.5</elasticjob.version>
     </properties>
 
     <dependencies>
