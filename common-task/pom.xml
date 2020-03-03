@@ -14,8 +14,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.qjdchina</groupId>
-            <artifactId>ai-common-base</artifactId>
+            <groupId>com.liyz.cloud</groupId>
+            <artifactId>common-base</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -18,6 +18,7 @@
         <module>service-gateway</module>
         <module>service-registry</module>
         <module>service-elasticsearch</module>
+        <module>service-sso</module>
     </modules>
 
     <parent>

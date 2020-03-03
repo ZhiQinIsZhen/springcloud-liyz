@@ -9,12 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>service-elasticsearch</artifactId>
+    <artifactId>service-sso</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>elasticsearch-dao</module>
-        <module>elasticsearch-biz</module>
-        <module>elasticsearch-web</module>
+        <module>sso-biz</module>
+        <module>sso-dao</module>
+        <module>sso-web</module>
     </modules>
 
     <build>
@@ -23,7 +23,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.liyz.cloud.service.es.EsApplication</mainClass>
+                    <mainClass>com.liyz.cloud.service.sso.SsoApplication</mainClass>
                 </configuration>
             </plugin>
             <plugin>
