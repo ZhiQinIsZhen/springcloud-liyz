@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -25,10 +24,11 @@ import java.util.Objects;
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
     private UserInfoService userInfoService;
 
+    /**
+     * 授权的时候是对角色授权，而认证的时候应该基于资源，而不是角色，因为资源是不变的，而用户的角色是会变的
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserInfoDO userInfoDO = userInfoService.getBy("login_name", username);
@@ -36,7 +36,17 @@ public class MyUserDetailsService implements UserDetailsService {
             log.warn("用户{}不存在", username);
             throw new UsernameNotFoundException(username);
         }
-        MyUser myUser = new MyUser(userInfoDO.getLoginName(), passwordEncoder.encode(userInfoDO.getLoginPwd()), null);
+        /*//设置用户角色 -- 暂时不设置
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        if (StringUtils.isNotBlank(userInfoDO.getRoles())) {
+            String[] roles = userInfoDO.getRoles().split(",");
+            for (String role : roles) {
+                authorities.add(new SimpleGrantedAuthority(role));
+            }
+        }*/
+
+        MyUser myUser = new MyUser(userInfoDO.getLoginName(), userInfoDO.getLoginPwd(), null, userInfoDO.getUserId(),
+                userInfoDO.getEmail(), userInfoDO.getWebTokenTime(), userInfoDO.getAppTokenTime());
         log.info("登录成功！用户: {}", JSON.toJSONString(myUser));
         return myUser;
     }

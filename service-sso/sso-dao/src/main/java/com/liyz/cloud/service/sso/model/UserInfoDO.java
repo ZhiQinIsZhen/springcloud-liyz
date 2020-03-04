@@ -50,4 +50,6 @@ public class UserInfoDO implements Serializable {
 
     @Column(name = "app_token_time")
     private Date appTokenTime;
+
+    private String roles;
 }

@@ -1,10 +1,12 @@
 package com.liyz.cloud.service.sso.config;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * 注释:
@@ -13,18 +15,41 @@ import java.util.Collection;
  * @version 1.0.0
  * @date 2020/3/4 0:09
  */
-@Data
 public class MyUser extends User {
 
-    private Long userId;
+    private final Long userId;
 
-    private String mobile;
+    private final String email;
 
-    public MyUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    private final Date lastWebPasswordResetDate;
+
+    private final Date lastAppPasswordResetDate;
+
+    public MyUser(String username, String password, Collection<? extends GrantedAuthority> authorities, Long userId, String email, Date lastWebPasswordResetDate, Date lastAppPasswordResetDate) {
         super(username, password, authorities);
+        this.userId = userId;
+        this.email = email;
+        this.lastWebPasswordResetDate = lastWebPasswordResetDate;
+        this.lastAppPasswordResetDate = lastAppPasswordResetDate;
     }
 
-    public MyUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+    @JsonIgnore
+    public Long getUserId() {
+        return userId;
+    }
+
+    @JsonIgnore
+    public String getEmail() {
+        return email;
+    }
+
+    @JsonIgnore
+    public Date getLastWebPasswordResetDate() {
+        return lastWebPasswordResetDate;
+    }
+
+    @JsonIgnore
+    public Date getLastAppPasswordResetDate() {
+        return lastAppPasswordResetDate;
     }
 }
