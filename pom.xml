@@ -19,6 +19,8 @@
         <module>service-registry</module>
         <module>service-elasticsearch</module>
         <module>service-sso</module>
+        <module>service-sso-member</module>
+        <module>service-push</module>
     </modules>
 
     <parent>
