@@ -6,14 +6,13 @@ import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 import com.liyz.cloud.common.model.bo.member.LoginUserInfoBO;
 import com.liyz.cloud.common.model.bo.member.UserInfoBO;
+import com.liyz.cloud.common.model.bo.member.UserRegisterBO;
 import com.liyz.cloud.service.member.remote.RemoteUserInfoService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Objects;
 
@@ -31,6 +30,11 @@ public class FeignUserInfoController {
 
     @Autowired
     RemoteUserInfoService remoteUserInfoService;
+
+    @PostMapping(value = "/register", consumes = "application/json")
+    public Result<UserInfoBO> getByLoginName(@Validated(UserRegisterBO.Register.class) @RequestBody UserRegisterBO userRegisterBO) {
+        return Result.success(remoteUserInfoService.register(userRegisterBO));
+    }
 
     @PostMapping(value = "/getByLoginName", consumes = "application/json")
     public Result<JwtUserBO> getByLoginName(@Validated(LoginUserInfoBO.Auth.class) @RequestBody LoginUserInfoBO loginUserInfoBO) {

@@ -1,8 +1,10 @@
 package com.liyz.cloud.api.web.controller.auth;
 
 import com.liyz.cloud.api.web.dto.auth.LoginDTO;
+import com.liyz.cloud.api.web.dto.auth.UserRegisterDTO;
 import com.liyz.cloud.api.web.feign.member.FeignUserInfoService;
 import com.liyz.cloud.api.web.vo.auth.LoginVO;
+import com.liyz.cloud.api.web.vo.business.UserInfoVO;
 import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.enums.CommonCodeEnum;
 import com.liyz.cloud.common.base.remote.LoginInfoService;
@@ -13,6 +15,8 @@ import com.liyz.cloud.common.controller.annotation.Limits;
 import com.liyz.cloud.common.controller.constant.LimitType;
 import com.liyz.cloud.common.controller.util.HttpRequestUtil;
 import com.liyz.cloud.common.model.bo.member.LoginUserInfoBO;
+import com.liyz.cloud.common.model.bo.member.UserInfoBO;
+import com.liyz.cloud.common.model.bo.member.UserRegisterBO;
 import com.liyz.cloud.common.model.constant.member.MemberEnum;
 import com.liyz.cloud.common.security.annotation.Anonymous;
 import com.liyz.cloud.common.security.util.JwtAuthenticationUtil;
@@ -31,6 +35,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,6 +72,8 @@ public class AuthenticationController {
     @Autowired
     LoginInfoService loginInfoService;
     @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
     FeignUserInfoService feignUserInfoService;
 
     @ApiOperation(value = "登陆", notes = "登陆")
@@ -78,12 +85,39 @@ public class AuthenticationController {
         LiteDeviceResolver resolver = new LiteDeviceResolver();
         Device device = resolver.resolveDevice(httpServletRequest);
         String ip = HttpRequestUtil.getIpAddress(httpServletRequest);
-        log.info("用户登陆了，ip:{}", ip);
+        log.info("user login，ip:{}", ip);
         if (!doAuth(loginDTO)) {
             return Result.error(CommonCodeEnum.LoginFail);
         }
         LoginVO loginVO = loginToken(device);
         return Result.success(loginVO);
+    }
+
+    @ApiOperation(value = "注册", notes = "注册")
+    @Limits(value = {@Limit(count = 10, type = LimitType.IP), @Limit(count = 10)})
+    @Anonymous
+    @PostMapping("/register")
+    public Result<UserInfoVO> register(@Validated({UserRegisterDTO.Register.class}) @RequestBody UserRegisterDTO userRegisterDTO) {
+        HttpServletRequest request = HttpRequestUtil.getRequest();
+        LiteDeviceResolver resolver = new LiteDeviceResolver();
+        String ip = HttpRequestUtil.getIpAddress(request);
+        Device device = resolver.resolveDevice(request);
+        log.info("user register，ip:{}", ip);
+        UserRegisterBO bo = CommonConverterUtil.beanCopy(userRegisterDTO, UserRegisterBO.class);
+        bo.setLoginPwd(passwordEncoder.encode(userRegisterDTO.getLoginPwd()));
+        bo.setIp(ip);
+        MemberEnum.DeviceEnum deviceEnum ;
+        if(device.isMobile()){
+            deviceEnum = MemberEnum.DeviceEnum.MOBILE;
+        }else{
+            deviceEnum = MemberEnum.DeviceEnum.WEB;
+        }
+        bo.setDeviceEnum(deviceEnum);
+        Result<UserInfoBO> result = feignUserInfoService.register(bo);
+        if (CommonCodeEnum.success.getCode().equals(result.getCode())) {
+            return Result.success(CommonConverterUtil.beanCopy(result.getData(), UserInfoVO.class));
+        }
+        return Result.error(result.getCode(), result.getMessage());
     }
 
     private boolean doAuth(LoginDTO loginDTO) {

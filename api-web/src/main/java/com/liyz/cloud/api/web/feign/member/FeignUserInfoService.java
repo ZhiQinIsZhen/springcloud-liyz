@@ -5,6 +5,7 @@ import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 import com.liyz.cloud.common.model.bo.member.LoginUserInfoBO;
 import com.liyz.cloud.common.model.bo.member.UserInfoBO;
+import com.liyz.cloud.common.model.bo.member.UserRegisterBO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,9 @@ import java.util.Date;
  */
 @FeignClient("member-service")
 public interface FeignUserInfoService {
+
+    @PostMapping(value = "/member/register", consumes = "application/json")
+    Result<UserInfoBO> register(@NotBlank UserRegisterBO userRegisterBO);
 
     @GetMapping(value = "/member/getByLoginName")
     Result<JwtUserBO> getByLoginName(@NotBlank LoginUserInfoBO loginUserInfoBO);

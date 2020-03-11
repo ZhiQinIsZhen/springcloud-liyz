@@ -14,7 +14,9 @@ import lombok.AllArgsConstructor;
 public enum MemberServiceCodeEnum implements ServiceCodeEnum {
 
     MobileExsist("20001", "手机号已存在"),
-    EmailExsist("20002", "邮箱号已存在")
+    EmailExsist("20002", "邮箱号已存在"),
+    MobileEmailNonMatch("20003", "用户名格式不正确"),
+    RegisterFail("20004", "注册失败"),
     ;
 
     private String code;

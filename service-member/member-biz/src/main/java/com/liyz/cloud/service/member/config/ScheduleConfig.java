@@ -16,7 +16,7 @@ import java.util.concurrent.Executor;
  * @date 2019/7/12 15:36
  */
 @Configuration
-public class ScheduleConfigurer implements SchedulingConfigurer {
+public class ScheduleConfig implements SchedulingConfigurer {
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {

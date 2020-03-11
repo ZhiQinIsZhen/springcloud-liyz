@@ -20,4 +20,8 @@ public class UserInfoService extends AbstractService<UserInfoDO> {
     public UserInfoDO getById(Object id) {
         return super.getById(id);
     }
+
+    public int selectCount(UserInfoDO userInfoDO) {
+        return mapper.selectCount(userInfoDO);
+    }
 }
