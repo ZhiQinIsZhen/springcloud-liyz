@@ -7,6 +7,7 @@ import com.liyz.cloud.api.web.vo.auth.LoginVO;
 import com.liyz.cloud.api.web.vo.business.UserInfoVO;
 import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.enums.CommonCodeEnum;
+import com.liyz.cloud.common.base.exception.RemoteServiceException;
 import com.liyz.cloud.common.base.remote.LoginInfoService;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 import com.liyz.cloud.common.base.util.CommonConverterUtil;
@@ -89,7 +90,7 @@ public class AuthenticationController {
         if (!doAuth(loginDTO)) {
             return Result.error(CommonCodeEnum.LoginFail);
         }
-        LoginVO loginVO = loginToken(device);
+        LoginVO loginVO = loginToken(device, ip);
         return Result.success(loginVO);
     }
 
@@ -133,7 +134,7 @@ public class AuthenticationController {
         }
     }
 
-    private LoginVO loginToken(Device device) {
+    private LoginVO loginToken(Device device, String ip) {
         MemberEnum.DeviceEnum deviceEnum ;
         if(device.isMobile()){
             deviceEnum = MemberEnum.DeviceEnum.MOBILE;
@@ -144,10 +145,13 @@ public class AuthenticationController {
         LoginUserInfoBO downLineBO = new LoginUserInfoBO();
         downLineBO.setUserId(userInfo.getUserId());
         downLineBO.setDeviceEnum(deviceEnum);
-        Result<Date> result = feignUserInfoService.kickDownLine(downLineBO);
-        Date date = null;
+        downLineBO.setIp(ip);
+        Result<Date> result = feignUserInfoService.loginTime(downLineBO);
+        Date date;
         if (CommonCodeEnum.success.getCode().equals(result.getCode())) {
             date = result.getData();
+        } else {
+            throw new RemoteServiceException(CommonCodeEnum.LoginError);
         }
         final UserDetails userDetails = JwtAuthenticationUtil.create(userInfo);
         final String token = jwtTokenAnalysisUtil.generateToken(userDetails, device, date, userInfo.getUserId());

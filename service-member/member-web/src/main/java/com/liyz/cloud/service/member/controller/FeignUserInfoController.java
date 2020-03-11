@@ -46,6 +46,11 @@ public class FeignUserInfoController {
         return Result.success(remoteUserInfoService.kickDownLine(downLineBO.getUserId(), downLineBO.getDeviceEnum()));
     }
 
+    @PostMapping(value = "/loginTime", consumes = "application/json")
+    public Result<Date> loginTime(@Validated(LoginUserInfoBO.Login.class) @RequestBody LoginUserInfoBO downLineBO) {
+        return Result.success(remoteUserInfoService.loginTime(downLineBO.getUserId(), downLineBO.getIp(), downLineBO.getDeviceEnum()));
+    }
+
     @GetMapping("/getByUserId")
     public Result<UserInfoBO> getByUserId(@RequestParam(required = false) Long userId) {
         if (Objects.isNull(userId)) {

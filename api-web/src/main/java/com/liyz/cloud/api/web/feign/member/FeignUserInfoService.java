@@ -34,6 +34,9 @@ public interface FeignUserInfoService {
     @PostMapping(value = "/member/kickDownLine", consumes = "application/json")
     Result<Date> kickDownLine(@RequestBody LoginUserInfoBO downLineBO);
 
+    @PostMapping(value = "/member/loginTime", consumes = "application/json")
+    Result<Date> loginTime(@RequestBody LoginUserInfoBO downLineBO);
+
     @GetMapping("/member/getByUserId")
     Result<UserInfoBO> getByUserId(@RequestParam(value = "userId", required = false) Long userId);
 

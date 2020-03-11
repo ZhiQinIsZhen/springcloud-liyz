@@ -105,7 +105,7 @@ public class JwtTokenAnalysisUtil {
     }
 
     private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
-        return (lastPasswordReset != null && created.before(lastPasswordReset));
+        return (created == null || lastPasswordReset == null || created.before(lastPasswordReset));
     }
 
     private String generateAudience(Device device) {

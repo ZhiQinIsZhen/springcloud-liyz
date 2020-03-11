@@ -8,15 +8,18 @@ import com.liyz.cloud.common.base.util.CommonConverterUtil;
 import com.liyz.cloud.common.base.util.DateUtil;
 import com.liyz.cloud.common.model.bo.member.UserInfoBO;
 import com.liyz.cloud.common.model.bo.member.UserRegisterBO;
+import com.liyz.cloud.common.model.constant.member.MemberConstant;
 import com.liyz.cloud.common.model.constant.member.MemberEnum;
 import com.liyz.cloud.common.model.constant.member.MemberServiceCodeEnum;
 import com.liyz.cloud.common.model.exception.mmeber.RemoteMemberServiceException;
 import com.liyz.cloud.service.member.config.MemberSnowflakeConfig;
 import com.liyz.cloud.service.member.model.UserInfoDO;
 import com.liyz.cloud.service.member.service.UserInfoService;
+import com.liyz.cloud.service.member.service.UserLoginLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -44,6 +47,8 @@ public class RemoteUserInfoService {
     UserInfoService userInfoService;
     @Autowired
     MemberSnowflakeConfig memberSnowflakeConfig;
+    @Autowired
+    UserLoginLogService userLoginLogService;
 
     /**
      * 用户注册
@@ -51,6 +56,7 @@ public class RemoteUserInfoService {
      * @param userRegisterBO
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public UserInfoBO register(UserRegisterBO userRegisterBO) {
         int type;
         if (matchMobile(userRegisterBO.getLoginName())) {
@@ -71,10 +77,13 @@ public class RemoteUserInfoService {
         param.setUserId(memberSnowflakeConfig.getId());
         param.setEmail(type == 1 ? param.getLoginName() : "812672598@qq.com");
         param.setMobile(type == 2 ? param.getLoginName() : "15988654731");
+        param.setRegTime(new Date());
         count = userInfoService.save(param);
         if (count == 0) {
             throw new RemoteMemberServiceException(MemberServiceCodeEnum.RegisterFail);
         }
+        userLoginLogService.save(param.getUserId(), userRegisterBO.getIp(), MemberConstant.REGISTER_TYPE,
+                userRegisterBO.getDeviceEnum().getDevice());
         return CommonConverterUtil.beanCopy(param, UserInfoBO.class);
     }
 
@@ -142,6 +151,21 @@ public class RemoteUserInfoService {
     }
 
     /**
+     * 获取登陆时间-登陆时调用
+     *
+     * @param userId
+     * @param ip
+     * @param deviceEnum
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public Date loginTime(Long userId, String ip, MemberEnum.DeviceEnum deviceEnum) {
+        Date loginTime = kickDownLine(userId, deviceEnum);
+        userLoginLogService.save(userId, ip, MemberConstant.LOGIN_TYPE, deviceEnum.getDevice());
+        return loginTime;
+    }
+
+    /**
      * 踢下线
      *
      * @param userId
@@ -152,7 +176,7 @@ public class RemoteUserInfoService {
         UserInfoBO userInfoBO = new UserInfoBO();
         userInfoBO.setUserId(userId);
         LocalDateTime nowLocalDateTime = LocalDateTime.now();
-        LocalDateTime localDateTime = DateUtil.minusTime(nowLocalDateTime, 10, ChronoUnit.MINUTES);
+        LocalDateTime localDateTime = DateUtil.minusTime(nowLocalDateTime, 10, ChronoUnit.SECONDS);
         Date tokenTime = DateUtil.convertLocalDateTimeToDate(localDateTime);
         if (MemberEnum.DeviceEnum.WEB == deviceEnum) {
             userInfoBO.setWebTokenTime(tokenTime);
@@ -162,7 +186,7 @@ public class RemoteUserInfoService {
             userInfoBO.setWebTokenTime(tokenTime);
             userInfoBO.setAppTokenTime(tokenTime);
         }
-        userInfoService.updateById(CommonConverterUtil.beanConverter(userInfoBO, UserInfoDO.class));
+        userInfoService.updateById(CommonConverterUtil.beanCopy(userInfoBO, UserInfoDO.class));
         return DateUtil.convertLocalDateTimeToDate(nowLocalDateTime);
     }
 

@@ -1,4 +1,4 @@
-package com.liyz.cloud.api.web.controller.business;
+package com.liyz.cloud.api.web.controller.member;
 
 import com.liyz.cloud.api.web.dto.page.PageBaseDTO;
 import com.liyz.cloud.api.web.feign.member.FeignUserInfoService;

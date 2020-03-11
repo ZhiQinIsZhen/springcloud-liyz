@@ -40,9 +40,9 @@ public class SwaggerConfig extends SwaggerBaseConfig {
                 .apiInfo(apiInfo())
                 .protocols(Sets.newHashSet("https", "http"))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.liyz.cloud.api.web.controller.business"))
+                .apis(RequestHandlerSelectors.basePackage("com.liyz.cloud.api.web.controller.member"))
                 .paths(PathSelectors.any())
-                .build().groupName("业务-API");
+                .build().groupName("用户相关-API");
     }
 
     @Bean
