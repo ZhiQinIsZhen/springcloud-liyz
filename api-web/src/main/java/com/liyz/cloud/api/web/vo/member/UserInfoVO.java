@@ -1,4 +1,4 @@
-package com.liyz.cloud.api.web.vo.business;
+package com.liyz.cloud.api.web.vo.member;
 
 import com.liyz.cloud.common.base.annotation.Desensitization;
 import com.liyz.cloud.common.base.enums.DesensitizationType;

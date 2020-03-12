@@ -24,4 +24,10 @@ public class UserInfoService extends AbstractService<UserInfoDO> {
     public int selectCount(UserInfoDO userInfoDO) {
         return mapper.selectCount(userInfoDO);
     }
+
+    public int loginNameCount(String loginName) {
+        UserInfoDO userInfoDO = new UserInfoDO();
+        userInfoDO.setLoginName(loginName);
+        return mapper.selectCount(userInfoDO);
+    }
 }

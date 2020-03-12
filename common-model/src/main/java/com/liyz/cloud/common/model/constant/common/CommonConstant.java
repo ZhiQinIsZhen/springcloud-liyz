@@ -14,4 +14,6 @@ public interface CommonConstant {
 
     //手机正则表达式
     String PHONEREG = "^1(3|4|5|7|8|9)\\d{9}$";
+
+    String DEFAULT_SPLIT = "_";
 }

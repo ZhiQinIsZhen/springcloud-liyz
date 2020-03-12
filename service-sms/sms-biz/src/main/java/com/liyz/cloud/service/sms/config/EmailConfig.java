@@ -109,7 +109,7 @@ public class EmailConfig {
         props.setProperty("mail.smtp.ssl.enable", "true");
         props.setProperty("mail.smtp.port", emailPort);
         props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-//        props.setProperty("mail.smtp.socketFactory.fallback", "false");
+        props.setProperty("mail.smtp.socketFactory.fallback", "false");
         props.setProperty("mail.smtp.socketFactory.port", emailPort);
         props.setProperty("mail.user", emailName);
         props.setProperty("mail.password", emailPwd);

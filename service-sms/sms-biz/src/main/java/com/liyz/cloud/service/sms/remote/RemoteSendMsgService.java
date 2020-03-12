@@ -5,6 +5,7 @@ import com.liyz.cloud.common.model.constant.sms.SmsConstant;
 import com.liyz.cloud.service.sms.config.EmailConfig;
 import com.liyz.cloud.service.sms.model.MsgTemplateDO;
 import com.liyz.cloud.service.sms.service.MsgTemplateService;
+import com.liyz.cloud.service.sms.util.SmsCacheUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,14 +27,18 @@ public class RemoteSendMsgService {
     MsgTemplateService msgTemplateService;
 
     public void email(EmailMessageBO emailMessageBO) {
-        MsgTemplateDO msgTemplateDO = new MsgTemplateDO();
-        msgTemplateDO.setCode(emailMessageBO.getCode());
-        msgTemplateDO.setLocale(emailMessageBO.getLocale());
-        msgTemplateDO.setType(SmsConstant.MSG_EMAIL_TYPE);
-        msgTemplateDO = msgTemplateService.getOne(msgTemplateDO);
+        MsgTemplateDO queryDO = new MsgTemplateDO();
+        queryDO.setCode(emailMessageBO.getCode());
+        queryDO.setLocale(emailMessageBO.getLocale());
+        queryDO.setType(SmsConstant.MSG_EMAIL_TYPE);
+        MsgTemplateDO msgTemplateDO = SmsCacheUtil.getMsgTemplate(queryDO);
         if (Objects.isNull(msgTemplateDO)) {
-            log.error("email template not exist, code:{},locale:{}", emailMessageBO.getCode(), emailMessageBO.getLocale());
-            return;
+            msgTemplateDO = msgTemplateService.getOne(queryDO);
+            if (Objects.isNull(msgTemplateDO)) {
+                log.error("email template not exist, code:{},locale:{}", emailMessageBO.getCode(), emailMessageBO.getLocale());
+                return;
+            }
+            SmsCacheUtil.pubMsgTemplate(msgTemplateDO);
         }
         emailMessageBO.setContent(msgTemplateDO.getContent());
         EmailConfig.sendSmtpEmail(emailMessageBO);

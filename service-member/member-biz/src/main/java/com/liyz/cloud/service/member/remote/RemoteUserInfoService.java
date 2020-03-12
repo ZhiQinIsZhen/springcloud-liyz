@@ -16,6 +16,7 @@ import com.liyz.cloud.service.member.config.MemberSnowflakeConfig;
 import com.liyz.cloud.service.member.model.UserInfoDO;
 import com.liyz.cloud.service.member.service.UserInfoService;
 import com.liyz.cloud.service.member.service.UserLoginLogService;
+import com.liyz.cloud.service.member.util.MemberUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static com.liyz.cloud.common.model.constant.common.CommonConstant.EMAILREG;
-import static com.liyz.cloud.common.model.constant.common.CommonConstant.PHONEREG;
 
 /**
  * 注释:
@@ -59,9 +55,9 @@ public class RemoteUserInfoService {
     @Transactional(rollbackFor = Exception.class)
     public UserInfoBO register(UserRegisterBO userRegisterBO) {
         int type;
-        if (matchMobile(userRegisterBO.getLoginName())) {
+        if (MemberUtil.matchMobile(userRegisterBO.getLoginName())) {
             type = 1;
-        } else if (matchEmail(userRegisterBO.getLoginName())){
+        } else if (MemberUtil.matchEmail(userRegisterBO.getLoginName())){
             type = 2;
         } else {
             throw new RemoteMemberServiceException(MemberServiceCodeEnum.MobileEmailNonMatch);
@@ -188,29 +184,5 @@ public class RemoteUserInfoService {
         }
         userInfoService.updateById(CommonConverterUtil.beanCopy(userInfoBO, UserInfoDO.class));
         return DateUtil.convertLocalDateTimeToDate(nowLocalDateTime);
-    }
-
-    /**
-     * 匹配手机
-     *
-     * @param mobile
-     * @return
-     */
-    public static boolean matchMobile(String mobile) {
-        Pattern p = Pattern.compile(PHONEREG);
-        Matcher m = p.matcher(mobile);
-        return m.matches();
-    }
-
-    /**
-     * 匹配邮箱
-     *
-     * @param email
-     * @return
-     */
-    public static boolean matchEmail(String email) {
-        Pattern p = Pattern.compile(EMAILREG);
-        Matcher m = p.matcher(email);
-        return m.matches();
     }
 }

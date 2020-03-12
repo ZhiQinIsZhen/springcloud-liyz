@@ -4,7 +4,7 @@ import com.liyz.cloud.api.web.dto.auth.LoginDTO;
 import com.liyz.cloud.api.web.dto.auth.UserRegisterDTO;
 import com.liyz.cloud.api.web.feign.member.FeignUserInfoService;
 import com.liyz.cloud.api.web.vo.auth.LoginVO;
-import com.liyz.cloud.api.web.vo.business.UserInfoVO;
+import com.liyz.cloud.api.web.vo.member.UserInfoVO;
 import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.enums.CommonCodeEnum;
 import com.liyz.cloud.common.base.exception.RemoteServiceException;

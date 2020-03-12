@@ -2,7 +2,7 @@ package com.liyz.cloud.api.web.controller.member;
 
 import com.liyz.cloud.api.web.dto.page.PageBaseDTO;
 import com.liyz.cloud.api.web.feign.member.FeignUserInfoService;
-import com.liyz.cloud.api.web.vo.business.UserInfoVO;
+import com.liyz.cloud.api.web.vo.member.UserInfoVO;
 import com.liyz.cloud.common.base.Result.PageResult;
 import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;

@@ -99,4 +99,12 @@ public class RedissonService {
     public boolean expire(String key, long time, TimeUnit unit) {
         return redissonClient.getBucket(key, STRING_CODE).expire(time, unit);
     }
+
+    public long getAndIncrement(String key) {
+        return redissonClient.getAtomicLong(key).getAndIncrement();
+    }
+
+    public long incrementAndGet(String key) {
+        return redissonClient.getAtomicLong(key).incrementAndGet();
+    }
 }
