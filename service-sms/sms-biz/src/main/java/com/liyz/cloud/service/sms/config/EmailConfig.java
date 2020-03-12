@@ -1,6 +1,5 @@
 package com.liyz.cloud.service.sms.config;
 
-import com.alibaba.fastjson.JSON;
 import com.liyz.cloud.common.base.enums.CommonCodeEnum;
 import com.liyz.cloud.common.model.bo.sms.EmailMessageBO;
 import com.liyz.cloud.common.model.exception.sms.RemoteSmsServiceException;
@@ -52,7 +51,6 @@ public class EmailConfig {
     }
 
     public static void sendSmtpEmail(EmailMessageBO emailMessage) {
-        log.info("emailMessage : {}", JSON.toJSONString(emailMessage));
         try {
             // 使用环境属性和授权信息，创建邮件会话
             Session session = Session.getInstance(getEmailProperties(), buildAuthorization());
@@ -63,18 +61,16 @@ public class EmailConfig {
             //设置发送者
             Address fromAddress = new InternetAddress(emailName);//邮件地址
             message.setFrom(fromAddress);//设置发送的邮件地址
-//            log.info("发送者Address-----"+ JSON.toJSONString(fromAddress));
+
             //设置接收者
             Address toAddress = new InternetAddress(emailMessage.getAddress());//要接收邮件的邮箱
             message.setRecipient(Message.RecipientType.TO, toAddress);//设置接收者的地址
-//            log.info("接收者Address-----"+ JSON.toJSONString(toAddress));
+
             //设置邮件的主题
             message.setSubject(emailMessage.getSubject());
             //设置邮件的内容
             String msgBody = getMessage(emailMessage.getParams(), emailMessage.getContent());
-//            if (!StringUtils.isBlank(smtpMessage.getAntiPhishingCode())) {
-//                msgBody += "\r\n\n防钓鱼码：" + smtpMessage.getAntiPhishingCode();
-//            }
+
             Multipart multipart = new MimeMultipart();
             BodyPart html = new MimeBodyPart();
 
@@ -82,7 +78,6 @@ public class EmailConfig {
             multipart.addBodyPart(html);
 
             message.setContent(multipart);
-            //message.setText(msgBody, "UTF-8");
             //保存邮件
             message.saveChanges();
 
@@ -109,7 +104,7 @@ public class EmailConfig {
         props.setProperty("mail.smtp.ssl.enable", "true");
         props.setProperty("mail.smtp.port", emailPort);
         props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.setProperty("mail.smtp.socketFactory.fallback", "false");
+//        props.setProperty("mail.smtp.socketFactory.fallback", "false");
         props.setProperty("mail.smtp.socketFactory.port", emailPort);
         props.setProperty("mail.user", emailName);
         props.setProperty("mail.password", emailPwd);

@@ -16,6 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient("sms-service")
 public interface FeignSendMsgService {
 
-    @PostMapping(value = "/email", consumes = "application/json")
+    @PostMapping(value = "/sms/email", consumes = "application/json")
     Result<Boolean> email(@RequestBody EmailMessageBO emailMessageBO);
 }

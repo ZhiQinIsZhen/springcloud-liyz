@@ -6,7 +6,9 @@ import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.util.CommonConverterUtil;
 import com.liyz.cloud.common.controller.util.HttpRequestUtil;
 import com.liyz.cloud.common.model.bo.member.SmsInfoBO;
+import com.liyz.cloud.common.security.annotation.Anonymous;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +44,8 @@ public class UserSmsController {
     @Autowired
     FeignUserSmsService feignUserSmsService;
 
+    @ApiOperation(value = "发送信息", notes = "发送信息")
+    @Anonymous
     @PostMapping(value = "/message")
     public Result<Boolean> message(@Validated(SmsInfoDTO.Sms.class) @RequestBody SmsInfoDTO smsInfoDTO) {
         SmsInfoBO smsInfoBO = CommonConverterUtil.beanCopy(smsInfoDTO, SmsInfoBO.class);
