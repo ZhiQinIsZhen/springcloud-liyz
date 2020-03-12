@@ -16,7 +16,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableEurekaClient
 @EnableFeignClients
 @EnableDiscoveryClient
-@SpringBootApplication(scanBasePackages = {"com.liyz", "com.liyz.cloud.api.web"})
+@SpringBootApplication(scanBasePackages = {"com.liyz.cloud"})
 public class WebApplication {
 
     public static void main(String[] args) {

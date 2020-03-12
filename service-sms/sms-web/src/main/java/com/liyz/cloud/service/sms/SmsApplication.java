@@ -20,7 +20,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableFeignClients
 @EnableScheduling
 @MapperScan(basePackages = {"com.liyz.cloud.service.sms.dao"})
-@SpringBootApplication(scanBasePackages = {"com.liyz"})
+@SpringBootApplication(scanBasePackages = {"com.liyz.cloud"})
 public class SmsApplication {
 
     public static void main(String[] args) {
