@@ -22,7 +22,7 @@ import java.util.Date;
  * @version 1.0.0
  * @date 2020/1/6 13:37
  */
-@FeignClient("member-service")
+@FeignClient(value = "member-service", contextId = "UserInfo")
 public interface FeignUserInfoService {
 
     @PostMapping(value = "/member/register", consumes = "application/json")
