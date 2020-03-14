@@ -100,6 +100,10 @@ public class RedissonService {
         return redissonClient.getBucket(key, STRING_CODE).expire(time, unit);
     }
 
+    public long remainTimeToLive(String key) {
+       return redissonClient.getBucket(key).remainTimeToLive();
+    }
+
     public long getAndIncrement(String key) {
         return redissonClient.getAtomicLong(key).getAndIncrement();
     }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @version 1.0.0
  * @date 2020/3/12 12:05
  */
-@FeignClient("sms-service")
+@FeignClient("service-sms")
 public interface FeignSendMsgService {
 
     @PostMapping(value = "/sms/email", consumes = "application/json")
