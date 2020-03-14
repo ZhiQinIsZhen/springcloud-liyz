@@ -88,7 +88,7 @@ public class RemoteUserSmsService {
         }
         //生成验证码
         smsCode = MemberUtil.randomInteger(6);
-        redissonService.setValueExpire(smsCodeKey, smsCode, 10, TimeUnit.MINUTES);
+        redissonService.setValueExpire(smsCodeKey, smsCode, 10L, TimeUnit.MINUTES);
         log.info("*********sms send******user:{},smsCode:{}", smsInfoBO.getAddress(), smsCode);
         if (type == 2) {
             EmailMessageBO emailMessageBO = new EmailMessageBO();

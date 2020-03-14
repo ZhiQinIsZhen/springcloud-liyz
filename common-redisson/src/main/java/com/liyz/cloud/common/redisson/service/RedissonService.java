@@ -1,5 +1,6 @@
 package com.liyz.cloud.common.redisson.service;
 
+import com.alibaba.fastjson.JSON;
 import com.liyz.cloud.common.redisson.constant.RedissonConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RList;
@@ -43,6 +44,10 @@ public class RedissonService {
         return redissonClient.getList(key, STRING_CODE).remove(value);
     }
 
+    public boolean delete(String key) {
+        return redissonClient.getBucket(key, STRING_CODE).delete();
+    }
+
     public <T> boolean isExistsForList(String key, T value) {
         return redissonClient.getList(key, STRING_CODE).contains(value);
     }
@@ -70,6 +75,11 @@ public class RedissonService {
     public String getValue(String key) {
         Object result = redissonClient.getBucket(key, STRING_CODE).get();
         return result == null ? null : result.toString();
+    }
+
+    public <T> T getValue(String key, Class<T> targetClass) {
+        Object result = redissonClient.getBucket(key, STRING_CODE).get();
+        return result == null ? null : JSON.parseObject(result.toString(), targetClass);
     }
 
     public <T> void setValue(String key, T value) {

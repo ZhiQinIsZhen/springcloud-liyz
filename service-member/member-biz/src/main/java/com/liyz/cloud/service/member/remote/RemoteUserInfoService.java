@@ -90,14 +90,7 @@ public class RemoteUserInfoService {
      * @return
      */
     public JwtUserBO getByLoginName(String loginName) {
-        UserInfoDO userInfoDO = null;
-        try {
-            UserInfoDO param = new UserInfoDO();
-            param.setLoginName(loginName);
-            userInfoDO = userInfoService.getOne(param);
-        } catch (Exception e) {
-            log.error("出错啦", e);
-        }
+        UserInfoDO userInfoDO = userInfoService.getByLoginName(loginName);
         return CommonConverterUtil.beanCopy(userInfoDO, JwtUserBO.class);
     }
 

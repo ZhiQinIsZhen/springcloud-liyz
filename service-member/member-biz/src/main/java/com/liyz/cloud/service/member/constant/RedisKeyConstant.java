@@ -31,6 +31,10 @@ public final class RedisKeyConstant {
      */
     private static final String SMS_Times = PROJECT_NAME + "sms:times:";
 
+    private static final String USER_ID_INFO = PROJECT_NAME + "user:id:";
+
+    private static final String LOGIN_NAME_INFO = PROJECT_NAME + "user:login_name:";
+
     /**
      * 获取sms验证码 key
      *
@@ -43,6 +47,14 @@ public final class RedisKeyConstant {
 
     public static String getSmsTimesKey(String key) {
         return joinKey(SMS_Times, key);
+    }
+
+    public static String getUserIdInfoKey(String key) {
+        return joinKey(USER_ID_INFO, key);
+    }
+
+    public static String getLoginNameInfoKey(String key) {
+        return joinKey(LOGIN_NAME_INFO, key);
     }
 
     /**
