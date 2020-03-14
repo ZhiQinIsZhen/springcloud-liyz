@@ -15,6 +15,8 @@ import com.liyz.cloud.service.member.util.MemberUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -31,6 +33,11 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class RemoteUserSmsService {
 
+    @Value("${cloud.topic.sms}")
+    private String topicSms;
+
+    @Autowired
+    KafkaTemplate<String, String> kafkaTemplate;
     @Autowired
     RedissonService redissonService;
     @Autowired
