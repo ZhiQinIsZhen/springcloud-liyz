@@ -1,5 +1,6 @@
 package com.liyz.cloud.service.sms;
 
+import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -15,6 +16,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @version 1.0.0
  * @date 2020/3/11 16:37
  */
+@EnableApolloConfig
 @EnableEurekaClient
 @EnableDiscoveryClient
 @EnableFeignClients

@@ -1,16 +1,15 @@
-server:
-  port: 8052
-  tomcat:
-    uri-encoding: UTF-8
-spring:
-  application:
-    name: gateway-service
-  http:
-    encoding:
-      force: true
-      charset: UTF-8
+app:
+  id: cloud-service-gateway
+apollo:
+  meta: http://127.0.0.1:8080
+  cluster: default
+  bootstrap:
+    enabled: true
+    eagerLoad:
       enabled: true
+    namespaces: application
 #gateway-#路由规则
+spring:
   cloud:
       gateway:
         discovery:
@@ -22,21 +21,3 @@ spring:
             uri: http://localhost:8053
             predicates:
             - Header=Authorization, .*?
-
-#eureka
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8050/eureka/
-  instance:
-    health-check-url-path: /actuator/health
-#一下配置，在生产环境注意，选择性配置
-management:
-  endpoint:
-    web:
-      exposure:
-        include: '*'
-    health:
-      show-details: always
-
-

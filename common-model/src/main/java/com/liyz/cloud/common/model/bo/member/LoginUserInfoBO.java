@@ -1,7 +1,8 @@
 package com.liyz.cloud.common.model.bo.member;
 
 import com.liyz.cloud.common.model.constant.member.MemberEnum;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,8 @@ import java.io.Serializable;
  * @version 1.0.0
  * @date 2020/1/6 13:32
  */
-@Data
+@Getter
+@Setter
 public class LoginUserInfoBO implements Serializable {
     private static final long serialVersionUID = -727638452434699928L;
 

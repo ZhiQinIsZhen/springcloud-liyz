@@ -1,5 +1,6 @@
 package com.liyz.cloud.service.member;
 
+import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.liyz.cloud.common.redisson.annotation.EnableRedisson;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +17,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @version 1.0.0
  * @date 2020/1/3 17:40
  */
+@EnableApolloConfig
 @EnableRedisson
 @EnableEurekaClient
 @EnableDiscoveryClient
