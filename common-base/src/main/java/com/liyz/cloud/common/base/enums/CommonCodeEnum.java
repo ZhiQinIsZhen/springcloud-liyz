@@ -25,6 +25,9 @@ public enum  CommonCodeEnum implements ServiceCodeEnum {
     ThirdServiceError("10011", "调用第三方服务异常"),
     OldFileNotExsist("10012", "原文件不存在"),
     LoginError("10013", "登陆失败"),
+    ImageCodeError("10014", "图片验证码不正确"),
+    MobileCodeError("10015", "短信验证码不正确"),
+    EmailCodeError("10016", "邮件验证码不正确"),
     ;
 
     private String code;

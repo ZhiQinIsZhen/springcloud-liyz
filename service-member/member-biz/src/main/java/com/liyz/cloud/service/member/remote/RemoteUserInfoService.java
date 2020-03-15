@@ -45,6 +45,8 @@ public class RemoteUserInfoService {
     MemberSnowflakeConfig memberSnowflakeConfig;
     @Autowired
     UserLoginLogService userLoginLogService;
+    @Autowired
+    RemoteUserSmsService remoteUserSmsService;
 
     /**
      * 用户注册
@@ -54,14 +56,7 @@ public class RemoteUserInfoService {
      */
     @Transactional(rollbackFor = Exception.class)
     public UserInfoBO register(UserRegisterBO userRegisterBO) {
-        int type;
-        if (MemberUtil.matchMobile(userRegisterBO.getLoginName())) {
-            type = 1;
-        } else if (MemberUtil.matchEmail(userRegisterBO.getLoginName())){
-            type = 2;
-        } else {
-            throw new RemoteMemberServiceException(MemberServiceCodeEnum.MobileEmailNonMatch);
-        }
+        int type = MemberUtil.checkMobileEmail(userRegisterBO.getLoginName(), MemberServiceCodeEnum.MobileEmailNonMatch);
         UserInfoDO param = new UserInfoDO();
         param.setLoginName(userRegisterBO.getLoginName());
         int count = userInfoService.selectCount(param);
@@ -69,6 +64,10 @@ public class RemoteUserInfoService {
             throw new RemoteMemberServiceException(type == 1 ? MemberServiceCodeEnum.MobileExsist : MemberServiceCodeEnum.EmailExsist);
         }
         //校验验证码
+        if (!remoteUserSmsService.validateSmsCode(MemberConstant.SMS_REGISTER_TYPE, userRegisterBO.getLoginName(),
+                userRegisterBO.getVerificationCode())) {
+            throw new RemoteMemberServiceException(type == 1 ? CommonCodeEnum.MobileCodeError : CommonCodeEnum.EmailCodeError);
+        }
         param = CommonConverterUtil.beanCopy(userRegisterBO, UserInfoDO.class);
         param.setUserId(memberSnowflakeConfig.getId());
         param.setEmail(type == 1 ? param.getLoginName() : "812672598@qq.com");

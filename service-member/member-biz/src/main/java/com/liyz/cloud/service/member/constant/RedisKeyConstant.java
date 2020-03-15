@@ -31,6 +31,8 @@ public final class RedisKeyConstant {
      */
     private static final String SMS_Times = PROJECT_NAME + "sms:times:";
 
+    private static final String IMAGE_TOKEN = PROJECT_NAME + "image:token:";
+
     private static final String USER_ID_INFO = PROJECT_NAME + "user:id:";
 
     private static final String LOGIN_NAME_INFO = PROJECT_NAME + "user:login_name:";
@@ -47,6 +49,10 @@ public final class RedisKeyConstant {
 
     public static String getSmsTimesKey(String key) {
         return joinKey(SMS_Times, key);
+    }
+
+    public static String getImageTokenKey(String key) {
+        return joinKey(IMAGE_TOKEN, key);
     }
 
     public static String getUserIdInfoKey(String key) {

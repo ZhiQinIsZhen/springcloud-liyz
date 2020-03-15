@@ -1,15 +1,16 @@
 package com.liyz.cloud.service.member.controller;
 
 import com.liyz.cloud.common.base.Result.Result;
+import com.liyz.cloud.common.model.bo.member.ImageBO;
 import com.liyz.cloud.common.model.bo.member.SmsInfoBO;
 import com.liyz.cloud.service.member.remote.RemoteUserSmsService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * 注释:
@@ -30,5 +31,11 @@ public class FeignUserSmsController {
     public Result<Boolean> message(@Validated(SmsInfoBO.Sms.class) @RequestBody SmsInfoBO smsInfoBO) {
         boolean result = remoteUserSmsService.message(smsInfoBO);
         return Result.success(result);
+    }
+
+    @GetMapping(value = "/imageCode")
+    public Result<ImageBO> imageCode() throws NoSuchAlgorithmException, IOException {
+        ImageBO imageBO = remoteUserSmsService.imageCode();
+        return Result.success(imageBO);
     }
 }

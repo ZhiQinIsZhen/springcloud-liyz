@@ -2,9 +2,12 @@ package com.liyz.cloud.api.web.controller.member;
 
 import com.liyz.cloud.api.web.dto.member.SmsInfoDTO;
 import com.liyz.cloud.api.web.feign.member.FeignUserSmsService;
+import com.liyz.cloud.api.web.vo.member.ImageVO;
 import com.liyz.cloud.common.base.Result.Result;
+import com.liyz.cloud.common.base.enums.CommonCodeEnum;
 import com.liyz.cloud.common.base.util.CommonConverterUtil;
 import com.liyz.cloud.common.controller.util.HttpRequestUtil;
+import com.liyz.cloud.common.model.bo.member.ImageBO;
 import com.liyz.cloud.common.model.bo.member.SmsInfoBO;
 import com.liyz.cloud.common.security.annotation.Anonymous;
 import io.swagger.annotations.Api;
@@ -14,10 +17,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -54,5 +54,19 @@ public class UserSmsController {
         log.info("user login，ip:{}", ip);
         smsInfoBO.setIp(ip);
         return feignUserSmsService.message(smsInfoBO);
+    }
+
+    @ApiOperation(value = "刷新图片验证码", notes = "刷新图片验证码")
+    @Anonymous
+    @GetMapping(value = "/imageCode")
+    public Result<ImageVO> imageCode() {
+        HttpServletRequest httpServletRequest = HttpRequestUtil.getRequest();
+        String ip = HttpRequestUtil.getIpAddress(httpServletRequest);
+        log.info("create imageCode，ip:{}", ip);
+        Result<ImageBO> boResult = feignUserSmsService.imageCode();
+        if (CommonCodeEnum.success.getCode().equals(boResult.getCode())) {
+            return Result.success(CommonConverterUtil.beanCopy(boResult.getData(), ImageVO.class));
+        }
+        return Result.error(boResult.getCode(), boResult.getMessage());
     }
 }
