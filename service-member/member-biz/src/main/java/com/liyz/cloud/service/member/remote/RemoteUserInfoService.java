@@ -70,8 +70,8 @@ public class RemoteUserInfoService {
         }
         param = CommonConverterUtil.beanCopy(userRegisterBO, UserInfoDO.class);
         param.setUserId(memberSnowflakeConfig.getId());
-        param.setEmail(type == 1 ? param.getLoginName() : "812672598@qq.com");
-        param.setMobile(type == 2 ? param.getLoginName() : "15988654731");
+        param.setEmail(type == 2 ? param.getLoginName() : "812672598@qq.com");
+        param.setMobile(type == 1 ? param.getLoginName() : "15988654731");
         param.setRegTime(new Date());
         count = userInfoService.save(param);
         if (count == 0) {
