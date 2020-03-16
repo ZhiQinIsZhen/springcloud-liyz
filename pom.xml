@@ -21,6 +21,7 @@
         <module>service-sso</module>
         <module>service-push</module>
         <module>service-sms</module>
+        <module>service-file</module>
     </modules>
 
     <parent>

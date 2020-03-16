@@ -1,14 +1,11 @@
-package com.liyz.cloud.service.member;
+package com.liyz.cloud.service.file;
 
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
-import com.liyz.cloud.common.redisson.annotation.EnableRedisson;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import tk.mybatis.spring.annotation.MapperScan;
 
@@ -17,21 +14,18 @@ import tk.mybatis.spring.annotation.MapperScan;
  *
  * @author liyangzhen
  * @version 1.0.0
- * @date 2020/1/3 17:40
+ * @date 2020/3/16 16:08
  */
-@EnableAspectJAutoProxy
-@EnableKafka
 @EnableApolloConfig
-@EnableRedisson
 @EnableEurekaClient
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableScheduling
-@MapperScan(basePackages = {"com.liyz.cloud.service.member.dao"})
+@MapperScan(basePackages = {"com.liyz.cloud.service.file.dao"})
 @SpringBootApplication(scanBasePackages = {"com.liyz.cloud"})
-public class MemberApplication {
+public class FileApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MemberApplication.class, args);
+        SpringApplication.run(FileApplication.class, args);
     }
 }
