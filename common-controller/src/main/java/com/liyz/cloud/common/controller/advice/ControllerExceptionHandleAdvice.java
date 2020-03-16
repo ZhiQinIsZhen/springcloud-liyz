@@ -3,6 +3,7 @@ package com.liyz.cloud.common.controller.advice;
 import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.enums.CommonCodeEnum;
 import com.liyz.cloud.common.base.exception.RemoteServiceException;
+import feign.RetryableException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
@@ -31,6 +32,12 @@ public class ControllerExceptionHandleAdvice {
     public Result exception(Exception exception) {
         log.error("未知异常", exception);
         return Result.error(CommonCodeEnum.UnckowException);
+    }
+
+    @ExceptionHandler({RetryableException.class})
+    public Result retryAbleException(RetryableException exception) {
+        log.error("method:{}, url:{}-->request time out", exception.method().name(), exception.request().url());
+        return Result.error(CommonCodeEnum.RequestTimeOut);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})

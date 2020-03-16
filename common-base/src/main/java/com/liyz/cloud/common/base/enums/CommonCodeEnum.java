@@ -18,7 +18,7 @@ public enum  CommonCodeEnum implements ServiceCodeEnum {
     LoginFail("10004", "用户名或者密码错误"),
     RemoteServiceFail("10005", "服务异常"),
     NoData("10006", "暂无数据"),
-    NonTable("10007", "该表不存在"),
+    RequestTimeOut("10007", "请求超时"),
     NonDatasource("10008", "该库不存在"),
     ParameterError("10009", "参数异常"),
     LimitCount("10010", "超出最大访问限制"),
