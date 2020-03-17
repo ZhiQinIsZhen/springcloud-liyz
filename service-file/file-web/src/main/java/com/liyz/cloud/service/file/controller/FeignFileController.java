@@ -6,7 +6,11 @@ import com.liyz.cloud.common.model.bo.file.FileInfoListBO;
 import com.liyz.cloud.service.file.remote.RemoteFileService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -30,8 +34,8 @@ public class FeignFileController {
         return Result.success(remoteFileService.upload(fileInfoListBO.getFileType(), fileInfoListBO.getFiles()));
     }
 
-    @GetMapping("/download")
-    public Result<FileInfoBO> download(FileInfoBO fileInfoBO) {
+    @PostMapping(value = "/download", consumes = "application/json")
+    public Result<FileInfoBO> download(@Validated(FileInfoBO.Down.class) @RequestBody FileInfoBO fileInfoBO) {
         return Result.success(remoteFileService.download(fileInfoBO));
     }
 

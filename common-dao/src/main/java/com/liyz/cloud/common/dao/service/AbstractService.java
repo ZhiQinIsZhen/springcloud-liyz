@@ -4,6 +4,7 @@ import com.liyz.cloud.common.dao.exception.DaoServiceException;
 import com.liyz.cloud.common.dao.mapper.Mapper;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Condition;
 
 import java.lang.reflect.Field;
@@ -67,7 +68,11 @@ public abstract class AbstractService<T> implements Service<T> {
             Field field = modelClass.getDeclaredField(fieldName);
             field.setAccessible(true);
             field.set(model, value);
-            return mapper.selectOne(model);
+            List<T> list = mapper.select(model);
+            if (CollectionUtils.isEmpty(list)) {
+                return null;
+            }
+            return list.get(0);
         } catch (ReflectiveOperationException e) {
             throw new DaoServiceException(e.getMessage(), e);
         }
@@ -75,7 +80,11 @@ public abstract class AbstractService<T> implements Service<T> {
 
     @Override
     public T getOne(T model) {
-        return mapper.selectOne(model);
+        List<T> list = mapper.select(model);
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+        return list.get(0);
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.liyz.cloud.common.model.bo.file;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -21,9 +23,13 @@ public class FileInfoBO implements Serializable {
 
     private String fileName;
 
+    @NotBlank(groups = {Down.class}, message = "文件key不能为空")
     private String fileKey;
 
+    @NotNull(groups = {Down.class}, message = "文件类型不能为空")
     private Integer fileType;
 
     private Integer isInactive = 0;
+
+    public interface Down {}
 }

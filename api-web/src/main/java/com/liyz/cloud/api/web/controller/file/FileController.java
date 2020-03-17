@@ -4,6 +4,7 @@ import com.liyz.cloud.api.web.dto.file.FileDTO;
 import com.liyz.cloud.api.web.feign.file.FeignFileService;
 import com.liyz.cloud.common.base.Result.Result;
 import com.liyz.cloud.common.base.enums.CommonCodeEnum;
+import com.liyz.cloud.common.base.util.CommonConverterUtil;
 import com.liyz.cloud.common.controller.util.HttpRequestUtil;
 import com.liyz.cloud.common.model.bo.file.FileInfoBO;
 import com.liyz.cloud.common.model.bo.file.FileInfoListBO;
@@ -78,14 +79,11 @@ public class FileController {
     @Anonymous
     @ApiOperation(value = "下载文件", notes = "type说明：0：上传头像，1：身份认证，3：banner图片，4：logo")
     @GetMapping("/down")
-    public void download(@Validated({FileDTO.File.class}) FileDTO fileDTO) {
+    public Result download(@Validated({FileDTO.File.class}) FileDTO fileDTO) {
         HttpServletResponse response = HttpRequestUtil.getResponse();
-        FileInfoBO param = new FileInfoBO();
-        param.setFileType(fileDTO.getFileType());
-        param.setFileKey(fileDTO.getFileKey());
-        Result<FileInfoBO> boResult = feignFileService.download(param);
+        Result<FileInfoBO> boResult = feignFileService.download(CommonConverterUtil.beanCopy(fileDTO, FileInfoBO.class));
         if (!CommonCodeEnum.success.getCode().equals(boResult.getCode())) {
-            return;
+            return Result.error(boResult.getCode(), boResult.getMessage());
         }
         FileInfoBO fileInfoBO = boResult.getData();
         if (fileInfoBO != null) {
@@ -106,6 +104,7 @@ public class FileController {
                 log.error("download file write fail", e);
             }
         }
+        return Result.success();
     }
 
     @ApiImplicitParam(name = "Authorization", value = "认证token", required = true, dataType = "String", paramType = "header")
