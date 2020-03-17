@@ -19,10 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Objects;
@@ -135,11 +135,12 @@ public class RemoteUserSmsService {
      *
      * @return
      */
-    public ImageBO imageCode() throws NoSuchAlgorithmException, IOException {
+    public ImageBO imageCode() throws IOException {
         String imageCode = ImageCodeUtil.generateVerifyCode(4);
         log.info("************生成的图形验证码是：{}", imageCode);
         //生成加密token
-        String token = MemberUtil.encodeMD5(imageCode + new Timestamp(System.currentTimeMillis()));
+        String str = imageCode + new Timestamp(System.currentTimeMillis());
+        String token = DigestUtils.md5DigestAsHex(str.getBytes());
         String key = RedisKeyConstant.getImageTokenKey(token);
         redissonService.setValueExpire(key, imageCode, 5, TimeUnit.MINUTES);
         int w = 100, h = 39;

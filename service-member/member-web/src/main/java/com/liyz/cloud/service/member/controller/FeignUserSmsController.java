@@ -10,7 +10,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * 注释:
@@ -34,7 +33,7 @@ public class FeignUserSmsController {
     }
 
     @GetMapping(value = "/imageCode")
-    public Result<ImageBO> imageCode() throws NoSuchAlgorithmException, IOException {
+    public Result<ImageBO> imageCode() throws IOException {
         ImageBO imageBO = remoteUserSmsService.imageCode();
         return Result.success(imageBO);
     }
