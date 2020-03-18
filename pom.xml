@@ -22,6 +22,8 @@
         <module>service-push</module>
         <module>service-sms</module>
         <module>service-file</module>
+        <module>api-backstage</module>
+        <module>common-backsecurity</module>
     </modules>
 
     <parent>

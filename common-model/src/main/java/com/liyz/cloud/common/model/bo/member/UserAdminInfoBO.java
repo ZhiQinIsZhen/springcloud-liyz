@@ -1,4 +1,4 @@
-package com.liyz.cloud.common.base.remote.bo;
+package com.liyz.cloud.common.model.bo.member;
 
 import lombok.Data;
 
@@ -10,11 +10,11 @@ import java.util.Date;
  *
  * @author liyangzhen
  * @version 1.0.0
- * @date 2019/11/20 9:57
+ * @date 2019/8/26 18:52
  */
 @Data
-public class JwtUserBO implements Serializable {
-    private static final long serialVersionUID = 1560387064652487267L;
+public class UserAdminInfoBO implements Serializable {
+    private static final long serialVersionUID = -8073120134954381610L;
 
     private Long userId;
 
