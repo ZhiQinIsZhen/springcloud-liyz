@@ -53,12 +53,6 @@ INSERT INTO `user_info` VALUES (11, '啦啦啦小魔仙', '张十一', '15988654
 INSERT INTO `user_info` VALUES (12, '啦啦啦小魔仙', '张十二', '15988654741', '$2a$10$j7FF83Bf.HbobebGITlmBeUbukBUeRUkie4CCEs0SBoXWeJ314DAK', '15988654730', '812672588@qq.com', '2019-08-28 17:28:34', '2019-08-27 17:28:37', '2019-08-28 20:36:55');
 INSERT INTO `user_info` VALUES (13, '啦啦啦小魔仙', '张十三', '15988654742', '$2a$10$j7FF83Bf.HbobebGITlmBeUbukBUeRUkie4CCEs0SBoXWeJ314DAK', '15988654730', '812672588@qq.com', '2019-08-28 17:28:34', '2019-08-27 17:28:37', '2019-08-28 20:36:55');
 
-SET FOREIGN_KEY_CHECKS = 1;
-
-
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-
 -- ----------------------------
 -- Table structure for user_login_log
 -- ----------------------------
@@ -72,6 +66,38 @@ CREATE TABLE `user_login_log`  (
   `create_time` datetime(0) NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `index_user_id`(`user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+
+DROP TABLE IF EXISTS `user_admin_info`;
+CREATE TABLE `user_admin_info`  (
+  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `nick_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '昵称',
+  `user_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '真实姓名',
+  `login_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '登录名',
+  `login_pwd` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '登录密码',
+  `mobile` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '手机号',
+  `email` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '邮件',
+  `role` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'admin；user',
+  `reg_time` datetime(0) NOT NULL COMMENT '注册时间',
+  `app_token_time` datetime(0) NULL DEFAULT NULL,
+  `web_token_time` datetime(0) NULL DEFAULT NULL COMMENT 'JWT 强制失效时间',
+  PRIMARY KEY (`user_id`) USING BTREE,
+  UNIQUE INDEX `uniq_login_name`(`login_name`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+DROP TABLE IF EXISTS `resource`;
+CREATE TABLE `resource`  (
+  `id` int(11) NOT NULL,
+  `url` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `method` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `describe` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `icon` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `parent_id` int(11) NULL DEFAULT NULL,
+  `create_time` datetime(0) NULL,
+  `update_time` datetime(0) NULL,
+  `version` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

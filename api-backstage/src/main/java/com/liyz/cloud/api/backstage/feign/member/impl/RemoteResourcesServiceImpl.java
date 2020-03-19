@@ -16,6 +16,12 @@ import java.util.List;
 @Service
 public class RemoteResourcesServiceImpl implements RemoteResourcesService {
 
+    /**
+     * 自己实现公司、角色、以及临时权限功能，然后进行汇总
+     *
+     * @param userId
+     * @return
+     */
     @Override
     public List<ResourcesBO> list(Long userId) {
         return null;
