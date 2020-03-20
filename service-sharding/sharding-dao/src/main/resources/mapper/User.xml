@@ -20,7 +20,7 @@
     </insert>
    
     <select id="list" resultMap="baseResultMap">
-        SELECT u.* FROM user u
+        SELECT u.* FROM user u order by u.id
     </select>
 	
 	<select id="findById" resultMap="baseResultMap">

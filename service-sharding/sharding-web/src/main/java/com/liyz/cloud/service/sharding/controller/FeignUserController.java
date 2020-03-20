@@ -1,7 +1,11 @@
 package com.liyz.cloud.service.sharding.controller;
 
+import com.liyz.cloud.common.base.Result.PageResult;
+import com.liyz.cloud.common.base.Result.Result;
+import com.liyz.cloud.common.model.bo.page.PageBaseBO;
+import com.liyz.cloud.common.model.bo.sharding.UserBO;
 import com.liyz.cloud.service.sharding.model.UserDO;
-import com.liyz.cloud.service.sharding.service.UserService;
+import com.liyz.cloud.service.sharding.remote.RemoteUserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,39 +13,46 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Api(value = "sharding-jdbc-demo", tags = "sharding-jdbc-demo")
 @RestController
 @RequestMapping("/sharding")
 public class FeignUserController {
 	
 	@Autowired
-	private UserService userService;
+	private RemoteUserService remoteUserService;
 	
 	@GetMapping("/users")
-	public Object list() {
-		return userService.list();
+	public Result<List<UserBO>> list() {
+		return Result.success(remoteUserService.list());
 	}
 	
 	@GetMapping("/add")
-	public Object add() {
-		for (long i = 0; i < 100; i++) {
+	public Result add() {
+		for (long i = 10; i < 100; i++) {
 			UserDO user = new UserDO();
 			user.setId(i);
 			user.setCity("深圳");
 			user.setName("李四");
-			userService.addUser(user);
+			remoteUserService.addUser(user);
 		}
-		return "success";
+		return Result.success();
 	}
 	
 	@GetMapping("/users/{id}")
-	public Object get(@PathVariable Long id) {
-		return userService.findById(id);
+	public Result<UserBO> get(@PathVariable Long id) {
+		return Result.success(remoteUserService.findById(id));
 	}
 	
 	@GetMapping("/users/query")
-	public Object get(String name) {
-		return userService.findByName(name);
+	public Result<UserBO> get(String name) {
+		return Result.success(remoteUserService.findByName(name));
+	}
+
+	@GetMapping("/users/page")
+	public PageResult<UserBO> page(PageBaseBO pageBaseBO) {
+		return PageResult.success(remoteUserService.page(pageBaseBO));
 	}
 	
 }
