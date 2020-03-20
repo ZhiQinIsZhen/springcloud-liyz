@@ -7,6 +7,7 @@
         <module>common-base</module>
         <module>common-dao</module>
         <module>common-security</module>
+        <module>common-backsecurity</module>
         <module>common-controller</module>
         <module>common-redisson</module>
         <module>common-elasticsearch</module>
@@ -23,7 +24,7 @@
         <module>service-sms</module>
         <module>service-file</module>
         <module>api-backstage</module>
-        <module>common-backsecurity</module>
+        <module>service-sharding</module>
     </modules>
 
     <parent>
@@ -46,7 +47,7 @@
         <fastjson.version>1.2.66</fastjson.version>
         <apollo.version>1.5.1</apollo.version>
         <!-- sql -->
-        <mybatis.version>2.1.1</mybatis.version>
+        <mybatis.version>2.1.2</mybatis.version>
         <tk.mybatis.version>2.1.5</tk.mybatis.version>
         <pagehelper.version>5.1.11</pagehelper.version>
         <pagehelper.auto.version>1.2.13</pagehelper.auto.version>
@@ -65,6 +66,7 @@
         <redisson.version>3.12.3</redisson.version>
         <elasticjob.version>2.1.5</elasticjob.version>
         <spring.kafka.version>2.4.4.RELEASE</spring.kafka.version>
+        <sharding-jdbc.version>4.0.1</sharding-jdbc.version>
     </properties>
 
     <dependencies>
@@ -230,6 +232,11 @@
                 <groupId>org.springframework.kafka</groupId>
                 <artifactId>spring-kafka</artifactId>
                 <version>${spring.kafka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+                <version>${sharding-jdbc.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
