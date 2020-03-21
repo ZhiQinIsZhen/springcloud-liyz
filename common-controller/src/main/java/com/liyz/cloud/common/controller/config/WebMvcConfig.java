@@ -86,24 +86,24 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     private List<MediaType> getSupportedMediaTypes() {
         List<MediaType> fastMediaTypes = new ArrayList<>();
         fastMediaTypes.add(MediaType.ALL);
-        fastMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
-        fastMediaTypes.add(MediaType.APPLICATION_JSON);
-        fastMediaTypes.add(MediaType.APPLICATION_ATOM_XML);
-        fastMediaTypes.add(MediaType.APPLICATION_FORM_URLENCODED);
-        fastMediaTypes.add(MediaType.APPLICATION_OCTET_STREAM);
-        fastMediaTypes.add(MediaType.APPLICATION_PDF);
-        fastMediaTypes.add(MediaType.APPLICATION_RSS_XML);
-        fastMediaTypes.add(MediaType.APPLICATION_XHTML_XML);
-        fastMediaTypes.add(MediaType.APPLICATION_XML);
-        fastMediaTypes.add(MediaType.IMAGE_GIF);
-        fastMediaTypes.add(MediaType.IMAGE_JPEG);
-        fastMediaTypes.add(MediaType.IMAGE_PNG);
-        fastMediaTypes.add(MediaType.TEXT_EVENT_STREAM);
-        fastMediaTypes.add(MediaType.TEXT_HTML);
-        fastMediaTypes.add(MediaType.TEXT_MARKDOWN);
-        fastMediaTypes.add(MediaType.TEXT_PLAIN);
-        fastMediaTypes.add(MediaType.TEXT_XML);
-        fastMediaTypes.add(new MediaType("application", "vnd.spring-boot.actuator.v3+json"));
+//        fastMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
+//        fastMediaTypes.add(MediaType.APPLICATION_JSON);
+//        fastMediaTypes.add(MediaType.APPLICATION_ATOM_XML);
+//        fastMediaTypes.add(MediaType.APPLICATION_FORM_URLENCODED);
+//        fastMediaTypes.add(MediaType.APPLICATION_OCTET_STREAM);
+//        fastMediaTypes.add(MediaType.APPLICATION_PDF);
+//        fastMediaTypes.add(MediaType.APPLICATION_RSS_XML);
+//        fastMediaTypes.add(MediaType.APPLICATION_XHTML_XML);
+//        fastMediaTypes.add(MediaType.APPLICATION_XML);
+//        fastMediaTypes.add(MediaType.IMAGE_GIF);
+//        fastMediaTypes.add(MediaType.IMAGE_JPEG);
+//        fastMediaTypes.add(MediaType.IMAGE_PNG);
+//        fastMediaTypes.add(MediaType.TEXT_EVENT_STREAM);
+//        fastMediaTypes.add(MediaType.TEXT_HTML);
+//        fastMediaTypes.add(MediaType.TEXT_MARKDOWN);
+//        fastMediaTypes.add(MediaType.TEXT_PLAIN);
+//        fastMediaTypes.add(MediaType.TEXT_XML);
+//        fastMediaTypes.add(new MediaType("application", "vnd.spring-boot.actuator.v3+json"));
         return fastMediaTypes;
     }
 }

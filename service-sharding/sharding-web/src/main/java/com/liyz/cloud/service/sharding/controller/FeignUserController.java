@@ -7,6 +7,7 @@ import com.liyz.cloud.common.model.bo.sharding.UserBO;
 import com.liyz.cloud.service.sharding.model.UserDO;
 import com.liyz.cloud.service.sharding.remote.RemoteUserService;
 import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @Api(value = "sharding-jdbc-demo", tags = "sharding-jdbc-demo")
 @RestController
 @RequestMapping("/sharding")
@@ -42,6 +44,9 @@ public class FeignUserController {
 	
 	@GetMapping("/users/{id}")
 	public Result<UserBO> get(@PathVariable Long id) {
+		log.info("this is info level....");
+		log.warn("this is warn level....");
+		log.error("this is error level....");
 		return Result.success(remoteUserService.findById(id));
 	}
 	

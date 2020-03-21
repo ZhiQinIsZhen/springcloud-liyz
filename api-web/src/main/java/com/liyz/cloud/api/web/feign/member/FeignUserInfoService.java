@@ -28,8 +28,8 @@ public interface FeignUserInfoService {
     @PostMapping(value = "/member/register", consumes = "application/json")
     Result<UserInfoBO> register(@NotBlank UserRegisterBO userRegisterBO);
 
-    @GetMapping(value = "/member/getByLoginName")
-    Result<JwtUserBO> getByLoginName(@NotBlank LoginUserInfoBO loginUserInfoBO);
+    @PostMapping(value = "/member/getByLoginName", consumes = "application/json")
+    Result<JwtUserBO> getByLoginName(@RequestBody LoginUserInfoBO loginUserInfoBO);
 
     @PostMapping(value = "/member/kickDownLine", consumes = "application/json")
     Result<Date> kickDownLine(@RequestBody LoginUserInfoBO downLineBO);
