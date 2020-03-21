@@ -85,6 +85,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
     private List<MediaType> getSupportedMediaTypes() {
         List<MediaType> fastMediaTypes = new ArrayList<>();
+        fastMediaTypes.add(MediaType.ALL);
         fastMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
         fastMediaTypes.add(MediaType.APPLICATION_JSON);
         fastMediaTypes.add(MediaType.APPLICATION_ATOM_XML);

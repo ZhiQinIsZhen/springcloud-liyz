@@ -1,5 +1,6 @@
 package com.liyz.cloud.common.controller.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import org.springframework.web.filter.CorsFilter;
  * @version 1.0.0
  * @date 2019/8/16 14:07
  */
+@Slf4j
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class MyCorsFilterConfig extends CorsFilter {
@@ -35,6 +37,7 @@ public class MyCorsFilterConfig extends CorsFilter {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
+        log.info("*********init crosconfig success");
         return source;
     }
 }
