@@ -41,7 +41,7 @@
     <description>this is project what is all projects's parent</description>
 
     <properties>
-        <spring-cloud.version>Hoxton.SR2</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
         <!-- tools -->
         <guava.version>28.2-jre</guava.version>
         <fastjson.version>1.2.66</fastjson.version>
