@@ -1,7 +1,8 @@
 package com.liyz.cloud.common.elasticsearch.util;
 
 import com.liyz.cloud.common.elasticsearch.annotation.EsField;
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -14,9 +15,9 @@ import java.util.*;
  * @version 1.0.0
  * @date 2020/4/5 11:54
  */
-@Slf4j
 public class EsFieldUtil<T> {
 
+    private static final Log logger = LogFactory.getLog(EsFieldUtil.class);
     private static ThreadLocal<List<FieldProperties>> fieldList = new ThreadLocal<>();
     /**
      * 初始化fieldList
@@ -79,7 +80,7 @@ public class EsFieldUtil<T> {
                     map.put(filed.getEsField(), columnObj);
                 }
             } catch (Exception e) {
-                log.error("EsFieldUtil error :{}", e);
+                logger.error("EsFieldUtil error :", e);
             }
         }
         return map;

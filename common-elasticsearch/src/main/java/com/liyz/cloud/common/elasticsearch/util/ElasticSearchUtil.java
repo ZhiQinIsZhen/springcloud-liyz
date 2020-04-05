@@ -52,7 +52,7 @@ public class ElasticSearchUtil {
         for(Map.Entry<String, Map<String, Object>> oneEsData : esBulkData.entrySet()){
             String id = oneEsData.getKey();
             Map<String, Object> esData = oneEsData.getValue();
-            UpdateRequest request = new UpdateRequest(index, id);
+            UpdateRequest request = new UpdateRequest(index, "_doc", id);
             request.doc(esData);
             request.docAsUpsert(true);
             bulkRequest.add(request);
