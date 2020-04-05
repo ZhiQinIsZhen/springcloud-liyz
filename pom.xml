@@ -25,6 +25,7 @@
         <module>service-file</module>
         <module>api-backstage</module>
         <module>service-sharding</module>
+        <module>service-task</module>
     </modules>
 
     <parent>

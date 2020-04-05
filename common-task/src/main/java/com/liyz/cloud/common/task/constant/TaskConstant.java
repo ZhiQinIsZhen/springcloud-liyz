@@ -9,9 +9,13 @@ package com.liyz.cloud.common.task.constant;
  */
 public interface TaskConstant {
 
-    String JobExceptionHandler = "com.dangdang.ddframe.job.executor.handler.impl.DefaultJobExceptionHandler";
+    String Default_JobExceptionHandler = "com.dangdang.ddframe.job.executor.handler.impl.DefaultJobExceptionHandler";
 
-    String ExecutorServiceHandler = "com.dangdang.ddframe.job.executor.handler.impl.DefaultExecutorServiceHandler";
+    String Default_ExecutorServiceHandler = "com.dangdang.ddframe.job.executor.handler.impl.DefaultExecutorServiceHandler";
+
+    String JobExceptionHandler = "com.liyz.cloud.common.task.listener.MyJobExceptionHandler";
 
     String DEFAULT_DATASOURCE = "dataSource";
+
+    String PREFIX = "elasticjob";
 }

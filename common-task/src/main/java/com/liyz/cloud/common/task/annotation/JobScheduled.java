@@ -1,24 +1,25 @@
 package com.liyz.cloud.common.task.annotation;
 
 import com.liyz.cloud.common.task.constant.TaskConstant;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 注释:
  *
  * @author liyangzhen
  * @version 1.0.0
- * @date 2019/9/11 10:57
+ * @date 2020/4/5 12:23
  */
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Service
-public @interface ElasticSimpleJob {
+@Component
+@Documented
+@Inherited
+public @interface JobScheduled {
+
+    String jobName();
 
     String cron() default "";
 
@@ -32,13 +33,27 @@ public @interface ElasticSimpleJob {
 
     String description() default "";
 
+    boolean failover() default false;
+
+    boolean misfire() default false;
+
     boolean disabled() default false;
 
     boolean overwrite() default true;
 
     int monitorPort() default -1;
 
+    String scriptCommandLine() default "";
+
+    int maxTimeDiffSeconds() default -1;
+
+    boolean monitorExecution() default true;
+
+    boolean streamingProcess() default false;
+
     String jobExceptionHandler() default TaskConstant.JobExceptionHandler;
 
-    String executorServiceHandler() default TaskConstant.ExecutorServiceHandler;
+    String executorServiceHandler() default TaskConstant.Default_ExecutorServiceHandler;
+
+    String jobShardingStrategyClass() default "";
 }
