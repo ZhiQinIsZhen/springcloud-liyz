@@ -12,18 +12,19 @@
         <module>common-redisson</module>
         <module>common-elasticsearch</module>
         <module>common-task</module>
-        <module>service-member</module>
+        <module>common-export</module>
         <module>api-web</module>
+        <module>api-backstage</module>
         <module>common-model</module>
         <module>service-monitor</module>
         <module>service-gateway</module>
         <module>service-registry</module>
+        <module>service-member</module>
         <module>service-elasticsearch</module>
         <module>service-sso</module>
         <module>service-push</module>
         <module>service-sms</module>
         <module>service-file</module>
-        <module>api-backstage</module>
         <module>service-sharding</module>
         <module>service-task</module>
     </modules>
@@ -68,6 +69,8 @@
         <elasticjob.version>2.1.5</elasticjob.version>
         <spring.kafka.version>2.4.4.RELEASE</spring.kafka.version>
         <sharding-jdbc.version>4.0.1</sharding-jdbc.version>
+
+        <commons-io.version>2.6</commons-io.version>
     </properties>
 
     <dependencyManagement>
@@ -226,6 +229,11 @@
                 <groupId>org.apache.shardingsphere</groupId>
                 <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
                 <version>${sharding-jdbc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
