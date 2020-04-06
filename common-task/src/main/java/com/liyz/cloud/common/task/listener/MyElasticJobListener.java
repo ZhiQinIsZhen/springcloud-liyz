@@ -34,7 +34,7 @@ public class MyElasticJobListener implements ElasticJobListener {
      */
     @Override
     public void afterJobExecuted(ShardingContexts shardingContexts) {
-        log.info("********jobName:{}, itemParameters:{}, parameter:{}----执行完成了, 耗时:{}************",
+        log.info("********jobName:{}, itemParameters:{}, parameter:{}----执行完成了, 耗时:{}ms************",
                 shardingContexts.getJobName(), shardingContexts.getShardingItemParameters(),
                 shardingContexts.getJobParameter(), System.currentTimeMillis() - beginTime);
     }

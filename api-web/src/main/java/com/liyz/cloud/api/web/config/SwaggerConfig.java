@@ -45,7 +45,7 @@ public class SwaggerConfig extends SwaggerBaseConfig {
                 .build().groupName("用户相关-API");
     }
 
-    @Bean
+//    @Bean
     public Docket createErrorApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())

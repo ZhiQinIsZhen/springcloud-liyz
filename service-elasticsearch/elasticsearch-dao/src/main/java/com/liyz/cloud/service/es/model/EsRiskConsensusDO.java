@@ -1,14 +1,13 @@
 package com.liyz.cloud.service.es.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 注释:
@@ -17,7 +16,8 @@ import java.util.Date;
  * @version 1.0.0
  * @date 2020/1/13 11:31
  */
-@Data
+@Getter
+@Setter
 @Document(indexName = "risk_consensus", type = "_doc")
 public class EsRiskConsensusDO implements Serializable {
     private static final long serialVersionUID = -879485120284773650L;
