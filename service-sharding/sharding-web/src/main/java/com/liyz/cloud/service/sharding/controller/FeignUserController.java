@@ -32,11 +32,12 @@ public class FeignUserController {
 	
 	@GetMapping("/add")
 	public Result add() {
-		for (long i = 10; i < 100; i++) {
+		for (long i = 0; i < 100; i++) {
 			UserDO user = new UserDO();
 			user.setId(i);
 			user.setCity("深圳");
 			user.setName("李四");
+			user.setPwd("Aa12345" + i);
 			remoteUserService.addUser(user);
 		}
 		return Result.success();

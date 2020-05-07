@@ -22,4 +22,6 @@ public class UserDO implements Serializable {
     private String city;
 
     private String name;
+
+    private String pwd;
 }

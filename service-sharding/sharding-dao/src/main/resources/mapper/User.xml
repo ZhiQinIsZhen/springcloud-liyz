@@ -6,16 +6,18 @@
         <result column="id" property="id" jdbcType="INTEGER" />
         <result column="city" property="city" jdbcType="VARCHAR" />
         <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="pwd" property="name" jdbcType="VARCHAR" />
     </resultMap>
     
     <insert id="addUser">
         INSERT INTO user (
-          id, city, name
+          id, city, name, pwd
         )
         VALUES (
         #{id,jdbcType=INTEGER},
         #{city,jdbcType=VARCHAR},
-        #{name,jdbcType=VARCHAR}
+        #{name,jdbcType=VARCHAR},
+        #{pwd,jdbcType=VARCHAR}
         )
     </insert>
    
