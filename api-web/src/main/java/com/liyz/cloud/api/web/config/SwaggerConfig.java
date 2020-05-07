@@ -45,17 +45,6 @@ public class SwaggerConfig extends SwaggerBaseConfig {
                 .build().groupName("用户相关-API");
     }
 
-//    @Bean
-    public Docket createErrorApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                .protocols(Sets.newHashSet("https", "http"))
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.liyz.cloud.common.controller.error"))
-                .paths(PathSelectors.any())
-                .build().groupName("错误-API");
-    }
-
     @Bean
     public Docket createFileApi() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -76,5 +65,16 @@ public class SwaggerConfig extends SwaggerBaseConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.liyz.cloud.api.web.controller.es"))
                 .paths(PathSelectors.any())
                 .build().groupName("ES-API");
+    }
+
+    @Bean
+    public Docket createTestApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .protocols(Sets.newHashSet("https", "http"))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.liyz.cloud.api.web.controller.test"))
+                .paths(PathSelectors.any())
+                .build().groupName("TEST-API");
     }
 }

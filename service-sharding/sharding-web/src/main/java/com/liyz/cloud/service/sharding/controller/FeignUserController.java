@@ -42,7 +42,7 @@ public class FeignUserController {
 		return Result.success();
 	}
 	
-	@GetMapping("/users/{id}")
+	@GetMapping("/user/{id}")
 	public Result<UserBO> get(@PathVariable Long id) {
 		log.info("this is info level....");
 		log.warn("this is warn level....");
@@ -50,7 +50,7 @@ public class FeignUserController {
 		return Result.success(remoteUserService.findById(id));
 	}
 	
-	@GetMapping("/users/query")
+	@GetMapping("/user/query")
 	public Result<UserBO> get(String name) {
 		return Result.success(remoteUserService.findByName(name));
 	}

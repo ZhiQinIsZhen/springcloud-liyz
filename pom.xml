@@ -67,7 +67,7 @@
         <redisson.version>3.12.4</redisson.version>
         <elasticjob.version>2.1.5</elasticjob.version>
         <spring.kafka.version>2.4.4.RELEASE</spring.kafka.version>
-        <sharding-jdbc.version>4.0.1</sharding-jdbc.version>
+        <sharding-jdbc.version>4.1.0</sharding-jdbc.version>
 
         <commons-io.version>2.6</commons-io.version>
     </properties>
