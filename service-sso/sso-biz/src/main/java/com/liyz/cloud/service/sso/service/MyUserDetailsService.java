@@ -1,8 +1,11 @@
 package com.liyz.cloud.service.sso.service;
 
 import com.alibaba.fastjson.JSON;
-import com.liyz.cloud.service.sso.config.MyUser;
+import com.liyz.cloud.common.base.remote.LoginInfoService;
+import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
+import com.liyz.cloud.common.base.util.CommonConverterUtil;
 import com.liyz.cloud.service.sso.model.UserInfoDO;
+import com.liyz.cloud.service.sso.util.JwtAuthenticationUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,13 +28,17 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserInfoService userInfoService;
+    @Autowired
+    private LoginInfoService loginInfoService;
 
     /**
      * 授权的时候是对角色授权，而认证的时候应该基于资源，而不是角色，因为资源是不变的，而用户的角色是会变的
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserInfoDO userInfoDO = userInfoService.getBy("login_name", username);
+        UserInfoDO param = new UserInfoDO();
+        param.setLoginName(username);
+        UserInfoDO userInfoDO = userInfoService.getOne(param);
         if (Objects.isNull(userInfoDO)) {
             log.warn("用户{}不存在", username);
             throw new UsernameNotFoundException(username);
@@ -44,10 +51,9 @@ public class MyUserDetailsService implements UserDetailsService {
                 authorities.add(new SimpleGrantedAuthority(role));
             }
         }*/
-
-        MyUser myUser = new MyUser(userInfoDO.getLoginName(), userInfoDO.getLoginPwd(), null, userInfoDO.getUserId(),
-                userInfoDO.getEmail(), userInfoDO.getWebTokenTime(), userInfoDO.getAppTokenTime());
-        log.info("登录成功！用户: {}", JSON.toJSONString(myUser));
-        return myUser;
+        JwtUserBO jwtUserBO = CommonConverterUtil.beanCopy(userInfoDO, JwtUserBO.class);
+        loginInfoService.setUser(jwtUserBO);
+        log.info("登录成功！用户: {}", JSON.toJSONString(jwtUserBO));
+        return JwtAuthenticationUtil.create(jwtUserBO);
     }
 }

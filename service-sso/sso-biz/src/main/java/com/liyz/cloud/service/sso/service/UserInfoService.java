@@ -20,4 +20,5 @@ public class UserInfoService extends AbstractService<UserInfoDO> {
     public UserInfoDO getById(Object id) {
         return super.getById(id);
     }
+
 }

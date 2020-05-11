@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -51,5 +52,6 @@ public class UserInfoDO implements Serializable {
     @Column(name = "app_token_time")
     private Date appTokenTime;
 
+    @Transient
     private String roles;
 }

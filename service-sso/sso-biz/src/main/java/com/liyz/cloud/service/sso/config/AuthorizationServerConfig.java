@@ -21,8 +21,8 @@ import javax.sql.DataSource;
  * @version 1.0.0
  * @date 2020/3/3 23:47
  */
-@Configuration
-@EnableAuthorizationServer
+//@Configuration
+//@EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Value("${jwt.secret:mySecret}")
