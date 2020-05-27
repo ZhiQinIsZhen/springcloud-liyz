@@ -73,7 +73,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui.html",
                         "/webjars/**").permitAll()
                 //配置可以匿名访问的api
-                .antMatchers("/login").permitAll()
+                .antMatchers(
+                        "/login",
+                        "oauth/**"
+                ).permitAll()
                 //其余都需要鉴权认证
                 .anyRequest().authenticated().and()
                 //添加jwt过滤器

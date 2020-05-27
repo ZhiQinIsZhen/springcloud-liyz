@@ -2,8 +2,8 @@ package com.liyz.cloud.service.sso.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -21,8 +21,8 @@ import javax.sql.DataSource;
  * @version 1.0.0
  * @date 2020/3/3 23:47
  */
-//@Configuration
-//@EnableAuthorizationServer
+@Configuration
+@EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Value("${jwt.secret:mySecret}")
@@ -57,29 +57,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.accessTokenConverter(jwtAccessTokenConverter());
-        endpoints.tokenStore(jwtTokenStore());
-//    endpoints.tokenServices(defaultTokenServices());
-    }
-
-    /*@Primary
-    @Bean
-    public DefaultTokenServices defaultTokenServices() {
-      DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-      defaultTokenServices.setTokenStore(jwtTokenStore());
-      defaultTokenServices.setSupportRefreshToken(true);
-      return defaultTokenServices;
-    }*/
-
-    @Bean
-    public JwtTokenStore jwtTokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter());
-    }
-
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        //覆盖原来的oauth/token
+        endpoints
+                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
+                .pathMapping("/oauth/token", "/login");
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        jwtAccessTokenConverter.setSigningKey(secret);  // Sets the JWT signing key
-        return jwtAccessTokenConverter;
+        jwtAccessTokenConverter.setSigningKey(secret);
+        endpoints.accessTokenConverter(jwtAccessTokenConverter);
+        endpoints.tokenStore(new JwtTokenStore(jwtAccessTokenConverter));
     }
+
 }
