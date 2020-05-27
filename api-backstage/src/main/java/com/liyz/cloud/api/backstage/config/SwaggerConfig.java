@@ -1,6 +1,6 @@
 package com.liyz.cloud.api.backstage.config;
 
-import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import com.google.common.collect.Sets;
 import com.liyz.cloud.common.controller.config.SwaggerBaseConfig;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @version 1.0.0
  * @date 2019/7/16 16:30
  */
-@EnableSwaggerBootstrapUI
+@EnableKnife4j
 @EnableSwagger2
 @Configuration
 public class SwaggerConfig extends SwaggerBaseConfig {

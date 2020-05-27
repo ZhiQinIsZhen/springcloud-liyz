@@ -1,7 +1,6 @@
 package com.liyz.cloud.service.member;
 
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
-import com.liyz.cloud.common.redisson.annotation.EnableRedisson;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -22,7 +21,6 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableAspectJAutoProxy
 @EnableKafka
 @EnableApolloConfig
-@EnableRedisson
 @EnableEurekaClient
 @EnableDiscoveryClient
 @EnableFeignClients

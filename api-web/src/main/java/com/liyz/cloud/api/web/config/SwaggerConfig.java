@@ -1,10 +1,12 @@
 package com.liyz.cloud.api.web.config;
 
-import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import com.google.common.collect.Sets;
 import com.liyz.cloud.common.controller.config.SwaggerBaseConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -18,9 +20,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @version 1.0.0
  * @date 2019/7/16 16:30
  */
-@EnableSwaggerBootstrapUI
+
+@EnableKnife4j
 @EnableSwagger2
 @Configuration
+@Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig extends SwaggerBaseConfig {
 
     @Bean

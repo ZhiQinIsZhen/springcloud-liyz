@@ -2,7 +2,6 @@ package com.liyz.cloud.service.member.service;
 
 import com.alibaba.fastjson.JSON;
 import com.liyz.cloud.common.dao.service.AbstractService;
-import com.liyz.cloud.common.redisson.service.RedissonService;
 import com.liyz.cloud.service.member.constant.RedisKeyConstant;
 import com.liyz.cloud.service.member.model.UserInfoDO;
 import lombok.extern.slf4j.Slf4j;

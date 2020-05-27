@@ -56,15 +56,13 @@
         <device.version>1.1.5.RELEASE</device.version>
         <jjwt.version>0.9.0</jjwt.version>
         <!-- swagger -->
-        <swagger.version>2.9.2</swagger.version>
-        <swagger.others.version>1.5.23</swagger.others.version>
-        <swagger.xiaoymin.version>1.9.5</swagger.xiaoymin.version>
+        <knife4j.version>2.0.3</knife4j.version>
         <!-- admin -->
         <admin-starter-server.version>2.2.2</admin-starter-server.version>
         <admin-starter-client.version>2.2.2</admin-starter-client.version>
 
         <cglib.version>3.3.0</cglib.version>
-        <redisson.version>3.12.4</redisson.version>
+        <redisson.version>3.13.0</redisson.version>
         <elasticjob.version>2.1.5</elasticjob.version>
         <spring.kafka.version>2.4.4.RELEASE</spring.kafka.version>
         <sharding-jdbc.version>4.1.0</sharding-jdbc.version>
@@ -126,61 +124,15 @@
             </dependency>
             <!-- swagger -->
             <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${swagger.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>io.swagger</groupId>
-                        <artifactId>swagger-annotations</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>io.swagger</groupId>
-                        <artifactId>swagger-models</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>guava</artifactId>
-                        <groupId>com.google.guava</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>${swagger.others.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-models</artifactId>
-                <version>${swagger.others.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>swagger-bootstrap-ui</artifactId>
-                <version>${swagger.xiaoymin.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>javassist</artifactId>
-                        <groupId>org.javassist</groupId>
-                    </exclusion>
-                </exclusions>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.redisson</groupId>
-                <artifactId>redisson</artifactId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>javassist</artifactId>
-                        <groupId>org.javassist</groupId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <!-- job -->
             <dependency>

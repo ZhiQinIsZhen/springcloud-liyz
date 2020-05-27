@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
             <exclusions>
                 <exclusion>
                     <artifactId>javassist</artifactId>
