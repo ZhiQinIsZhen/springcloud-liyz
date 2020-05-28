@@ -1,4 +1,4 @@
-Dubbo Springboot Mybatis Project for Java
+Spring Cloud Mybatis Project for Java
 =========================================
 
 [![Build Status](https://img.shields.io/badge/Build-ZhiQinlsZhen-brightgreen)](https://github.com/ZhiQinIsZhen/dubbo-springboot-project)
@@ -26,7 +26,7 @@ Dubbo Springboot Mybatis Project for Java
 --- | ---
 Spring Boot |   2.2.7.RELEASE
 Spring security | 2.2.7.RELEASE
-Dubbo |  2.7.7
+Spring Cloud |  Hoxton.SR3
 Mybatis | 2.1.2
 Zookeeper Curator | 4.3.0
 Redisson |  3.13.0
