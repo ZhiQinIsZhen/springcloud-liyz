@@ -78,7 +78,7 @@ public class AuthenticationController {
     FeignUserInfoService feignUserInfoService;
 
     @ApiOperation(value = "登陆", notes = "登陆")
-    @Limits(value = {@Limit(count = 10, type = LimitType.IP), @Limit(count = 10)})
+    @Limits(value = {@Limit(count = 1, type = LimitType.IP), @Limit(count = 10)})
     @Anonymous
     @PostMapping("/login")
     public Result<LoginVO> login(@Validated({LoginDTO.Login.class}) @RequestBody LoginDTO loginDTO) {
