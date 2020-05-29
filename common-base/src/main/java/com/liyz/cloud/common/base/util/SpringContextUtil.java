@@ -21,17 +21,30 @@ public class SpringContextUtil implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
     public static <T> T getBean(String name, Class<T> requiredType) throws BeansException {
-        if(applicationContext == null) return null;
+        if(applicationContext == null) {
+            return null;
+        }
         return applicationContext.getBean(name, requiredType);
     }
 
+    public static <T> T getBean(Class<T> requiredType) {
+        if(applicationContext == null) {
+            return null;
+        }
+        return applicationContext.getBean(requiredType);
+    }
+
     public static Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotation) throws BeansException {
-        if (applicationContext == null) return null;
+        if(applicationContext == null) {
+            return null;
+        }
         return applicationContext.getBeansWithAnnotation(annotation);
     }
 
     public static String[] getBeanNamesForAnnotation(Class<? extends Annotation> annotation) throws BeansException {
-        if (applicationContext == null) return null;
+        if(applicationContext == null) {
+            return null;
+        }
         return applicationContext.getBeanNamesForAnnotation(annotation);
     }
 
