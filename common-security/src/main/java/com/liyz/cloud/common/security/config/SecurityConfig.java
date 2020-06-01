@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.liyz.cloud.common.security.core.JwtAuthenticationEntryPoint;
 import com.liyz.cloud.common.security.core.RestfulAccessDeniedHandler;
 import com.liyz.cloud.common.security.filter.JwtAuthenticationTokenFilter;
-import com.liyz.cloud.common.security.util.JwtAuthenticationUtil;
+import com.liyz.cloud.common.security.util.PermitAllUrlsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        List<String> list = JwtAuthenticationUtil.getAntPatterns();
+        List<String> list = PermitAllUrlsUtil.anonymousUrls();
         String[] strings = list.toArray(new String[list.size()]);
         log.info("免鉴权api:{}", JSONArray.toJSONString(strings));
         http

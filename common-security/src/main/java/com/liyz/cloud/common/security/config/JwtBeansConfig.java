@@ -23,7 +23,6 @@ public class JwtBeansConfig {
 
     @Autowired
     RemoteJwtUserService remoteJwtUserService;
-
     @Autowired
     LoginInfoService loginInfoService;
 
