@@ -6,7 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.alibaba.fastjson.support.springfox.SwaggerJsonSerializer;
-import com.liyz.cloud.common.base.filter.DesensitizationContextValueFilter;
+import com.liyz.cloud.common.base.filter.FastjsonDesensitizationContextValueFilter;
 import com.liyz.cloud.common.base.remote.LoginInfoService;
 import com.liyz.cloud.common.controller.resolver.LoginUserArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +72,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
         fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
-        fastJsonConfig.setSerializeFilters(new DesensitizationContextValueFilter());
+        fastJsonConfig.setSerializeFilters(new FastjsonDesensitizationContextValueFilter());
         fastJsonConfig.getSerializeConfig().put(Json.class, SwaggerJsonSerializer.instance);
         SerializeConfig.getGlobalInstance().propertyNamingStrategy = PropertyNamingStrategy.CamelCase;
         fastJsonHttpMessageConverter.setSupportedMediaTypes(getSupportedMediaTypes());

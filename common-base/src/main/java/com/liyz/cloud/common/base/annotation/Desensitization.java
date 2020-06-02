@@ -1,6 +1,9 @@
 package com.liyz.cloud.common.base.annotation;
 
+import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.liyz.cloud.common.base.enums.DesensitizationType;
+import com.liyz.cloud.common.base.filter.JacksonDesensitizationContextValueFilter;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -16,6 +19,8 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
+@JsonSerialize(using = JacksonDesensitizationContextValueFilter.class)
+@JacksonAnnotationsInside
 public @interface Desensitization {
 
     DesensitizationType value() default DesensitizationType.SELF_DEFINITION;
