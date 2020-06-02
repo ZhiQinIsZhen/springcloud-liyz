@@ -44,15 +44,4 @@ public class SwaggerConfig extends SwaggerBaseConfig {
                 .paths(PathSelectors.any())
                 .build().groupName("用户相关-API");
     }
-
-    @Bean
-    public Docket createErrorApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                .protocols(Sets.newHashSet("https", "http"))
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.liyz.cloud.common.controller.error"))
-                .paths(PathSelectors.any())
-                .build().groupName("错误-API");
-    }
 }

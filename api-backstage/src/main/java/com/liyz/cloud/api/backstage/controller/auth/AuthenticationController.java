@@ -7,6 +7,7 @@ import com.liyz.cloud.api.backstage.feign.member.FeignUserAdminInfoService;
 import com.liyz.cloud.api.backstage.vo.auth.LoginVO;
 import com.liyz.cloud.api.backstage.vo.auth.ResourcesVO;
 import com.liyz.cloud.api.backstage.vo.member.UserAdminInfoVO;
+import com.liyz.cloud.common.backsecurity.annotation.Anonymous;
 import com.liyz.cloud.common.backsecurity.core.JwtGrantedAuthority;
 import com.liyz.cloud.common.backsecurity.util.JwtAuthenticationUtil;
 import com.liyz.cloud.common.backsecurity.util.JwtTokenAnalysisUtil;
@@ -87,6 +88,7 @@ public class AuthenticationController {
     RemoteResourcesService remoteResourcesService;
 
     @ApiOperation(value = "登陆", notes = "登陆")
+    @Anonymous
     @Limits(value = {@Limit(count = 10, type = LimitType.IP), @Limit(count = 10)})
     @PostMapping("/login")
     public Result<LoginVO> login(@Validated({LoginDTO.Login.class}) @RequestBody LoginDTO loginDTO) {
@@ -147,11 +149,13 @@ public class AuthenticationController {
         List<ResourcesBO> boList = remoteResourcesService.list(userInfo.getUserId());
         int size = CollectionUtils.isEmpty(boList) ? 10 : boList.size();
         List<GrantedAuthority> authorities = new ArrayList<>(size);
-        boList.forEach(resourcesBO -> {
-            GrantedAuthority grantedAuthority = new JwtGrantedAuthority(resourcesBO.getUrl(),
-                    resourcesBO.getMethod());
-            authorities.add(grantedAuthority);
-        });
+        if (!CollectionUtils.isEmpty(boList)) {
+            boList.forEach(resourcesBO -> {
+                GrantedAuthority grantedAuthority = new JwtGrantedAuthority(resourcesBO.getUrl(),
+                        resourcesBO.getMethod());
+                authorities.add(grantedAuthority);
+            });
+        }
         final UserDetails userDetails = JwtAuthenticationUtil.create(userInfo, authorities);
         final String token = jwtTokenAnalysisUtil.generateToken(userDetails, device, date, userInfo.getUserId());
         Date expirationDateFromToken = jwtTokenAnalysisUtil.getExpirationDateFromToken(token);

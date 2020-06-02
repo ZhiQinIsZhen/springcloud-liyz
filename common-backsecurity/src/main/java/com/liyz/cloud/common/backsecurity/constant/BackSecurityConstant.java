@@ -16,6 +16,12 @@ public interface BackSecurityConstant {
 
     String ALL_METHOD = "ALL";
 
+    String ASTERISK = "**";
+
+    String UTF8 = "UTF-8";
+
+    String RESOURCE_SERVER_CONFIGURER = "resourceServerConfigurerAdapter";
+
     List<String> SECURITY_IGNORE_RESOURCES = Arrays.asList("/instances",
             "/actuator/**",
             "/*.html",

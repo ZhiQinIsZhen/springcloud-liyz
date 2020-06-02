@@ -60,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //允许访问所有swagger的静态资源与接口
                 .antMatchers(HttpMethod.GET,
                         "/",
-                        "/instances",
+                        "/instances/**",
                         "/actuator/**",
                         "/*.html",
                         "/favicon.ico",

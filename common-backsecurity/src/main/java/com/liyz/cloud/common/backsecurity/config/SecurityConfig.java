@@ -1,9 +1,11 @@
 package com.liyz.cloud.common.backsecurity.config;
 
+import com.alibaba.fastjson.JSONArray;
 import com.liyz.cloud.common.backsecurity.core.JwtAuthenticationEntryPoint;
 import com.liyz.cloud.common.backsecurity.core.RestfulAccessDeniedHandler;
 import com.liyz.cloud.common.backsecurity.filter.JwtAuthenticationTokenFilter;
 import com.liyz.cloud.common.backsecurity.filter.JwtFilterSecurityInterceptor;
+import com.liyz.cloud.common.backsecurity.util.PermitAllUrlsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +18,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.List;
 
 /**
  * 注释:Security配置器
@@ -31,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
-    @Autowired
+    @Autowired(required = false)
     JwtFilterSecurityInterceptor jwtFilterSecurityInterceptor;
 
     @Bean
@@ -42,6 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        List<String> list = PermitAllUrlsUtil.anonymousUrls();
+        String[] strings = list.toArray(new String[list.size()]);
+        log.info("免鉴权api:{}", JSONArray.toJSONString(strings));
         http
                 //由于使用的是JWT，我们这里不需要csrf，并配置entryPoint
                 .csrf()
@@ -70,11 +77,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/configuration/security",
                         "/swagger-ui.html",
                         "/webjars/**").permitAll()
+                //配置可以匿名访问的api
+                .antMatchers(strings).permitAll()
                 //其余都需要鉴权认证
                 .anyRequest().authenticated().and()
                 //添加jwt过滤器
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtFilterSecurityInterceptor, FilterSecurityInterceptor.class)
+//                .addFilterBefore(jwtFilterSecurityInterceptor, FilterSecurityInterceptor.class)
                 // 禁用缓存
                 .headers().cacheControl().and()
                 //spring security上使用ifame时候允许跨域

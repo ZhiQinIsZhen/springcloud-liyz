@@ -1,9 +1,15 @@
 package com.liyz.cloud.common.base.config;
 
+import lombok.SneakyThrows;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -17,8 +23,20 @@ import org.springframework.web.client.RestTemplate;
 public class RestTemplateConfig {
 
     @Bean
+    @Primary
+    @LoadBalanced
     public RestTemplate restTemplate(ClientHttpRequestFactory factory){
-        return new RestTemplate(factory);
+        RestTemplate restTemplate = new RestTemplate(factory);
+        restTemplate.setErrorHandler(new DefaultResponseErrorHandler() {
+            @Override
+            @SneakyThrows
+            public void handleError(ClientHttpResponse response) {
+                if (response.getRawStatusCode() != HttpStatus.BAD_REQUEST.value()) {
+                    super.handleError(response);
+                }
+            }
+        });
+        return restTemplate;
     }
 
     @Bean

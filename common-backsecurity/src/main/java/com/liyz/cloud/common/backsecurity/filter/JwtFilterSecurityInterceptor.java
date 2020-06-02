@@ -21,7 +21,7 @@ import java.io.IOException;
  * @date 2020/3/18 16:11
  */
 @Slf4j
-@Service
+//@Service
 public class JwtFilterSecurityInterceptor extends AbstractSecurityInterceptor implements Filter {
 
     @Autowired

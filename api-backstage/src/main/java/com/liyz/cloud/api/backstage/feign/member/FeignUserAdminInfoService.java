@@ -26,7 +26,7 @@ public interface FeignUserAdminInfoService {
     @PostMapping(value = "/member/register", consumes = "application/json")
     Result<UserAdminInfoBO> register(@NotBlank UserRegisterBO userRegisterBO);
 
-    @GetMapping(value = "/getByLoginName")
+    @PostMapping(value = "/getByLoginName")
     Result<JwtUserBO> getByLoginName(@NotBlank LoginUserInfoBO loginUserInfoBO);
 
     @PostMapping(value = "/kickDownLine", consumes = "application/json")

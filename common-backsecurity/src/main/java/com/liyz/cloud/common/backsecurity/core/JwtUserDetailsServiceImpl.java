@@ -49,11 +49,13 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
         List<ResourcesBO> boList = remoteResourcesService.list(jwtUserBO.getUserId());
         int size = CollectionUtils.isEmpty(boList) ? 10 : boList.size();
         List<GrantedAuthority> authorities = new ArrayList<>(size);
-        boList.forEach(resourcesBO -> {
-            GrantedAuthority grantedAuthority = new JwtGrantedAuthority(resourcesBO.getUrl(),
-                    resourcesBO.getMethod());
-            authorities.add(grantedAuthority);
-        });
+        if (!CollectionUtils.isEmpty(boList)) {
+            boList.forEach(resourcesBO -> {
+                GrantedAuthority grantedAuthority = new JwtGrantedAuthority(resourcesBO.getUrl(),
+                        resourcesBO.getMethod());
+                authorities.add(grantedAuthority);
+            });
+        }
         return JwtAuthenticationUtil.create(jwtUserBO, authorities);
     }
 }
