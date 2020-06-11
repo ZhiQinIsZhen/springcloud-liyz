@@ -12,6 +12,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -20,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
@@ -42,7 +45,7 @@ public class RiskConsensusService {
     @Autowired
     RiskConsensusRepository riskConsensusRepository;
     @Autowired
-    ElasticsearchTemplate elasticsearchTemplate;
+    ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     /**
      * 新增/修改
@@ -200,13 +203,16 @@ public class RiskConsensusService {
         //聚合
         builder.addAggregation(AggregationBuilders.terms("sentimentTypes").field("sentimentType"));
         NativeSearchQuery searchQuery = builder.build();
-        return elasticsearchTemplate.query(searchQuery, response -> {
-            Map<String,Object> agg = new HashMap<>();
-            Terms userAgg = response.getAggregations().get("sentimentTypes");
-            for (Terms.Bucket entry : userAgg.getBuckets()) {
-                agg.put(entry.getKey().toString(),entry.getDocCount());
-            }
-            return agg;
-        });
+        SearchHits<EsRiskConsensusDO> searchHits = elasticsearchRestTemplate.search(searchQuery, EsRiskConsensusDO.class, IndexCoordinates.of("risk_consensus"));
+        if (!searchHits.hasAggregations()) {
+            return null;
+        }
+        Aggregations aggregations = searchHits.getAggregations();
+        Terms terms = aggregations.get("sentimentTypes");
+        Map<String,Object> agg = new HashMap<>();
+        for (Terms.Bucket entry : terms.getBuckets()) {
+            agg.put(entry.getKey().toString(),entry.getDocCount());
+        }
+        return agg;
     }
 }

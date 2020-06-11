@@ -1,5 +1,6 @@
 package com.liyz.cloud.api.web.dto.es;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.liyz.cloud.api.web.dto.page.PageBaseDTO;
 import lombok.Data;
 
@@ -22,7 +23,9 @@ public class RiskConsensusPageQueryDTO extends PageBaseDTO {
 
     private String sourceType;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date beginTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date endTime;
 }

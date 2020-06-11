@@ -37,18 +37,21 @@ public class FeignRiskConsensusController {
     }
 
     @PostMapping(value = "/saveList", consumes = "application/json")
-    public int saveList(@RequestBody List<RiskConsensusBO> list) {
-        return remoteRiskConsensusService.save(list);
+    public Result<Integer> saveList(@RequestBody List<RiskConsensusBO> list) {
+        int count = remoteRiskConsensusService.save(list);
+        return Result.success(count);
     }
 
     @PostMapping(value = "/deleteById", consumes = "application/json")
-    public void deleteById(@RequestBody RiskConsensusBO riskConsensusBO) {
+    public Result deleteById(@RequestBody RiskConsensusBO riskConsensusBO) {
         remoteRiskConsensusService.delete(riskConsensusBO.getId());
+        return Result.success();
     }
 
     @PostMapping(value = "/deleteByIds", consumes = "application/json")
-    public void deleteByIds(@RequestBody List<RiskConsensusBO> list) {
+    public Result deleteByIds(@RequestBody List<RiskConsensusBO> list) {
         remoteRiskConsensusService.delete(list.stream().map(RiskConsensusBO::getId).collect(Collectors.toList()));
+        return Result.success();
     }
 
     @PostMapping(value = "/search", consumes = "application/json")
