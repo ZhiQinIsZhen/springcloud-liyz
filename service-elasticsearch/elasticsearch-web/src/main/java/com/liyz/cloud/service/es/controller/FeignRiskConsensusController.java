@@ -9,7 +9,10 @@ import com.liyz.cloud.service.es.remote.RemoteRiskConsensusService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
@@ -55,25 +58,25 @@ public class FeignRiskConsensusController {
     }
 
     @PostMapping(value = "/search", consumes = "application/json")
-    public PageResult<RiskConsensusBO> search(PageBaseBO pageBaseBO) {
+    public PageResult<RiskConsensusBO> search(@RequestBody PageBaseBO pageBaseBO) {
         PageImpl<RiskConsensusBO> implBoPage = remoteRiskConsensusService.search(pageBaseBO);
         return PageResult.success(implBoPage);
     }
 
-    @GetMapping(value = "/searchForCondition")
-    public PageResult<RiskConsensusBO> searchForCondition(RiskConsensusPageQueryBO queryBO) {
+    @PostMapping(value = "/searchForCondition", consumes = "application/json")
+    public PageResult<RiskConsensusBO> searchForCondition(@RequestBody RiskConsensusPageQueryBO queryBO) {
         PageImpl<RiskConsensusBO> implBoPage = remoteRiskConsensusService.search(queryBO);
         return PageResult.success(implBoPage);
     }
 
-    @GetMapping(value = "/searchForHighlight")
-    public PageResult<RiskConsensusBO> searchForHighlight(RiskConsensusPageQueryBO queryBO) {
+    @PostMapping(value = "/searchForHighlight", consumes = "application/json")
+    public PageResult<RiskConsensusBO> searchForHighlight(@RequestBody RiskConsensusPageQueryBO queryBO) {
         PageImpl<RiskConsensusBO> implBoPage = remoteRiskConsensusService.searchForHighlight(queryBO);
         return PageResult.success(implBoPage);
     }
 
-    @GetMapping(value = "/aggregateForSentimentType")
-    public Result<Map<String,Object>> aggregateForSentimentType(RiskConsensusPageQueryBO queryBO) {
+    @PostMapping(value = "/aggregateForSentimentType", consumes = "application/json")
+    public Result<Map<String,Object>> aggregateForSentimentType(@RequestBody RiskConsensusPageQueryBO queryBO) {
         return Result.success(remoteRiskConsensusService.aggregateForSentimentType(queryBO));
     }
 }

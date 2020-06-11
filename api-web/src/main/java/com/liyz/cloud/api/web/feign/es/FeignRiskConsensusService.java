@@ -6,7 +6,6 @@ import com.liyz.cloud.common.model.bo.elasticsearch.RiskConsensusBO;
 import com.liyz.cloud.common.model.bo.elasticsearch.RiskConsensusPageQueryBO;
 import com.liyz.cloud.common.model.bo.page.PageBaseBO;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -38,12 +37,12 @@ public interface FeignRiskConsensusService {
     @PostMapping(value = "/es/yq/search", consumes = "application/json")
     PageResult<RiskConsensusBO> search(@RequestBody PageBaseBO pageBaseBO);
 
-    @GetMapping(value = "/es/yq/searchForCondition")
+    @PostMapping(value = "/es/yq/searchForCondition", consumes = "application/json")
     PageResult<RiskConsensusBO> searchForCondition(RiskConsensusPageQueryBO queryBO);
 
-    @GetMapping(value = "/es/yq/searchForHighlight")
+    @PostMapping(value = "/es/yq/searchForHighlight", consumes = "application/json")
     PageResult<RiskConsensusBO> searchForHighlight(RiskConsensusPageQueryBO queryBO);
 
-    @GetMapping(value = "/es/yq/aggregateForSentimentType")
+    @PostMapping(value = "/es/yq/aggregateForSentimentType", consumes = "application/json")
     Result<Map<String,Object>> aggregateForSentimentType(RiskConsensusPageQueryBO queryBO);
 }
