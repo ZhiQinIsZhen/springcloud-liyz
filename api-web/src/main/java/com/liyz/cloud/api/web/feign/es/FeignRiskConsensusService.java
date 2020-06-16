@@ -19,7 +19,7 @@ import java.util.Map;
  * @version 1.0.0
  * @date 2020/2/29 14:56
  */
-@FeignClient("service-elasticsearch")
+@FeignClient(value = "service-elasticsearch", contextId = "RiskConsensus")
 public interface FeignRiskConsensusService {
 
     @PostMapping(value = "/es/yq/save", consumes = "application/json")

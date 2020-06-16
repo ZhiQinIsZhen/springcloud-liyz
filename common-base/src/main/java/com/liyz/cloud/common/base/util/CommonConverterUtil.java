@@ -140,7 +140,7 @@ public final class CommonConverterUtil {
         if (sourcePage == null) {
             return null;
         }
-        if (sourcePage.getTotalElements() == 0) {
+        if (sourcePage.getTotalElements() == 0 || sourcePage.getContent().size() == 0) {
             return new PageImpl<Y>(new ArrayList<Y>(), sourcePage.getPageable(), sourcePage.getTotalElements());
         }
         SimpleBeanCopier simpleBeanCopier = getClone();

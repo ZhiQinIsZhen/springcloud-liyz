@@ -111,7 +111,7 @@ public class RiskConsensusService {
      * @return
      */
     public Page<EsRiskConsensusDO> search(PageBaseBO pageBaseBO) {
-        Pageable pageable = PageRequest.of(pageBaseBO.getPageNum(), pageBaseBO.getPageSize());
+        Pageable pageable = PageRequest.of(pageBaseBO.getPageNum() >= 1 ? pageBaseBO.getPageNum() - 1 : 0, pageBaseBO.getPageSize());
         return riskConsensusRepository.findAll(pageable);
     }
 
@@ -124,7 +124,7 @@ public class RiskConsensusService {
     public Page<EsRiskConsensusDO> search(RiskConsensusPageQueryBO queryBO) {
         NativeSearchQueryBuilder builder = getBuilder(queryBO);
         //分页
-        Pageable pageable = PageRequest.of(queryBO.getPageNum(), queryBO.getPageSize());
+        Pageable pageable = PageRequest.of(queryBO.getPageNum() >= 1 ? queryBO.getPageNum() - 1 : 0, queryBO.getPageSize());
         builder.withPageable(pageable);
         //排序
         builder.withSort(SortBuilders.fieldSort("publishTime").order(SortOrder.DESC));
@@ -184,7 +184,7 @@ public class RiskConsensusService {
         HighlightBuilder highlightBuilder = new HighlightBuilder().field("title").field("content").numOfFragments(0);
         builder.withHighlightBuilder(highlightBuilder);
         //分页
-        Pageable pageable = PageRequest.of(queryBO.getPageNum(), queryBO.getPageSize());
+        Pageable pageable = PageRequest.of(queryBO.getPageNum() >= 1 ? queryBO.getPageNum() - 1 : 0, queryBO.getPageSize());
         builder.withPageable(pageable);
         //排序
         builder.withSort(SortBuilders.fieldSort("publishTime").order(SortOrder.DESC));
