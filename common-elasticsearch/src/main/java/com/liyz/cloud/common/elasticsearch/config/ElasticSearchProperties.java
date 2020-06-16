@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 注释:
+ * 注释:es properties
  *
  * @author liyangzhen
  * @version 1.0.0

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 
 /**
- * 注释:
+ * 注释:es selector
  *
  * @author liyangzhen
  * @version 1.0.0

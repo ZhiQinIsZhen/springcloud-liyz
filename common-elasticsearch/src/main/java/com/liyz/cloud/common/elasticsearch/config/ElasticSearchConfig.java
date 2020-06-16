@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 
 /**
- * 注释:
+ * 注释:es配置bean
  *
  * @author liyangzhen
  * @version 1.0.0

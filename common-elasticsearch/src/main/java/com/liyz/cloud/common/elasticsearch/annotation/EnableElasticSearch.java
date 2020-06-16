@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
- * 注释:
+ * 注释:es注解
  *
  * @author liyangzhen
  * @version 1.0.0

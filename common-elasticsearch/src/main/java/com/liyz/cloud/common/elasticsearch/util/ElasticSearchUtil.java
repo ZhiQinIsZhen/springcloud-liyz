@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * 注释:
+ * 注释:es工具类
  *
  * @author liyangzhen
  * @version 1.0.0
