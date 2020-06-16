@@ -36,31 +36,69 @@ public abstract class AbstractService<T> implements Service<T> {
         modelClass = (Class<T>) pt.getActualTypeArguments()[0];
     }
 
+    /**
+     * insert
+     *
+     * @param model model实体
+     * @return
+     */
     @Override
     public int save(T model) {
         return mapper.insertSelective(model);
     }
 
+    /**
+     * insert
+     *
+     * @param models model实体列表
+     * @return
+     */
     @Override
     public int save(List<T> models) {
         return mapper.insertList(models);
     }
 
+    /**
+     * delete
+     *
+     * @param id 主键
+     * @return
+     */
     @Override
     public int removeById(Object id) {
         return mapper.deleteByPrimaryKey(id);
     }
 
+    /**
+     * update
+     *
+     * @param model model实体
+     * @return
+     */
     @Override
     public int updateById(T model) {
         return mapper.updateByPrimaryKeySelective(model);
     }
 
+    /**
+     * select
+     *
+     * @param id 主键
+     * @return
+     */
     @Override
     public T getById(Object id) {
         return mapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * select
+     *
+     * @param fieldName 成员变量名称
+     * @param value     值
+     * @return
+     * @throws TooManyResultsException
+     */
     @Override
     public T getBy(String fieldName, Object value) throws TooManyResultsException {
         try {
@@ -78,6 +116,12 @@ public abstract class AbstractService<T> implements Service<T> {
         }
     }
 
+    /**
+     * select
+     *
+     * @param model
+     * @return
+     */
     @Override
     public T getOne(T model) {
         List<T> list = mapper.select(model);
@@ -87,21 +131,44 @@ public abstract class AbstractService<T> implements Service<T> {
         return list.get(0);
     }
 
+    /**
+     * select
+     *
+     * @param ids eg：ids -> “1,2,3,4”
+     * @return
+     */
     @Override
     public List<T> listByIds(String ids) {
         return mapper.selectByIds(ids);
     }
 
+    /**
+     * select
+     *
+     * @param condition 自定义条件
+     * @return
+     */
     @Override
     public List<T> listByCondition(Condition condition) {
         return mapper.selectByCondition(condition);
     }
 
+    /**
+     * select
+     *
+     * @param model
+     * @return
+     */
     @Override
     public List<T> list(T model) {
         return mapper.select(model);
     }
 
+    /**
+     * select
+     *
+     * @return
+     */
     @Override
     public List<T> listAll() {
         return mapper.selectAll();
