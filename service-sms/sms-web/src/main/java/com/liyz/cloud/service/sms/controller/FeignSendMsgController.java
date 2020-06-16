@@ -26,6 +26,12 @@ public class FeignSendMsgController {
     @Autowired
     RemoteSendMsgService remoteSendMsgService;
 
+    /**
+     * 邮件发送
+     *
+     * @param emailMessageBO
+     * @return
+     */
     @PostMapping(value = "/email", consumes = "application/json")
     public Result<Boolean> email(@Validated(EmailMessageBO.Email.class) @RequestBody EmailMessageBO emailMessageBO) {
         remoteSendMsgService.email(emailMessageBO);
