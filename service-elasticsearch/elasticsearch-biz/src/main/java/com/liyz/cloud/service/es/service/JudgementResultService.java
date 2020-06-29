@@ -7,7 +7,6 @@ import com.liyz.cloud.service.es.repository.JudgementResultRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchPhraseQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -136,8 +135,8 @@ public class JudgementResultService {
         NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
         if (StringUtils.isNotBlank(queryBO.getKeyWord())) {
             BoolQueryBuilder keyWordMatch = QueryBuilders.boolQuery();
-            MatchPhraseQueryBuilder title = QueryBuilders.matchPhraseQuery("defendant", queryBO.getKeyWord()).slop(1);
-            MatchPhraseQueryBuilder content = QueryBuilders.matchPhraseQuery("accuser",queryBO.getKeyWord()).slop(1);
+            MatchPhraseQueryBuilder title = QueryBuilders.matchPhraseQuery("defendant", queryBO.getKeyWord()).slop(100);
+            MatchPhraseQueryBuilder content = QueryBuilders.matchPhraseQuery("accuser",queryBO.getKeyWord()).slop(100);
             keyWordMatch.should(title).should(content);
             builder.withQuery(keyWordMatch);
         }
