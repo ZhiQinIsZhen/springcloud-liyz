@@ -32,7 +32,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.1.RELEASE</version>
+        <version>2.3.2.RELEASE</version>
         <relativePath></relativePath>
     </parent>
 
@@ -43,7 +43,7 @@
     <description>this is project what is all projects's parent</description>
 
     <properties>
-        <spring-cloud.version>Hoxton.SR5</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
         <!-- tools -->
         <guava.version>29.0-jre</guava.version>
         <fastjson.version>1.2.71</fastjson.version>

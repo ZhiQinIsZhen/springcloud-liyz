@@ -3,7 +3,7 @@ package com.liyz.cloud.common.base.remote;
 import com.liyz.cloud.common.base.remote.bo.JwtUserBO;
 
 /**
- * 注释:
+ * 注释:用户登陆信息获取接口
  *
  * @author liyangzhen
  * @version 1.0.0
