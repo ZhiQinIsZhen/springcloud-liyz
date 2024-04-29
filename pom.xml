@@ -3,207 +3,49 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <modules>
-        <module>common-base</module>
-        <module>common-dao</module>
-        <module>common-security</module>
-        <module>common-backsecurity</module>
-        <module>common-controller</module>
-        <module>common-redisson</module>
-        <module>common-elasticsearch</module>
-        <module>common-task</module>
-        <module>common-export</module>
-        <module>api-web</module>
-        <module>api-backstage</module>
-        <module>common-model</module>
-        <module>service-monitor</module>
-        <module>service-gateway</module>
-        <module>service-registry</module>
-        <module>service-member</module>
-        <module>service-elasticsearch</module>
-        <module>service-sso</module>
-        <module>service-push</module>
-        <module>service-sms</module>
-        <module>service-file</module>
-        <module>service-sharding</module>
-        <module>service-task</module>
-    </modules>
-
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.4.RELEASE</version>
-        <relativePath></relativePath>
-    </parent>
 
     <groupId>com.liyz.cloud</groupId>
-    <artifactId>springcloud-demo</artifactId>
+    <artifactId>springcloud-liyz</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <description>this is project what is all projects's parent</description>
+    <description>this is project what is all project's parent</description>
 
     <properties>
-        <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
-        <!-- tools -->
-        <guava.version>29.0-jre</guava.version>
-        <fastjson.version>1.2.74</fastjson.version>
-        <apollo.version>1.6.0</apollo.version>
-        <!-- sql -->
-        <mybatis.version>2.1.2</mybatis.version>
-        <tk.mybatis.version>2.1.5</tk.mybatis.version>
-        <pagehelper.version>1.2.13</pagehelper.version>
-        <!-- token -->
-        <device.version>1.1.5.RELEASE</device.version>
-        <jjwt.version>0.9.0</jjwt.version>
-        <!-- swagger -->
-        <knife4j.version>2.0.5</knife4j.version>
-        <!-- admin -->
-        <admin-starter-server.version>2.2.3</admin-starter-server.version>
-        <admin-starter-client.version>2.2.3</admin-starter-client.version>
-
-        <cglib.version>3.3.0</cglib.version>
-        <redisson.version>3.13.0</redisson.version>
-        <elasticjob.version>2.1.5</elasticjob.version>
-        <spring.kafka.version>2.5.1.RELEASE</spring.kafka.version>
-        <sharding-jdbc.version>4.1.1</sharding-jdbc.version>
-
-        <commons-io.version>2.6</commons-io.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ctrip.framework.apollo</groupId>
-                <artifactId>apollo-client</artifactId>
-                <version>${apollo.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- pagehelper -->
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>${pagehelper.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>tk.mybatis</groupId>
-                <artifactId>mapper-spring-boot-starter</artifactId>
-                <version>${tk.mybatis.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib</artifactId>
-                <version>${cglib.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.mobile</groupId>
-                <artifactId>spring-mobile-device</artifactId>
-                <version>${device.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>${jjwt.version}</version>
-            </dependency>
-            <!-- swagger -->
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.redisson</groupId>
-                <artifactId>redisson-spring-boot-starter</artifactId>
-                <version>${redisson.version}</version>
-            </dependency>
-            <!-- job -->
-            <dependency>
-                <groupId>com.dangdang</groupId>
-                <artifactId>elastic-job-lite-core</artifactId>
-                <version>${elasticjob.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.google.guava</groupId>
-                        <artifactId>guava</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>com.dangdang</groupId>
-                <artifactId>elastic-job-lite-spring</artifactId>
-                <version>${elasticjob.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>de.codecentric</groupId>
-                <artifactId>spring-boot-admin-starter-server</artifactId>
-                <version>${admin-starter-server.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>de.codecentric</groupId>
-                <artifactId>spring-boot-admin-starter-client</artifactId>
-                <version>${admin-starter-client.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.kafka</groupId>
-                <artifactId>spring-kafka</artifactId>
-                <version>${spring.kafka.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
-                <version>${sharding-jdbc.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons-io.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
-                    <skipTests>true</skipTests>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
     </build>
 </project>

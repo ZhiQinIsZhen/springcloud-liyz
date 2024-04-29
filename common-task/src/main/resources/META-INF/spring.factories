@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.liyz.cloud.common.task.config.RegCentreAutoConfig,\
-com.liyz.cloud.common.task.config.ElasticJobAutoConfig

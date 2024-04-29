@@ -1,23 +1,39 @@
 # Maven
 target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 *.ser
 *.ec
 
-# IntelliJ Idea
+### IntelliJ IDEA ###
 .idea/
 out/
-*.ipr
 *.iws
 *.iml
+*.ipr
 
-# Eclipse
+### Eclipse ###
+.apt_generated
 .classpath
+.factorypath
 .project
-.settings/
-.metadata/
+.settings
+.springBeans
+.sts4-cache
 
-# OS X
-*.DS_Store
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# git
-/${urule.repository.dir}
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
