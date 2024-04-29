@@ -1,11 +1,14 @@
-Spring Cloud Mybatis Project for Java
-=========================================
+# Spring Cloud Liyz Project
 
-[![Build Status](https://img.shields.io/badge/Build-ZhiQinlsZhen-brightgreen)](https://github.com/ZhiQinIsZhen/dubbo-springboot-project)
-![maven](https://img.shields.io/maven-central/v/org.apache.dubbo/dubbo.svg)
-[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-Hoxton.SR3-brightgreen)](https://spring.io/projects/spring-cloud)
-![spring-boot](https://img.shields.io/badge/Springboot-2.2.7.RELEASE-brightgreen)
-![Mybatis](https://img.shields.io/badge/Mybatis-2.1.2-brightgreen)
+[![Build Status](https://img.shields.io/badge/Build-ZhiQinlsZhen-red)](https://github.com/ZhiQinIsZhen)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/ZhiQinIsZhen/springcloud-liyz/blob/master/LICENSE)
+![Springboot Version](https://img.shields.io/badge/Springboot-3.2.5-brightgreen)
+[![Spring Cloud](https://img.shields.io/badge/Springcloud-2023.0.1-brightgreen)](https://spring.io/projects/spring-cloud)
+![Gateway Version](https://img.shields.io/badge/Gateway-4.1.3-brightgreen)
+![jjwt Version](https://img.shields.io/badge/jjwt-0.12.5-brightgreen)
+![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.6-brightgreen)
+![Swagger Version](https://img.shields.io/badge/knife4j-4.4.0-brightgreen)
+![Elasticjob Version](https://img.shields.io/badge/elasticjob-3.0.4-brightgreen)
 
 这是一个Spring Cloud项目，基于SpringBoot、Mybatis等框架。
 

@@ -10,11 +10,31 @@
     <version>1.0.0-SNAPSHOT</version>
     <description>this is project what is all project's parent</description>
 
+
+    <modules>
+
+        <module>cloud-api</module>
+        <module>cloud-common</module>
+        <module>cloud-service</module>
+    </modules>
+
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.liyz.cloud</groupId>
+                <artifactId>cloud-dependencies-bom</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
