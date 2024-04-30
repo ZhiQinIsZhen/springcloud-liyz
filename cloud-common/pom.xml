@@ -15,6 +15,7 @@
     <modules>
         <module>cloud-common-util</module>
         <module>cloud-common-exception</module>
+        <module>cloud-common-dao</module>
     </modules>
 
 </project>
