@@ -125,6 +125,17 @@
                 <artifactId>spring-boot-admin-starter-client</artifactId>
                 <version>${springboot.admin.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.liyz.cloud</groupId>
+                <artifactId>cloud-common-exception</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.liyz.cloud</groupId>
+                <artifactId>cloud-common-util</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

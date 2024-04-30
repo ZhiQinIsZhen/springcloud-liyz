@@ -5,16 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.liyz.cloud</groupId>
-        <artifactId>springcloud-liyz</artifactId>
+        <artifactId>cloud-common</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cloud-common</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>cloud-common-exception</artifactId>
 
-    <modules>
-        <module>cloud-common-util</module>
-        <module>cloud-common-exception</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
