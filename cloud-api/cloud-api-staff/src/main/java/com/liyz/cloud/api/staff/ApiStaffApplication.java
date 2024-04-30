@@ -1,7 +1,8 @@
-package com.liyz.cloud.api.user;
+package com.liyz.cloud.api.staff;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * Desc:启动类
@@ -10,10 +11,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version 1.0.0
  * @date 2024/4/30 9:25
  */
+
+@EnableFeignClients
 @SpringBootApplication
-public class ApiUserApplication {
+public class ApiStaffApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ApiUserApplication.class, args);
+        SpringApplication.run(ApiStaffApplication.class, args);
     }
 }

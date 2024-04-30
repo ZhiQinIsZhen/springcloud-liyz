@@ -5,17 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.liyz.cloud</groupId>
-        <artifactId>springcloud-liyz</artifactId>
+        <artifactId>cloud-service-staff</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cloud-service</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>staff-feign</artifactId>
 
-    <modules>
-        <module>cloud-service-eureka</module>
-        <module>cloud-service-staff</module>
-        <module>cloud-service-auth</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>com.liyz.cloud</groupId>
+            <artifactId>staff-biz</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -1,4 +1,4 @@
-package com.liyz.cloud.api.user.config;
+package com.liyz.cloud.api.staff.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

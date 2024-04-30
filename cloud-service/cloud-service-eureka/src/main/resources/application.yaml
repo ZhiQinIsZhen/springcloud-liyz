@@ -2,8 +2,6 @@
 server:
   port: 8050
   shutdown: graceful
-  servlet:
-    context-path: /eureka
 # spring
 spring:
   application:

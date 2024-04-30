@@ -12,7 +12,7 @@
     <artifactId>cloud-api</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>cloud-api-user</module>
+        <module>cloud-api-staff</module>
     </modules>
 
     <properties>

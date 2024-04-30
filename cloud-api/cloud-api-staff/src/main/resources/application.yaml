@@ -1,8 +1,8 @@
 #server
 server:
-  port: 7072
+  port: 7071
   servlet:
-    context-path: /user
+    context-path: /staff
   tomcat:
     accept-count: 10
     threads:
@@ -14,7 +14,7 @@ server:
 # spring
 spring:
   application:
-    name: cloud-api-user
+    name: cloud-api-staff
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true

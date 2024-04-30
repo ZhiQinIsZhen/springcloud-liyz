@@ -9,7 +9,7 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cloud-api-user</artifactId>
+    <artifactId>cloud-api-staff</artifactId>
 
     <dependencies>
         <dependency>
