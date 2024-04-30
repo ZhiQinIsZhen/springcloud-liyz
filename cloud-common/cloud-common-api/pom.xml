@@ -5,20 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.liyz.cloud</groupId>
-        <artifactId>springcloud-liyz</artifactId>
+        <artifactId>cloud-common</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cloud-api</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>cloud-api-user</module>
-    </modules>
+    <artifactId>cloud-common-api</artifactId>
 
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.liyz.cloud</groupId>
+            <artifactId>cloud-common-base</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -10,6 +10,10 @@
     </parent>
 
     <artifactId>cloud-service</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>cloud-service-eureka</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

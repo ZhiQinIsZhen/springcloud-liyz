@@ -1,0 +1,75 @@
+#server
+server:
+  port: 7072
+  servlet:
+    context-path: /user
+  tomcat:
+    accept-count: 10
+    threads:
+      max: 200
+      min-spare: 50
+  error:
+    path: /liyz/error
+  shutdown: graceful
+# spring
+spring:
+  application:
+    name: cloud-api-user
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  threads:
+    virtual:
+      enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 60s
+  data:
+    # redis
+    redis:
+      database: 2
+      host: 127.0.0.1
+      port: 6379
+      client-type: lettuce
+      lettuce:
+        pool:
+          enabled: true
+          max-active: 1
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: false
+# eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8050/eureka/
+  instance:
+    health-check-url-path: /actuator/health
+# log
+logging:
+  pattern:
+  file:
+    name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
+# springdoc
+springdoc:
+  default-flat-param-object: true
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  group-configs:
+    - group: all
+      display-name: 所有接口
+      paths-to-match:
+        - /**
+      packages-to-scan:
+        - com.liyz.cloud.api.user.controller
+# knife4j
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    swagger-model-name: 实体类列表
+  basic:
+    username: abc
+    password: 123
+    enable: false

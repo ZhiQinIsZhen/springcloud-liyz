@@ -136,6 +136,16 @@
                 <artifactId>cloud-common-util</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.liyz.cloud</groupId>
+                <artifactId>cloud-common-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.liyz.cloud</groupId>
+                <artifactId>cloud-common-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

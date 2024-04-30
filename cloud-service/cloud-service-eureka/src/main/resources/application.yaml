@@ -1,0 +1,32 @@
+#server
+server:
+  port: 8050
+  shutdown: graceful
+  servlet:
+    context-path: /eureka
+# spring
+spring:
+  application:
+    name: cloud-service-eureka
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  threads:
+    virtual:
+      enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 60s
+# eureka
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  instance:
+    hostname: localhost
+  server:
+    enable-self-preservation: false
+# log
+logging:
+  pattern:
+  file:
+    name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
