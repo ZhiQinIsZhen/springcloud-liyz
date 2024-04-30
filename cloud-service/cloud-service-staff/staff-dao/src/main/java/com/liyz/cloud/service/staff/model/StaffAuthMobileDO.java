@@ -2,6 +2,7 @@ package com.liyz.cloud.service.staff.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.liyz.cloud.service.staff.model.base.StaffAuthBaseDO;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;

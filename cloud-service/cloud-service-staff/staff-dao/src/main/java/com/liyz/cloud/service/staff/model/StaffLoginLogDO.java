@@ -3,7 +3,8 @@ package com.liyz.cloud.service.staff.model;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.liyz.boot3.common.dao.model.BaseDO;
+import com.liyz.cloud.common.dao.model.BaseDO;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;

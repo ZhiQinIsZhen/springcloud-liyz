@@ -20,7 +20,7 @@ import java.util.Date;
 @Setter
 public abstract class BaseDO implements Serializable {
     @Serial
-    private static final long serialVersionUID = -1076284846563372546L;
+    private static final long serialVersionUID = 1L;
 
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;

@@ -133,6 +133,11 @@
             </dependency>
             <dependency>
                 <groupId>com.liyz.cloud</groupId>
+                <artifactId>cloud-common-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.liyz.cloud</groupId>
                 <artifactId>cloud-common-util</artifactId>
                 <version>${project.version}</version>
             </dependency>
