@@ -1,5 +1,6 @@
 package com.liyz.cloud.service.staff.bo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,5 +41,6 @@ public class StaffInfoBO implements Serializable {
     private String salt;
 
     @Schema(description = "用户注册时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date registryTime;
 }
