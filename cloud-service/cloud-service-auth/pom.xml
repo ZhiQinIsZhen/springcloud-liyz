@@ -10,5 +10,11 @@
     </parent>
 
     <artifactId>cloud-service-auth</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>auth-biz</module>
+        <module>auth-dao</module>
+        <module>auth-feign</module>
+    </modules>
 
 </project>
