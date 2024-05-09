@@ -6,11 +6,17 @@ import com.liyz.cloud.common.api.bo.AuthUserLoginBO;
 import com.liyz.cloud.common.api.bo.AuthUserLogoutBO;
 import com.liyz.cloud.common.api.bo.AuthUserRegisterBO;
 import com.liyz.cloud.common.api.constant.SecurityClientConstant;
+import com.liyz.cloud.common.api.feign.FeignAuthService;
+import com.liyz.cloud.common.api.feign.FeignJwtParseService;
+import com.liyz.cloud.common.api.user.AuthUserDetails;
 import com.liyz.cloud.common.api.util.CookieUtil;
 import com.liyz.cloud.common.api.util.HttpServletContext;
 import com.liyz.cloud.common.base.constant.Device;
 import com.liyz.cloud.common.base.constant.LoginType;
+import com.liyz.cloud.common.base.result.Result;
 import com.liyz.cloud.common.base.util.BeanUtil;
+import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
+import com.liyz.cloud.common.exception.RemoteServiceException;
 import com.liyz.cloud.common.util.PatternUtil;
 import com.liyz.cloud.common.util.constant.CommonConstant;
 import org.apache.commons.lang3.tuple.Pair;
@@ -42,6 +48,8 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
     private static String clientId;
     private static ApplicationContext applicationContext;
     private static AuthenticationManager authenticationManager;
+    private static FeignAuthService feignAuthService;
+    private static FeignJwtParseService feignJwtParseService;
 
     /**
      * 获取认证用户
@@ -81,7 +89,11 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
          */
         public static Boolean registry(AuthUserRegisterBO authUserRegisterBO) {
             authUserRegisterBO.setClientId(clientId);
-            return remoteAuthService.registry(authUserRegisterBO);
+            Result<Boolean> result = feignAuthService.registry(authUserRegisterBO);
+            if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
+                return result.getData();
+            }
+            throw new RemoteServiceException(result.getCode(), result.getMessage());
         }
 
         /**
@@ -103,7 +115,7 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
                     authUserLoginBO.getPassword());
             SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authentication));
             AuthUserDetails authUserDetails = (AuthUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            Date checkTime = remoteAuthService.login(
+            Result<Date> result = feignAuthService.login(
                     AuthUserLoginBO.builder()
                             .clientId(authUserLoginBO.getClientId())
                             .authId(authUserDetails.getAuthUser().getAuthId())
@@ -111,6 +123,12 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
                             .device(authUserLoginBO.getDevice())
                             .ip(authUserLoginBO.getIp())
                             .build());
+            Date checkTime;
+            if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
+                checkTime = result.getData();
+            } else {
+                throw new RemoteServiceException(result.getCode(), result.getMessage());
+            }
             Pair<String, String> pair = JwtService.generateToken(authUserDetails.getAuthUser());
             AuthUserBO authUserBO = BeanUtil.copyProperties(authUserDetails.getAuthUser(), AuthUserBO::new, (s, t) -> {
                 t.setPassword(null);
@@ -134,7 +152,14 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
          * @return 用户信息
          */
         public static AuthUserBO loadByUsername(String username, Device device) {
-            return remoteAuthService.loadByUsername(username, device);
+            AuthUserBO authUserBO = new AuthUserBO();
+            authUserBO.setUsername(username);
+            authUserBO.setDevice(device);
+            Result<AuthUserBO> result = feignAuthService.loadByUsername(authUserBO);
+            if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
+                return result.getData();
+            }
+            throw new RemoteServiceException(result.getCode(), result.getMessage());
         }
 
         /**
@@ -154,7 +179,11 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
                 t.setIp(HttpServletContext.getIpAddress());
             });
             CookieUtil.removeCookie(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY);
-            return remoteAuthService.logout(authUserLogoutBO);
+            Result<Boolean> result = feignAuthService.logout(authUserLogoutBO);
+            if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
+                return result.getData();
+            }
+            throw new RemoteServiceException(result.getCode(), result.getMessage());
         }
     }
 
@@ -170,7 +199,11 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
          * @return 用户信息
          */
         public static AuthUserBO parseToken(final String token) {
-            return remoteJwtParseService.parseToken(token, clientId);
+            Result<AuthUserBO> result = feignJwtParseService.parseToken(token, clientId);
+            if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
+                return result.getData();
+            }
+            throw new RemoteServiceException(result.getCode(), result.getMessage());
         }
 
         /**
@@ -181,7 +214,11 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
          */
         public static Pair<String, String> generateToken(final AuthUserBO authUser) {
             authUser.setClientId(clientId);
-            return remoteJwtParseService.generateToken(authUser);
+            Result<Pair<String, String>> result = feignJwtParseService.generateToken(authUser);
+            if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
+                return result.getData();
+            }
+            throw new RemoteServiceException(result.getCode(), result.getMessage());
         }
 
         /**
@@ -191,14 +228,18 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
          * @return 失效时间戳
          */
         public static Long getExpiration(final String token) {
-            return remoteJwtParseService.getExpiration(token);
+            Result<Long> result = feignJwtParseService.getExpiration(token);
+            if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
+                return result.getData();
+            }
+            throw new RemoteServiceException(result.getCode(), result.getMessage());
         }
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        remoteAuthService = applicationContext.getBean(SecurityClientConstant.AUTH_SERVICE_BEAN_NAME, RemoteAuthService.class);
-        remoteJwtParseService = applicationContext.getBean(SecurityClientConstant.JWT_SERVICE_BEAN_NAME, RemoteJwtParseService.class);
+        feignAuthService = applicationContext.getBean(FeignAuthService.class);
+        feignJwtParseService = applicationContext.getBean(FeignJwtParseService.class);
         authenticationManager = applicationContext.getBean(SecurityClientConstant.AUTH_MANAGER_BEAN_NAME, AuthenticationManager.class);
     }
 
@@ -209,6 +250,6 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
 
     @Override
     public void setEnvironment(Environment environment) {
-        clientId = environment.getProperty(SecurityClientConstant.DUBBO_APPLICATION_NAME_PROPERTY);
+        clientId = environment.getProperty(SecurityClientConstant.CLIENT_ID);
     }
 }

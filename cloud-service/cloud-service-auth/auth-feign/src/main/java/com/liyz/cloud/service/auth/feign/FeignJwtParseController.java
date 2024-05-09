@@ -117,12 +117,8 @@ public class FeignJwtParseController {
         );
     }
 
-    /**
-     * 生成token
-     *
-     * @param authUser 用户信息
-     * @return jwt token
-     */
+    @Operation(summary = "生成token")
+    @GetMapping("/generateToken")
     public Result<Pair<String, String>> generateToken(AuthUserBO authUser) {
         if (StringUtils.isBlank(authUser.getClientId())) {
             log.error("创建token失败，原因 : clientId is blank");
@@ -150,13 +146,9 @@ public class FeignJwtParseController {
         );
     }
 
-    /**
-     * 获取失效时间
-     *
-     * @param token jwt token
-     * @return 失效时间
-     */
-    public Result<Long> getExpiration(final String token) {
+    @Operation(summary = "获取失效时间")
+    @GetMapping("/getExpiration")
+    public Result<Long> getExpiration(@RequestParam("token") final String token) {
         return Result.success(this.parseClaimsJws(token).getExpiration().getTime());
     }
 

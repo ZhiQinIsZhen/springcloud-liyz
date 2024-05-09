@@ -34,4 +34,6 @@ public interface SecurityClientConstant {
     String DEFAULT_TOKEN_HEADER_KEY = HttpHeaders.AUTHORIZATION;
 
     String AUTH_MANAGER_BEAN_NAME = "authenticationManager";
+
+    String CLIENT_ID = "clientId";
 }

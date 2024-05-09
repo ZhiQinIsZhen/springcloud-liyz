@@ -1,13 +1,15 @@
 package com.liyz.cloud.api.staff.controller.auth;
 
-import com.liyz.cloud.api.staff.bo.AuthUserBO;
-import com.liyz.cloud.api.staff.bo.AuthUserLoginBO;
-import com.liyz.cloud.api.staff.bo.AuthUserRegisterBO;
 import com.liyz.cloud.api.staff.dto.auth.StaffLoginDTO;
 import com.liyz.cloud.api.staff.dto.auth.StaffRegisterDTO;
 import com.liyz.cloud.api.staff.vo.auth.AuthLoginVO;
 import com.liyz.cloud.common.api.annotation.Anonymous;
+import com.liyz.cloud.common.api.bo.AuthUserBO;
+import com.liyz.cloud.common.api.bo.AuthUserLoginBO;
+import com.liyz.cloud.common.api.bo.AuthUserRegisterBO;
 import com.liyz.cloud.common.api.constant.SecurityClientConstant;
+import com.liyz.cloud.common.api.context.AuthContext;
+import com.liyz.cloud.common.api.util.HttpServletContext;
 import com.liyz.cloud.common.base.result.Result;
 import com.liyz.cloud.common.base.util.BeanUtil;
 import io.swagger.v3.oas.annotations.Operation;

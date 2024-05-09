@@ -73,3 +73,4 @@ knife4j:
     username: abc
     password: 123
     enable: false
+cliendId: dubbo-api-admin
