@@ -1,4 +1,4 @@
-package com.liyz.cloud.common.api.error;
+package com.liyz.cloud.common.base.error;
 
 import com.liyz.cloud.common.base.result.Result;
 import io.swagger.v3.oas.annotations.Hidden;

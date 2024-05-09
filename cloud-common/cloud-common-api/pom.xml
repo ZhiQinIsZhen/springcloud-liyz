@@ -16,6 +16,10 @@
             <groupId>com.liyz.cloud</groupId>
             <artifactId>cloud-common-base</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
