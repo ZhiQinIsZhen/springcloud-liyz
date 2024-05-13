@@ -1,10 +1,7 @@
 package com.liyz.cloud.common.api.context;
 
 import com.google.common.base.Joiner;
-import com.liyz.cloud.common.api.bo.AuthUserBO;
-import com.liyz.cloud.common.api.bo.AuthUserLoginBO;
-import com.liyz.cloud.common.api.bo.AuthUserLogoutBO;
-import com.liyz.cloud.common.api.bo.AuthUserRegisterBO;
+import com.liyz.cloud.common.api.bo.*;
 import com.liyz.cloud.common.api.constant.SecurityClientConstant;
 import com.liyz.cloud.common.api.feign.FeignAuthService;
 import com.liyz.cloud.common.api.feign.FeignJwtParseService;
@@ -19,7 +16,6 @@ import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.exception.RemoteServiceException;
 import com.liyz.cloud.common.util.PatternUtil;
 import com.liyz.cloud.common.util.constant.CommonConstant;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -30,6 +26,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Objects;
@@ -41,6 +38,7 @@ import java.util.Objects;
  * @version 1.0.0
  * @date 2023/11/24 10:39
  */
+@Component
 public class AuthContext implements EnvironmentAware, ApplicationContextAware, InitializingBean {
 
     private static final InheritableThreadLocal<AuthUserBO> innerContext = new InheritableThreadLocal<>();
@@ -129,16 +127,18 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
             } else {
                 throw new RemoteServiceException(result.getCode(), result.getMessage());
             }
-            Pair<String, String> pair = JwtService.generateToken(authUserDetails.getAuthUser());
+            AuthUserBO authUser = authUserDetails.getAuthUser();
+            authUser.setCheckTime(checkTime);
+            AuthJwtBO authJwtBO = JwtService.generateToken(authUser);
             AuthUserBO authUserBO = BeanUtil.copyProperties(authUserDetails.getAuthUser(), AuthUserBO::new, (s, t) -> {
                 t.setPassword(null);
                 t.setSalt(null);
                 s.setCheckTime(checkTime);
-                t.setToken(pair.getRight());
+                t.setToken(authJwtBO.getToken());
             });
             CookieUtil.addCookie(
                     SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY,
-                    pair.getLeft() + authUserBO.getToken(),
+                    authJwtBO.getJwtPrefix() + authUserBO.getToken(),
                     30 * 60,
                     null
             );
@@ -212,9 +212,9 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
          * @param authUser 认证用户信息
          * @return jwt
          */
-        public static Pair<String, String> generateToken(final AuthUserBO authUser) {
+        public static AuthJwtBO generateToken(final AuthUserBO authUser) {
             authUser.setClientId(clientId);
-            Result<Pair<String, String>> result = feignJwtParseService.generateToken(authUser);
+            Result<AuthJwtBO> result = feignJwtParseService.generateToken(authUser);
             if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
                 return result.getData();
             }

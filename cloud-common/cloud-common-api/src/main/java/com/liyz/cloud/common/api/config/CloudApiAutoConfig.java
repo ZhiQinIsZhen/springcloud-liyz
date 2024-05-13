@@ -1,6 +1,7 @@
 package com.liyz.cloud.common.api.config;
 
 import com.liyz.cloud.common.api.constant.SecurityClientConstant;
+import com.liyz.cloud.common.api.context.AuthContext;
 import com.liyz.cloud.common.api.filter.JwtAuthenticationTokenFilter;
 import com.liyz.cloud.common.api.handler.JwtAuthenticationEntryPoint;
 import com.liyz.cloud.common.api.handler.RestfulAccessDeniedHandler;
@@ -38,6 +39,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class CloudApiAutoConfig {
+
+    @Bean
+    public AuthContext authContext() {
+        return new AuthContext();
+    }
 
     @Bean
     public AnonymousMappingConfig anonymousMappingConfig() {

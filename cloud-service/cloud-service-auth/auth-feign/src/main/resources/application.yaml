@@ -14,7 +14,7 @@ server:
 # spring
 spring:
   application:
-    name: cloud-service-staff
+    name: cloud-service-auth
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
@@ -23,17 +23,22 @@ spring:
       enabled: true
   lifecycle:
     timeout-per-shutdown-phase: 60s
-  data:
-    # redis
+  # cache
+  cache:
+    cache-names: test,bug
+    type: redis
     redis:
-      database: 1
+      time-to-live: 300000
+      key-prefix: 'auth:'
+      cache-null-values: true
+      enable-statistics: true
+      use-key-prefix: true
+  # redis
+  data:
+    redis:
+      database: 0
       host: 127.0.0.1
       port: 6379
-      client-type: lettuce
-      lettuce:
-        pool:
-          enabled: true
-          max-active: 1
   cloud:
     loadbalancer:
       retry:
@@ -60,9 +65,10 @@ eureka:
     health-check-url-path: /actuator/health
 # log
 logging:
-  pattern:
   file:
     name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
+  level:
+    com.liyz.cloud.service.auth.dao: debug
 # springdoc
 springdoc:
   default-flat-param-object: true
