@@ -14,7 +14,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @date 2024/5/7 15:10
  */
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients(basePackages = {"com.liyz.cloud.service.auth.feign", "com.liyz.cloud.common.api.feign"})
 @MapperScan(basePackages = {"com.liyz.cloud.service.auth.dao"})
 @SpringBootApplication
 public class ServiceAuthApplication {

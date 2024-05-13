@@ -2,6 +2,8 @@ package com.liyz.cloud.service.auth.feign;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.liyz.cloud.common.api.annotation.Anonymous;
+import com.liyz.cloud.common.api.bo.AuthJwtBO;
 import com.liyz.cloud.common.base.constant.AuthExceptionCodeEnum;
 import com.liyz.cloud.common.base.constant.Device;
 import com.liyz.cloud.common.base.constant.LoginType;
@@ -26,11 +28,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -45,6 +43,7 @@ import java.util.Objects;
  */
 @Slf4j
 @Tag(name = "客户鉴权")
+@Anonymous
 @RestController
 @RequestMapping("/jwt")
 public class FeignJwtParseController {
@@ -118,8 +117,8 @@ public class FeignJwtParseController {
     }
 
     @Operation(summary = "生成token")
-    @GetMapping("/generateToken")
-    public Result<Pair<String, String>> generateToken(AuthUserBO authUser) {
+    @PostMapping("/generateToken")
+    public Result<AuthJwtBO> generateToken(@RequestBody AuthUserBO authUser) {
         if (StringUtils.isBlank(authUser.getClientId())) {
             log.error("创建token失败，原因 : clientId is blank");
             throw new RemoteServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
@@ -129,9 +128,12 @@ public class FeignJwtParseController {
             log.error("生成token失败, 没有找到该应用下jwt配置信息，clientId : {}", authUser.getClientId());
             throw new RemoteServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
         }
+
         return Result.success(
-                Pair.ofNonNull(authJwtDO.getJwtPrefix(),
-                        JwtUtil.builder()
+                AuthJwtBO
+                        .builder()
+                        .jwtPrefix(authJwtDO.getJwtPrefix())
+                        .token(JwtUtil.builder()
                                 .id(authUser.getAuthId().toString())
                                 .subject(authUser.getUsername())
                                 .audience().add(authUser.getClientId()).and()
@@ -143,6 +145,7 @@ public class FeignJwtParseController {
                                         Keys.hmacShaKeyFor(Decoders.BASE64.decode(Joiner.on(CommonConstant.DEFAULT_PADDING).join(authJwtDO.getSigningKey(), authUser.getSalt())))
                                 )
                                 .compact())
+                        .build()
         );
     }
 

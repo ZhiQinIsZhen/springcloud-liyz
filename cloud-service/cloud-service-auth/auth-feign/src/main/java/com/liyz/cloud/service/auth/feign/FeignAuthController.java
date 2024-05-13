@@ -1,6 +1,7 @@
 package com.liyz.cloud.service.auth.feign;
 
 import com.google.common.base.Splitter;
+import com.liyz.cloud.common.api.annotation.Anonymous;
 import com.liyz.cloud.common.base.constant.AuthExceptionCodeEnum;
 import com.liyz.cloud.common.base.result.Result;
 import com.liyz.cloud.common.base.util.BeanUtil;
@@ -39,6 +40,7 @@ import java.util.Objects;
  * @date 2024/4/30 17:47
  */
 @Slf4j
+@Anonymous
 @Tag(name = "客户鉴权")
 @RestController
 @RequestMapping("/auth")

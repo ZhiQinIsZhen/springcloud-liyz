@@ -1,11 +1,13 @@
 package com.liyz.cloud.common.api.feign;
 
+import com.liyz.cloud.common.api.bo.AuthJwtBO;
 import com.liyz.cloud.common.api.bo.AuthUserBO;
 import com.liyz.cloud.common.base.result.Result;
 import io.swagger.v3.oas.annotations.Operation;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -23,8 +25,8 @@ public interface FeignJwtParseService {
     Result<AuthUserBO> parseToken(@RequestParam("token") String token, @RequestParam("clientId") String clientId);
 
     @Operation(summary = "生成token")
-    @GetMapping("/generateToken")
-    Result<Pair<String, String>> generateToken(AuthUserBO authUser);
+    @PostMapping("/generateToken")
+    Result<AuthJwtBO> generateToken(@RequestBody AuthUserBO authUser);
 
     @Operation(summary = "获取失效时间")
     @GetMapping("/getExpiration")

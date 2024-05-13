@@ -60,9 +60,10 @@ eureka:
     health-check-url-path: /actuator/health
 # log
 logging:
-  pattern:
   file:
     name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
+  level:
+    com.liyz.cloud.service.staff.dao: debug
 # springdoc
 springdoc:
   default-flat-param-object: true
