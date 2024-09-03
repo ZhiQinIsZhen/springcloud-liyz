@@ -12,7 +12,7 @@
 
 
     <modules>
-
+        <module>cloud-dependencies-bom</module>
         <module>cloud-api</module>
         <module>cloud-common</module>
         <module>cloud-service</module>
