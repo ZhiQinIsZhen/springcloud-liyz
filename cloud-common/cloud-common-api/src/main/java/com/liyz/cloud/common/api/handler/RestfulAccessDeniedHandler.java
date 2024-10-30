@@ -25,7 +25,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setCharacterEncoding(String.valueOf(Charsets.UTF_8));
-        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().println(JsonUtil.toJSONString(Result.error(AuthExceptionCodeEnum.NO_RIGHT)));
         response.getWriter().flush();
     }
