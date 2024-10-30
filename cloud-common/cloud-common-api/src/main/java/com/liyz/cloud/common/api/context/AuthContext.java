@@ -1,21 +1,26 @@
 package com.liyz.cloud.common.api.context;
 
 import com.google.common.base.Joiner;
-import com.liyz.cloud.common.api.bo.*;
 import com.liyz.cloud.common.api.constant.SecurityClientConstant;
-import com.liyz.cloud.common.api.feign.FeignAuthService;
-import com.liyz.cloud.common.api.feign.FeignJwtParseService;
 import com.liyz.cloud.common.api.user.AuthUserDetails;
 import com.liyz.cloud.common.api.util.CookieUtil;
 import com.liyz.cloud.common.api.util.HttpServletContext;
-import com.liyz.cloud.common.base.constant.Device;
-import com.liyz.cloud.common.base.constant.LoginType;
-import com.liyz.cloud.common.base.result.Result;
 import com.liyz.cloud.common.base.util.BeanUtil;
 import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.exception.RemoteServiceException;
+import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
+import com.liyz.cloud.common.feign.bo.jwt.AuthJwtBO;
+import com.liyz.cloud.common.feign.constant.Device;
+import com.liyz.cloud.common.feign.constant.LoginType;
+import com.liyz.cloud.common.feign.dto.auth.AuthUserDTO;
+import com.liyz.cloud.common.feign.dto.auth.AuthUserLoginDTO;
+import com.liyz.cloud.common.feign.dto.auth.AuthUserLogoutDTO;
+import com.liyz.cloud.common.feign.dto.auth.AuthUserRegisterDTO;
+import com.liyz.cloud.common.feign.result.Result;
 import com.liyz.cloud.common.util.PatternUtil;
 import com.liyz.cloud.common.util.constant.CommonConstant;
+import com.liyz.cloud.service.auth.feign.AuthFeignService;
+import com.liyz.cloud.service.auth.feign.JwtParseFeignService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -46,8 +51,8 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
     private static String clientId;
     private static ApplicationContext applicationContext;
     private static AuthenticationManager authenticationManager;
-    private static FeignAuthService feignAuthService;
-    private static FeignJwtParseService feignJwtParseService;
+    private static AuthFeignService authFeignService;
+    private static JwtParseFeignService jwtParseFeignService;
 
     /**
      * 获取认证用户
@@ -82,12 +87,12 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
         /**
          * 用户注册
          *
-         * @param authUserRegisterBO 用户注册参数
+         * @param authUserRegister 用户注册参数
          * @return 是否注册成功
          */
-        public static Boolean registry(AuthUserRegisterBO authUserRegisterBO) {
-            authUserRegisterBO.setClientId(clientId);
-            Result<Boolean> result = feignAuthService.registry(authUserRegisterBO);
+        public static Boolean registry(AuthUserRegisterDTO authUserRegister) {
+            authUserRegister.setClientId(clientId);
+            Result<Boolean> result = authFeignService.registry(authUserRegister);
             if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
                 return result.getData();
             }
@@ -97,29 +102,30 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
         /**
          * 登录
          *
-         * @param authUserLoginBO 登录参数
+         * @param authUserLoginDTO 登录参数
          * @return 登录用户信息
          */
-        public static AuthUserBO login(AuthUserLoginBO authUserLoginBO) {
-            authUserLoginBO.setClientId(clientId);
-            authUserLoginBO.setDevice(DeviceContext.getDevice(HttpServletContext.getRequest()));
-            authUserLoginBO.setLoginType(LoginType.getByType(PatternUtil.checkMobileEmail(authUserLoginBO.getUsername())));
-            authUserLoginBO.setIp(HttpServletContext.getIpAddress());
+        public static AuthUserBO login(AuthUserLoginDTO authUserLoginDTO) {
+            authUserLoginDTO.setClientId(clientId);
+            authUserLoginDTO.setDevice(DeviceContext.getDevice(HttpServletContext.getRequest()));
+            authUserLoginDTO.setLoginType(LoginType.getByType(PatternUtil.checkMobileEmail(authUserLoginDTO.getUsername())));
+            authUserLoginDTO.setIp(HttpServletContext.getIpAddress());
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     Joiner.on(CommonConstant.DEFAULT_JOINER).join(
-                            authUserLoginBO.getDevice().getType(),
-                            authUserLoginBO.getClientId(),
-                            authUserLoginBO.getUsername()),
-                    authUserLoginBO.getPassword());
+                            authUserLoginDTO.getDevice().getType(),
+                            authUserLoginDTO.getClientId(),
+                            authUserLoginDTO.getUsername()),
+                    authUserLoginDTO.getPassword());
             SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authentication));
-            AuthUserDetails authUserDetails = (AuthUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            Result<Date> result = feignAuthService.login(
-                    AuthUserLoginBO.builder()
-                            .clientId(authUserLoginBO.getClientId())
+            AuthUserDetails authUserDetails = (AuthUserDetails) SecurityContextHolder
+                    .getContext().getAuthentication().getPrincipal();
+            Result<Date> result = authFeignService.login(
+                    authUserLoginDTO.builder()
+                            .clientId(authUserLoginDTO.getClientId())
                             .authId(authUserDetails.getAuthUser().getAuthId())
-                            .loginType(authUserLoginBO.getLoginType())
-                            .device(authUserLoginBO.getDevice())
-                            .ip(authUserLoginBO.getIp())
+                            .loginType(authUserLoginDTO.getLoginType())
+                            .device(authUserLoginDTO.getDevice())
+                            .ip(authUserLoginDTO.getIp())
                             .build());
             Date checkTime;
             if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
@@ -152,10 +158,10 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
          * @return 用户信息
          */
         public static AuthUserBO loadByUsername(String username, Device device) {
-            AuthUserBO authUserBO = new AuthUserBO();
-            authUserBO.setUsername(username);
-            authUserBO.setDevice(device);
-            Result<AuthUserBO> result = feignAuthService.loadByUsername(authUserBO);
+            AuthUserDTO authUserDTO = new AuthUserDTO();
+            authUserDTO.setUsername(username);
+            authUserDTO.setDevice(device);
+            Result<AuthUserBO> result = authFeignService.loadByUsername(authUserDTO);
             if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
                 return result.getData();
             }
@@ -173,13 +179,13 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
             if (Objects.isNull(authUser)) {
                 return Boolean.FALSE;
             }
-            AuthUserLogoutBO authUserLogoutBO = BeanUtil.copyProperties(authUser, AuthUserLogoutBO::new, (s, t) -> {
+            AuthUserLogoutDTO authUserLogoutDTO = BeanUtil.copyProperties(authUser, AuthUserLogoutDTO::new, (s, t) -> {
                 t.setLogoutType(s.getLoginType());
                 t.setDevice(s.getDevice());
                 t.setIp(HttpServletContext.getIpAddress());
             });
             CookieUtil.removeCookie(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY);
-            Result<Boolean> result = feignAuthService.logout(authUserLogoutBO);
+            Result<Boolean> result = authFeignService.logout(authUserLogoutDTO);
             if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
                 return result.getData();
             }
@@ -199,7 +205,7 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
          * @return 用户信息
          */
         public static AuthUserBO parseToken(final String token) {
-            Result<AuthUserBO> result = feignJwtParseService.parseToken(token, clientId);
+            Result<AuthUserBO> result = jwtParseFeignService.parseToken(token, clientId);
             if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
                 return result.getData();
             }
@@ -214,7 +220,7 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
          */
         public static AuthJwtBO generateToken(final AuthUserBO authUser) {
             authUser.setClientId(clientId);
-            Result<AuthJwtBO> result = feignJwtParseService.generateToken(authUser);
+            Result<AuthJwtBO> result = jwtParseFeignService.generateToken(authUser);
             if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
                 return result.getData();
             }
@@ -228,7 +234,7 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
          * @return 失效时间戳
          */
         public static Long getExpiration(final String token) {
-            Result<Long> result = feignJwtParseService.getExpiration(token);
+            Result<Long> result = jwtParseFeignService.getExpiration(token);
             if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
                 return result.getData();
             }
@@ -238,9 +244,10 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        feignAuthService = applicationContext.getBean(FeignAuthService.class);
-        feignJwtParseService = applicationContext.getBean(FeignJwtParseService.class);
-        authenticationManager = applicationContext.getBean(SecurityClientConstant.AUTH_MANAGER_BEAN_NAME, AuthenticationManager.class);
+        authFeignService = applicationContext.getBean(AuthFeignService.class);
+        jwtParseFeignService = applicationContext.getBean(JwtParseFeignService.class);
+        authenticationManager = applicationContext.getBean(SecurityClientConstant.AUTH_MANAGER_BEAN_NAME,
+                AuthenticationManager.class);
     }
 
     @Override

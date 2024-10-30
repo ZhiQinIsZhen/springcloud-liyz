@@ -1,10 +1,10 @@
 package com.liyz.cloud.common.api.user;
 
 import com.google.common.base.Joiner;
-import com.liyz.cloud.common.api.bo.AuthUserBO;
 import com.liyz.cloud.common.api.context.AuthContext;
 import com.liyz.cloud.common.base.constant.AuthExceptionCodeEnum;
-import com.liyz.cloud.common.base.constant.Device;
+import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
+import com.liyz.cloud.common.feign.constant.Device;
 import com.liyz.cloud.common.util.constant.CommonConstant;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

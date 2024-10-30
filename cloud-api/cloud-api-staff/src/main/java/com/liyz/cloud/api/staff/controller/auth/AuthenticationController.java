@@ -4,14 +4,14 @@ import com.liyz.cloud.api.staff.dto.auth.StaffLoginDTO;
 import com.liyz.cloud.api.staff.dto.auth.StaffRegisterDTO;
 import com.liyz.cloud.api.staff.vo.auth.AuthLoginVO;
 import com.liyz.cloud.common.api.annotation.Anonymous;
-import com.liyz.cloud.common.api.bo.AuthUserBO;
-import com.liyz.cloud.common.api.bo.AuthUserLoginBO;
-import com.liyz.cloud.common.api.bo.AuthUserRegisterBO;
 import com.liyz.cloud.common.api.constant.SecurityClientConstant;
 import com.liyz.cloud.common.api.context.AuthContext;
 import com.liyz.cloud.common.api.util.HttpServletContext;
-import com.liyz.cloud.common.base.result.Result;
 import com.liyz.cloud.common.base.util.BeanUtil;
+import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
+import com.liyz.cloud.common.feign.dto.auth.AuthUserLoginDTO;
+import com.liyz.cloud.common.feign.dto.auth.AuthUserRegisterDTO;
+import com.liyz.cloud.common.feign.result.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -48,14 +48,14 @@ public class AuthenticationController {
     @Operation(summary = "注册")
     @PostMapping("/register")
     public Result<Boolean> register(@Validated({StaffRegisterDTO.Register.class}) @RequestBody StaffRegisterDTO staffRegister) {
-        return Result.success(AuthContext.AuthService.registry(BeanUtil.copyProperties(staffRegister, AuthUserRegisterBO::new)));
+        return Result.success(AuthContext.AuthService.registry(BeanUtil.copyProperties(staffRegister, AuthUserRegisterDTO::new)));
     }
 
     @Anonymous
     @Operation(summary = "登录")
     @PostMapping("/login")
     public Result<AuthLoginVO> login(@Validated({StaffLoginDTO.Login.class}) @RequestBody StaffLoginDTO loginDTO) throws IOException {
-        AuthUserBO authUserBO = AuthContext.AuthService.login(BeanUtil.copyProperties(loginDTO, AuthUserLoginBO::new));
+        AuthUserBO authUserBO = AuthContext.AuthService.login(BeanUtil.copyProperties(loginDTO, AuthUserLoginDTO::new));
         AuthLoginVO authLoginVO = new AuthLoginVO();
         authLoginVO.setToken(authUserBO.getToken());
         authLoginVO.setExpiration(AuthContext.JwtService.getExpiration(authUserBO.getToken()));

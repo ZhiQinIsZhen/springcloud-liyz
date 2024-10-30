@@ -1,6 +1,6 @@
 package com.liyz.cloud.common.api.context;
 
-import com.liyz.cloud.common.base.constant.Device;
+import com.liyz.cloud.common.feign.constant.Device;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;

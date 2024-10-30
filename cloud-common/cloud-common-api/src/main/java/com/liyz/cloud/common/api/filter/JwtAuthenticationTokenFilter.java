@@ -1,14 +1,14 @@
 package com.liyz.cloud.common.api.filter;
 
 import com.google.common.base.Charsets;
-import com.liyz.cloud.common.api.bo.AuthUserBO;
 import com.liyz.cloud.common.api.config.AnonymousMappingConfig;
 import com.liyz.cloud.common.api.constant.SecurityClientConstant;
 import com.liyz.cloud.common.api.context.AuthContext;
 import com.liyz.cloud.common.api.user.AuthUserDetails;
 import com.liyz.cloud.common.api.util.CookieUtil;
-import com.liyz.cloud.common.base.result.Result;
 import com.liyz.cloud.common.exception.RemoteServiceException;
+import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
+import com.liyz.cloud.common.feign.result.Result;
 import com.liyz.cloud.common.util.JsonUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

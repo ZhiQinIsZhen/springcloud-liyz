@@ -1,6 +1,6 @@
 package com.liyz.cloud.common.base.error;
 
-import com.liyz.cloud.common.base.result.Result;
+import com.liyz.cloud.common.feign.result.Result;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

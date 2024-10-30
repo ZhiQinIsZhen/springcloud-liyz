@@ -1,8 +1,8 @@
 package com.liyz.cloud.common.base.advice;
 
-import com.liyz.cloud.common.base.result.Result;
 import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.exception.RemoteServiceException;
+import com.liyz.cloud.common.feign.result.Result;
 import com.liyz.cloud.common.util.constant.CommonConstant;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

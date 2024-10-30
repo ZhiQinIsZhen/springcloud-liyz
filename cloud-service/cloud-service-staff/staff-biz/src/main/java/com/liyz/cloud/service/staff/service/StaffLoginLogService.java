@@ -1,7 +1,7 @@
 package com.liyz.cloud.service.staff.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.liyz.cloud.common.base.constant.Device;
+import com.liyz.cloud.common.feign.constant.Device;
 import com.liyz.cloud.service.staff.model.StaffLoginLogDO;
 
 import java.util.Date;

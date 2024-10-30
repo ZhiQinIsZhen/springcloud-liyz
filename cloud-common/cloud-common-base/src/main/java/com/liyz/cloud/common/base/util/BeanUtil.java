@@ -1,6 +1,6 @@
 package com.liyz.cloud.common.base.util;
 
-import com.liyz.cloud.common.base.page.RemotePage;
+import com.liyz.cloud.common.feign.bo.RemotePage;
 import lombok.experimental.UtilityClass;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;

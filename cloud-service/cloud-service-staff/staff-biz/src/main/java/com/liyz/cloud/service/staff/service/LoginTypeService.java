@@ -1,6 +1,6 @@
 package com.liyz.cloud.service.staff.service;
 
-import com.liyz.cloud.common.base.constant.LoginType;
+import com.liyz.cloud.common.feign.constant.LoginType;
 import com.liyz.cloud.service.staff.model.base.StaffAuthBaseDO;
 import org.springframework.beans.factory.InitializingBean;
 

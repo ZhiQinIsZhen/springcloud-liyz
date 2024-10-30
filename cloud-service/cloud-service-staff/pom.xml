@@ -16,6 +16,7 @@
         <module>staff-dao</module>
         <module>staff-biz</module>
         <module>staff-feign</module>
+        <module>staff-web</module>
     </modules>
 
 </project>

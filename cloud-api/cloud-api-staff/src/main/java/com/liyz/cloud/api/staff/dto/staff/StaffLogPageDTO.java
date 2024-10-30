@@ -1,6 +1,6 @@
 package com.liyz.cloud.api.staff.dto.staff;
 
-import com.liyz.cloud.common.api.dto.PageDTO;
+import com.liyz.cloud.common.feign.dto.PageDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;

@@ -18,6 +18,7 @@
         <module>cloud-common-dao</module>
         <module>cloud-common-api</module>
         <module>cloud-common-base</module>
+        <module>cloud-common-feign</module>
     </modules>
 
 </project>

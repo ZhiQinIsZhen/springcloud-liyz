@@ -1,7 +1,7 @@
 package com.liyz.cloud.common.api.user;
 
 import com.google.common.base.Joiner;
-import com.liyz.cloud.common.api.bo.AuthUserBO;
+import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
 import com.liyz.cloud.common.util.constant.CommonConstant;
 import lombok.Getter;
 import lombok.Setter;

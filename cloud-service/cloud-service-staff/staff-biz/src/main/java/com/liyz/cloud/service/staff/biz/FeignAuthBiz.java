@@ -2,16 +2,17 @@ package com.liyz.cloud.service.staff.biz;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.liyz.cloud.common.base.constant.AuthExceptionCodeEnum;
-import com.liyz.cloud.common.base.constant.Device;
-import com.liyz.cloud.common.base.constant.LoginType;
 import com.liyz.cloud.common.base.util.BeanUtil;
 import com.liyz.cloud.common.exception.RemoteServiceException;
+import com.liyz.cloud.common.feign.constant.Device;
+import com.liyz.cloud.common.feign.constant.LoginType;
 import com.liyz.cloud.common.util.DateUtil;
 import com.liyz.cloud.common.util.PatternUtil;
-import com.liyz.cloud.service.staff.bo.auth.AuthUserBO;
-import com.liyz.cloud.service.staff.bo.auth.AuthUserLoginBO;
-import com.liyz.cloud.service.staff.bo.auth.AuthUserLogoutBO;
-import com.liyz.cloud.service.staff.bo.auth.AuthUserRegisterBO;
+import com.liyz.cloud.common.feign.dto.auth.AuthUserLogoutDTO;
+import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
+import com.liyz.cloud.common.feign.dto.auth.AuthUserDTO;
+import com.liyz.cloud.common.feign.dto.auth.AuthUserLoginDTO;
+import com.liyz.cloud.common.feign.dto.auth.AuthUserRegisterDTO;
 import com.liyz.cloud.service.staff.model.*;
 import com.liyz.cloud.service.staff.model.base.StaffAuthBaseDO;
 import com.liyz.cloud.service.staff.service.*;
@@ -63,7 +64,7 @@ public class FeignAuthBiz {
      * @return True：注册成功；false：注册失败
      */
     @Transactional(rollbackFor = Exception.class)
-    public Boolean registry(AuthUserRegisterBO authUserRegister) {
+    public Boolean registry(AuthUserRegisterDTO authUserRegister) {
         boolean isEmail = PatternUtil.matchEmail(authUserRegister.getUsername());
         //判断该用户名是否存在
         boolean userNameExist = isEmail ?
@@ -134,7 +135,7 @@ public class FeignAuthBiz {
      * @return 当前登录时间
      */
     @Transactional(rollbackFor = Exception.class)
-    public Date login(AuthUserLoginBO authUserLogin) {
+    public Date login(AuthUserLoginDTO authUserLogin) {
         StaffLoginLogDO staffLoginLogDO = BeanUtil.copyProperties(authUserLogin, StaffLoginLogDO::new, (s, t) -> {
             t.setStaffId(s.getAuthId());
             t.setLoginTime(DateUtil.date());
@@ -153,7 +154,7 @@ public class FeignAuthBiz {
      * @return True：登出成功；false：登出失败
      */
     @Transactional(rollbackFor = Exception.class)
-    public Boolean logout(AuthUserLogoutBO authUserLogout) {
+    public Boolean logout(AuthUserLogoutDTO authUserLogout) {
         StaffLogoutLogDO staffLogoutLogDO = BeanUtil.copyProperties(authUserLogout, StaffLogoutLogDO::new, (s, t) -> {
             t.setStaffId(s.getAuthId());
             t.setDevice(s.getDevice().getType());
@@ -169,7 +170,7 @@ public class FeignAuthBiz {
      * @param authUser 认证用户信息
      * @return 权限列表
      */
-    public List<AuthUserBO.AuthGrantedAuthorityBO> authorities(AuthUserBO authUser) {
+    public List<AuthUserBO.AuthGrantedAuthorityBO> authorities(AuthUserDTO authUser) {
         Set<Integer> authorityIdSet = new HashSet<>();
         //查询角色拥有的权限
         if (!CollectionUtils.isEmpty(authUser.getRoleIds())) {

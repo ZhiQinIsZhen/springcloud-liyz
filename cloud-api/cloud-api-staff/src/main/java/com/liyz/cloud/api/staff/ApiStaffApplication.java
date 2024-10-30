@@ -12,7 +12,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @date 2024/4/30 9:25
  */
 
-@EnableFeignClients(basePackages = {"com.liyz.cloud.api.staff.feign", "com.liyz.cloud.common.api.feign"})
+@EnableFeignClients(basePackages = {"com.liyz.cloud.service.*.feign"})
 @SpringBootApplication
 public class ApiStaffApplication {
 

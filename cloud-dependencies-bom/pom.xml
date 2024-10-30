@@ -151,6 +151,11 @@
                 <artifactId>cloud-common-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.liyz.cloud</groupId>
+                <artifactId>cloud-common-feign</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

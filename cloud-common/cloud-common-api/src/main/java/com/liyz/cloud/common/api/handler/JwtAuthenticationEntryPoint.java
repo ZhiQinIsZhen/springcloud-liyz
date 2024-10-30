@@ -1,7 +1,7 @@
 package com.liyz.cloud.common.api.handler;
 
 import com.liyz.cloud.common.base.constant.AuthExceptionCodeEnum;
-import com.liyz.cloud.common.base.result.Result;
+import com.liyz.cloud.common.feign.result.Result;
 import com.liyz.cloud.common.util.JsonUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

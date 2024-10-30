@@ -2,7 +2,7 @@ package com.liyz.cloud.common.api.advice;
 
 import com.liyz.cloud.common.api.properties.AuthSecurityClientProperties;
 import com.liyz.cloud.common.base.constant.AuthExceptionCodeEnum;
-import com.liyz.cloud.common.base.result.Result;
+import com.liyz.cloud.common.feign.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

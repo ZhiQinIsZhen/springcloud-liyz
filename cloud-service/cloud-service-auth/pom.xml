@@ -15,6 +15,7 @@
         <module>auth-biz</module>
         <module>auth-dao</module>
         <module>auth-feign</module>
+        <module>auth-web</module>
     </modules>
 
 </project>

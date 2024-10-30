@@ -3,7 +3,7 @@ package com.liyz.cloud.service.staff.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.liyz.cloud.common.base.constant.Device;
+import com.liyz.cloud.common.feign.constant.Device;
 import com.liyz.cloud.service.staff.dao.StaffLogoutLogMapper;
 import com.liyz.cloud.service.staff.model.StaffLogoutLogDO;
 import com.liyz.cloud.service.staff.service.StaffLogoutLogService;

@@ -2,7 +2,7 @@ package com.liyz.cloud.service.staff.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.liyz.cloud.common.base.constant.LoginType;
+import com.liyz.cloud.common.feign.constant.LoginType;
 import com.liyz.cloud.service.staff.dao.StaffAuthMobileMapper;
 import com.liyz.cloud.service.staff.model.StaffAuthMobileDO;
 import com.liyz.cloud.service.staff.model.base.StaffAuthBaseDO;
