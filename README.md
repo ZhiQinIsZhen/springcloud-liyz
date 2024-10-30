@@ -11,9 +11,9 @@
 ![Swagger Version](https://img.shields.io/badge/knife4j-4.5.0-brightgreen)
 ![Elasticjob Version](https://img.shields.io/badge/elasticjob-3.0.4-brightgreen)
 
-这是一个Spring Cloud项目，基于SpringBoot、SpringCloud、Mybatis-plus等框架。
+这是一个基于Jdk21，框架是SpringCloud + Springboot3 + Mybatis-plus的脚手架。
 
-- 主框架基于：Spring Cloud、Spring Boot、Mybatis-plus、knife4j
+- 主框架基于：Spring Cloud、Spring Boot、Mybatis-plus
 - 注册中心基于：Eureka
 - 监控中心基于：Spring Admin
 - 登陆安全基于：Spring Security、jjwt、redisson
@@ -24,29 +24,30 @@
 - 分库分表读写分离基于：Sharding-jdbc
 
 
-#### 核心依赖 
-
-依赖 | 版本
---- | ---
-Spring Boot |   3.2.5
-Spring security | 3.2.5
-Spring Cloud |  2023.0.1
-Mybatis-plus | 3.5.6
-Redisson |  3.29.0
-Elastic Job | 3.0.4
-Swagger Knife4j | 4.4.0
-
-
-### 目录结构说明
-```lua
+## 目录结构说明
 1. `cloud-dependencies-bom`：Maven Pom版本管理文件
 2. `cloud-gateway`：前置网关层，集成限流与JWT验证
 3. `cloud-api`：后置网关层，即真正的入口
 4. `cloud-common`：基础包的框架
 5. `cloud-service`：Feign的服务提供者，即业务服务
-```
 
-#### 开源共建
-1.如有问题可以提交[issue](https://github.com/ZhiQinIsZhen/springcloud-liyz/issues)
+## api结构说明
+1. `cloud-api-staff`: 管理后台网关层，鉴权基于spring-security
+2. `cloud-api-monitor`: 监控平台
 
-2.如有需要Dubbo项目，请点击[Spring Boot + Dubbo](https://github.com/ZhiQinIsZhen/dubbo-springboot-project)
+## common结构说明
+1. `cloud-common-api`: 通用web或者网关层框架，以及SpringSecurity鉴权实现
+2. `dubbo-common-dao`: 通用DAO层的框架(基于Mybatis-plus)
+3. `dubbo-common-base`: 业务通用核心框架
+4. `dubbo-common-exception`: 业务异常通用框架
+5. `dubbo-common-feign`: SpringCloud的feign通用框架
+6. `dubbo-common-util`: 通用工具类框架
+
+## service结构说明
+
+1. `cloud-service-auth`: 认证资源服务，基于SpringSecurity以及jwt
+2. `cloud-service-staff`: 员工信息服务
+
+## 开源共建
+1. 如有问题可以提交[issue](https://github.com/ZhiQinIsZhen/springcloud-liyz/issues)
+2. 如有需要Dubbo项目，请点击[Spring Boot + Dubbo](https://github.com/ZhiQinIsZhen/dubbo-springboot-project)
