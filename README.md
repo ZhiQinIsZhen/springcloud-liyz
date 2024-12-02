@@ -8,6 +8,7 @@
 ![Gateway Version](https://img.shields.io/badge/Gateway-4.1.3-brightgreen)
 ![jjwt Version](https://img.shields.io/badge/jjwt-0.12.6-brightgreen)
 ![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.9-brightgreen)
+![Sharding-jdbc Version](https://img.shields.io/badge/ShardingJdbc-5.5.1-brightgreen)
 ![Swagger Version](https://img.shields.io/badge/knife4j-4.5.0-brightgreen)
 ![Elasticjob Version](https://img.shields.io/badge/elasticjob-3.0.4-brightgreen)
 
@@ -47,6 +48,9 @@
 
 1. `cloud-service-auth`: 认证资源服务，基于SpringSecurity以及jwt
 2. `cloud-service-staff`: 员工信息服务
+    ```text
+    1.1 使用shardingsphere-jdbc对登录登出日志进行分表
+    ```
 
 ## 开源共建
 1. 如有问题可以提交[issue](https://github.com/ZhiQinIsZhen/cloud-springboot3/issues)

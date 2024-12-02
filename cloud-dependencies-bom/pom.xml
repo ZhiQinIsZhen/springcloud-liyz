@@ -13,17 +13,18 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springboot.version>3.3.4</springboot.version>
-        <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <springboot.version>3.3.6</springboot.version>
+        <spring-cloud.version>2023.0.4</spring-cloud.version>
         <hutool.version>5.8.32</hutool.version>
         <google.guava.version>33.3.1-jre</google.guava.version>
         <knife4j.version>4.5.0</knife4j.version>
-        <mybatis.plus.version>3.5.8</mybatis.plus.version>
-        <redisson.version>3.37.0</redisson.version>
+        <mybatis.plus.version>3.5.9</mybatis.plus.version>
+        <redisson.version>3.39.0</redisson.version>
         <io.jwt.version>0.12.6</io.jwt.version>
         <elasticjob.version>3.0.4</elasticjob.version>
+        <shardingsphere.version>5.5.1</shardingsphere.version>
         <excel.version>4.0.3</excel.version>
-        <springboot.admin.version>3.3.4</springboot.admin.version>
+        <springboot.admin.version>3.3.6</springboot.admin.version>
         <rocketmq.version>2.3.1</rocketmq.version>
         <kafka.version>3.2.4</kafka.version>
 
@@ -76,6 +77,11 @@
                 <version>${mybatis.plus.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-jsqlparser</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
@@ -104,6 +110,11 @@
                 <groupId>org.apache.shardingsphere.elasticjob</groupId>
                 <artifactId>elasticjob-lite-spring-boot-starter</artifactId>
                 <version>${elasticjob.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>shardingsphere-jdbc</artifactId>
+                <version>${shardingsphere.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.rocketmq</groupId>

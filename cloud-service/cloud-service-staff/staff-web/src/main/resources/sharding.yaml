@@ -1,0 +1,56 @@
+databaseName: staff2
+
+dataSources:
+  staff_db_0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/staff2?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8
+    username: root
+    password: root
+
+rules:
+  - !SINGLE
+    tables:
+      - "staff_db_0.*"
+  - !SHARDING
+    tables:
+      staff_login_log:
+        actualDataNodes: staff_db_0.staff_login_log_$->{0..1}
+        databaseStrategy:
+          none:
+        tableStrategy:
+          standard:
+            shardingColumn: staff_id
+            shardingAlgorithmName: login_inline
+        keyGenerateStrategy:
+          column: id
+          keyGeneratorName: snowflake
+      staff_logout_log:
+        actualDataNodes: staff_db_0.staff_logout_log_$->{0..1}
+        databaseStrategy:
+          none:
+        tableStrategy:
+          standard:
+            shardingColumn: staff_id
+            shardingAlgorithmName: logout_inline
+        keyGenerateStrategy:
+          column: id
+          keyGeneratorName: snowflake
+    keyGenerators:
+      snowflake:
+        type: SNOWFLAKE
+        props:
+          worker-id: 123
+    # 分片算法配置
+    shardingAlgorithms:
+      login_inline:
+        type: INLINE
+        props:
+          algorithm-expression: staff_login_log_$->{staff_id % 2}
+      logout_inline:
+        type: INLINE
+        props:
+          algorithm-expression: staff_logout_log_$->{staff_id % 2}
+
+props:
+  sql-show: true
