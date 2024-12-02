@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.liyz.cloud</groupId>
-    <artifactId>springcloud-liyz</artifactId>
+    <artifactId>cloud-springboot3</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
     <description>this is project what is all project's parent</description>
