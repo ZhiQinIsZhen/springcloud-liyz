@@ -14,14 +14,12 @@
 
 这是一个基于Jdk21，框架是SpringCloud + Springboot3 + Mybatis-plus的脚手架。
 
-- 主框架基于：Spring Cloud、Spring Boot、Mybatis-plus
+- 主框架基于：Spring Cloud、Spring Boot
+- 数据ORM基于：Mybatis-plus
 - 注册中心基于：Eureka
 - 监控中心基于：Spring Admin
-- 登陆安全基于：Spring Security、jjwt、redisson
-- 接口文档基于：Swagger-knife4j
-- 限流基于：Google-guava
-- 分布式定时任务基于：Elastic-job
-- 推送聊天基于：Netty
+- 登陆安全基于：Spring Security、jjwt
+- 接口文档基于：knife4j
 - 分库分表读写分离基于：Sharding-jdbc
 
 

@@ -1,4 +1,4 @@
-package com.liyz.cloud.service.staff.bo.info;
+package com.liyz.cloud.service.staff.vo.info;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,7 +18,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class StaffInfoBO implements Serializable {
+public class StaffInfoVO implements Serializable {
     @Serial
     private static final long serialVersionUID = 477985923412638468L;
 

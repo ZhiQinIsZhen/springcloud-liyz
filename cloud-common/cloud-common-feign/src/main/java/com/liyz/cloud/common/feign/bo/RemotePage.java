@@ -15,6 +15,7 @@ import java.util.List;
  * @version 1.0.0
  * @date 2023/11/13 10:30
  */
+@Getter
 public class RemotePage<T> implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,21 +30,17 @@ public class RemotePage<T> implements Serializable {
         this.pageSize = pageSize;
     }
 
-    @Getter
     @Setter
     @Schema(description = "结果集")
     private List<T> list;
 
-    @Getter
     @Setter
     @Schema(description = "总记录数")
     private long total;
 
-    @Getter
     @Schema(description = "当前页")
     private long pageNum;
 
-    @Getter
     @Schema(description = "每页的数量")
     private long pageSize;
 

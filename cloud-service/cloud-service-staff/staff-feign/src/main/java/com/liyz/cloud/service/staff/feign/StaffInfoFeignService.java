@@ -3,9 +3,13 @@ package com.liyz.cloud.service.staff.feign;
 import com.liyz.cloud.common.feign.bo.RemotePage;
 import com.liyz.cloud.common.feign.dto.PageDTO;
 import com.liyz.cloud.common.feign.result.Result;
-import com.liyz.cloud.service.staff.bo.info.StaffInfoBO;
 import com.liyz.cloud.service.staff.constants.StaffConstants;
+import com.liyz.cloud.service.staff.dto.log.StaffLogPageDTO;
+import com.liyz.cloud.service.staff.vo.info.StaffInfoVO;
+import com.liyz.cloud.service.staff.vo.log.StaffLoginLogVO;
+import com.liyz.cloud.service.staff.vo.log.StaffLogoutLogVO;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,9 +29,17 @@ public interface StaffInfoFeignService {
 
     @Operation(summary = "根据staffId获取用户信息")
     @GetMapping( "/getByStaffId")
-    Result<StaffInfoBO> getByStaffId(@RequestParam("staffId") Long staffId);
+    Result<StaffInfoVO> getByStaffId(@RequestParam("staffId") Long staffId);
 
     @Operation(summary = "分页查询员工信息")
     @PostMapping("/page")
-    Result<RemotePage<StaffInfoBO>> page(@RequestBody PageDTO pageDTO);
+    Result<RemotePage<StaffInfoVO>> page(@RequestBody PageDTO pageDTO);
+
+    @Operation(summary = "分页查询员工登录信息")
+    @PostMapping("/login/page")
+    Result<RemotePage<StaffLoginLogVO>> loginPage(@Valid @RequestBody StaffLogPageDTO pageDTO);
+
+    @Operation(summary = "分页查询员工登出信息")
+    @PostMapping("/logout/page")
+    Result<RemotePage<StaffLogoutLogVO>> logoutPage(@Valid @RequestBody StaffLogPageDTO pageDTO);
 }

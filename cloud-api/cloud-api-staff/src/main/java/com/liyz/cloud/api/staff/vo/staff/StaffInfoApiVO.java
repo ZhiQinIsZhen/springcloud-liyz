@@ -20,7 +20,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class StaffInfoVO implements Serializable {
+public class StaffInfoApiVO implements Serializable {
     @Serial
     private static final long serialVersionUID = 3401036150852744531L;
 

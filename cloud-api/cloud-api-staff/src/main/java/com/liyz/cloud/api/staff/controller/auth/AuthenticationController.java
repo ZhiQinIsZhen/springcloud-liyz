@@ -34,7 +34,7 @@ import java.io.IOException;
  * @version 1.0.0
  * @date 2024/5/9 15:10
  */
-@Tag(name = "员工信息")
+@Tag(name = "鉴权相关")
 @ApiResponses(value = {
         @ApiResponse(responseCode = "0", description = "成功"),
         @ApiResponse(responseCode = "1", description = "失败")

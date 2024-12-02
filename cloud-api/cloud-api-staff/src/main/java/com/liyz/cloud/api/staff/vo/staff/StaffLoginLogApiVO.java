@@ -18,7 +18,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
-public class StaffLoginLogVO implements Serializable {
+public class StaffLoginLogApiVO implements Serializable {
     @Serial
     private static final long serialVersionUID = 378737454967076747L;
 

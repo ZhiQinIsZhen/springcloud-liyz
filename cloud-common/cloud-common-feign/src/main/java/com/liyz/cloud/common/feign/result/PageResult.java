@@ -75,6 +75,13 @@ public class PageResult<T> {
         return new PageResult<>(codeEnum);
     }
 
+    public static <T, E> PageResult<T> result(Result<RemotePage<E>> result, RemotePage<T> data) {
+        if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
+            return success(data);
+        }
+        return error(result.getCode(), result.getMessage());
+    }
+
     public void setPageNum(long pageNum) {
         this.pageNum = Math.max(1L, pageNum);
     }

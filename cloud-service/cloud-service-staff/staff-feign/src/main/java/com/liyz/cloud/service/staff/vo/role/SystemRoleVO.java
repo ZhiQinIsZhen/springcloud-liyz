@@ -1,4 +1,4 @@
-package com.liyz.cloud.service.staff.bo.role;
+package com.liyz.cloud.service.staff.vo.role;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class SystemRoleBO implements Serializable {
+public class SystemRoleVO implements Serializable {
     @Serial
     private static final long serialVersionUID = 2197798732348814224L;
 
