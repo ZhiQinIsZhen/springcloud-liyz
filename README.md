@@ -3,11 +3,11 @@
 [![Build Status](https://img.shields.io/badge/Build-ZhiQinlsZhen-red)](https://github.com/ZhiQinIsZhen)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/ZhiQinIsZhen/springcloud-liyz/blob/master/LICENSE)
 ![JDK Version](https://img.shields.io/badge/JDK-21-brightgreen)
-![Springboot Version](https://img.shields.io/badge/Springboot-3.3.4-brightgreen)
-[![Spring Cloud](https://img.shields.io/badge/Springcloud-2023.0.3-brightgreen)](https://spring.io/projects/spring-cloud)
+![Springboot Version](https://img.shields.io/badge/Springboot-3.3.6-brightgreen)
+[![Spring Cloud](https://img.shields.io/badge/Springcloud-2023.0.4-brightgreen)](https://spring.io/projects/spring-cloud)
 ![Gateway Version](https://img.shields.io/badge/Gateway-4.1.3-brightgreen)
 ![jjwt Version](https://img.shields.io/badge/jjwt-0.12.6-brightgreen)
-![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.8-brightgreen)
+![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.9-brightgreen)
 ![Swagger Version](https://img.shields.io/badge/knife4j-4.5.0-brightgreen)
 ![Elasticjob Version](https://img.shields.io/badge/elasticjob-3.0.4-brightgreen)
 
@@ -49,5 +49,5 @@
 2. `cloud-service-staff`: 员工信息服务
 
 ## 开源共建
-1. 如有问题可以提交[issue](https://github.com/ZhiQinIsZhen/springcloud-liyz/issues)
+1. 如有问题可以提交[issue](https://github.com/ZhiQinIsZhen/cloud-springboot3/issues)
 2. 如有需要Dubbo项目，请点击[Spring Boot + Dubbo](https://github.com/ZhiQinIsZhen/dubbo-springboot-project)
