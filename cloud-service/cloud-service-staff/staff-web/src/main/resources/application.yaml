@@ -38,6 +38,12 @@ spring:
     loadbalancer:
       retry:
         enabled: false
+    nacos:
+      discovery:
+        enabled: true
+        register-enabled: true
+        server-addr: 127.0.0.1:8848
+        namespace: liyz-cloud
   # datasource
   datasource:
     url: jdbc:shardingsphere:classpath:sharding.yaml

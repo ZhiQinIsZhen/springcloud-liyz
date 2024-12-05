@@ -25,6 +25,7 @@
         <shardingsphere.version>5.5.1</shardingsphere.version>
         <excel.version>4.0.3</excel.version>
         <springboot.admin.version>3.3.6</springboot.admin.version>
+        <alibaba.cloud.version>2023.0.3.2</alibaba.cloud.version>
         <rocketmq.version>2.3.1</rocketmq.version>
         <kafka.version>3.2.4</kafka.version>
 
@@ -43,6 +44,13 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${alibaba.cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

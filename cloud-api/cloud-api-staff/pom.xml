@@ -49,6 +49,10 @@
             <artifactId>spring-boot-starter-security</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.liyz.cloud</groupId>

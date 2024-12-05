@@ -38,6 +38,10 @@ spring:
     loadbalancer:
       retry:
         enabled: false
+    nacos:
+      discovery:
+        server-addr: nacos://localhost:8848
+        namespace: liyz-cloud
 # eureka
 eureka:
   client:
