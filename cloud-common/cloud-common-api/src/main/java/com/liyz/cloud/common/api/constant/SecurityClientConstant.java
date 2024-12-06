@@ -37,5 +37,5 @@ public interface SecurityClientConstant {
 
     String AUTH_MANAGER_BEAN_NAME = "authenticationManager";
 
-    String CLIENT_ID = "clientId";
+    String CLIENT_ID = "spring.application.name";
 }

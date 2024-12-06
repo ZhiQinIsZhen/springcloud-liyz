@@ -36,6 +36,8 @@ spring:
           max-active: 1
   cloud:
     loadbalancer:
+      nacos:
+        enabled: true
       retry:
         enabled: false
     nacos:

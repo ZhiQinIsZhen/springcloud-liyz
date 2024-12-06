@@ -17,10 +17,10 @@ CREATE TABLE `auth_source`  (
 -- Records of auth_application
 -- ----------------------------
 INSERT INTO `auth_source` VALUES
-(1, 'dubbo-api-admin', 'staff', -1, -1, now(), now(), 0, 0),
-(2, 'dubbo-api-user', 'user', -1, -1, now(), now(), 0, 0);
+(1, 'cloud-api-staff', 'staff', -1, -1, now(), now(), 0, 0),
+(2, 'cloud-api-user', 'user', -1, -1, now(), now(), 0, 0);
 
-CREATE TABLE `auth_jwt1` (
+CREATE TABLE `auth_jwt` (
     `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
     `client_id` varchar(128) NOT NULL COMMENT '客户端id',
     `jwt_prefix` varchar(32) NOT NULL COMMENT 'token前缀',
@@ -40,6 +40,6 @@ CREATE TABLE `auth_jwt1` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='认证服务jwt信息配置表';
 
 INSERT INTO `auth`.`auth_jwt1` VALUES
-(1, 'dubbo-api-admin', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0),
-(2, 'dubbo-api-user', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0),
-(3, 'dubbo-service-auth', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0);
+(1, 'cloud-api-staff', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0),
+(2, 'cloud-api-user', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0),
+(3, 'cloud-service-auth', 'Bearer ', 'Bonnie', 604800, 'HS512', 0, 1, -1, -1, now(), now(), 0, 0);
