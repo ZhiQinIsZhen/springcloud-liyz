@@ -93,3 +93,13 @@ knife4j:
     username: abc
     password: 123
     enable: false
+# xxl-job
+xxl:
+  job:
+    enable: true
+    admin-address: http://xxljob.liyz.com/xxl-job-admin
+    app-name: staff-service
+    log-path: '\srv\job\logs\${spring.application.name}'
+    port: 22883
+    access-token: wls123456
+    log-retention-days: 15

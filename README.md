@@ -10,6 +10,7 @@
 ![Mybatis-plus Version](https://img.shields.io/badge/MybatisPlus-3.5.9-brightgreen)
 ![Sharding-jdbc Version](https://img.shields.io/badge/ShardingJdbc-5.5.1-brightgreen)
 ![Swagger Version](https://img.shields.io/badge/knife4j-4.5.0-brightgreen)
+![Xxl-job Version](https://img.shields.io/badge/xxljob-2.4.2-brightgreen)
 ![Elasticjob Version](https://img.shields.io/badge/elasticjob-3.0.4-brightgreen)
 
 这是一个基于Jdk21，框架是SpringCloud + Springboot3 + Mybatis-plus的脚手架。
@@ -21,6 +22,7 @@
 - 登陆安全基于：Spring Security、jjwt
 - 接口文档基于：knife4j
 - 分库分表读写分离基于：Sharding-jdbc
+- 分布式定时任务基于：Xxl-job
 
 
 ## 目录结构说明
@@ -41,6 +43,7 @@
 4. `dubbo-common-exception`: 业务异常通用框架
 5. `dubbo-common-feign`: SpringCloud的feign通用框架
 6. `dubbo-common-util`: 通用工具类框架
+7. `dubbo-common-xxl-job`: 通用定时任务框架
 
 ## service结构说明
 

@@ -19,6 +19,7 @@
         <module>cloud-common-api</module>
         <module>cloud-common-base</module>
         <module>cloud-common-feign</module>
+        <module>cloud-common-xxl-job</module>
     </modules>
 
 </project>
