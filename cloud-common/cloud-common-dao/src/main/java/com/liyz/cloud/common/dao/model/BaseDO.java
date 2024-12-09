@@ -2,7 +2,8 @@ package com.liyz.cloud.common.dao.model;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,9 +18,6 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public abstract class BaseDO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

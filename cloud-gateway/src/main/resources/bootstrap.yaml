@@ -1,0 +1,77 @@
+#server
+server:
+  port: 8080
+  shutdown: graceful
+  netty:
+    connection-timeout: 1000ms
+#spring
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: cloud-gateway
+  threads:
+    virtual:
+      enabled: true
+  lifecycle:
+    timeout-per-shutdown-phase: 60s
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: liyz-cloud
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: cloud-api-staff
+          uri: http://localhost:7071
+          predicates:
+            - Path=/staff/**
+  # redis
+  data:
+    redis:
+      database: 2
+      host: 127.0.0.1
+      port: 6379
+knife4j:
+  # 聚合swagger文档
+  gateway:
+    enabled: true
+    routes:
+      - name: 后台管理服务
+        url: /staff/v3/api-docs?group=default
+        service-name: cloud-api-staff
+        context-path: /staff
+        order: 1
+    discover:
+      version: openapi3
+      enabled: true
+    tags-sorter: order
+    operations-sorter: order
+# 免鉴权
+anonymous:
+  mapping:
+    server:
+      cloud-api-staff:
+        - /staff/v3/api-docs/**
+        - /staff/auth/register
+        - /staff/auth/login
+        - /staff/test/**
+      cloud-api-user:
+        - /user/doc.html
+        - /user/webjars/**
+        - /user/v3/api-docs/**
+        - /user/user/register
+        - /user/user/login
+        - /user/test/**
+        - /user/export/**
+        - /user/search/company/**
+        - /user/search/investor/**
+        - /user/search/financing/**
+logging:
+  file:
+    name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
+

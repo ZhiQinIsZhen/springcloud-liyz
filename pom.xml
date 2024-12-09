@@ -16,6 +16,7 @@
         <module>cloud-api</module>
         <module>cloud-common</module>
         <module>cloud-service</module>
+        <module>cloud-gateway</module>
     </modules>
 
     <properties>
