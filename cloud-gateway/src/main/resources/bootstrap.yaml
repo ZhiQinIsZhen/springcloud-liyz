@@ -27,7 +27,7 @@ spring:
           lower-case-service-id: true
       routes:
         - id: cloud-api-staff
-          uri: http://localhost:7071
+          uri: lb://cloud-api-staff
           predicates:
             - Path=/staff/**
   # redis
