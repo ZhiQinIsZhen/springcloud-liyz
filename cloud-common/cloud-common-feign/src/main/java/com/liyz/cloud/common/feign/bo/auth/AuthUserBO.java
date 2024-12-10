@@ -1,5 +1,6 @@
 package com.liyz.cloud.common.feign.bo.auth;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.liyz.cloud.common.feign.constant.Device;
 import com.liyz.cloud.common.feign.constant.LoginType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -60,6 +61,7 @@ public class AuthUserBO implements Serializable {
     private Device device;
 
     @Schema(description = "检查时间(用于是否但设备登录的)")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date checkTime;
 
     @Schema(description = "用户角色")

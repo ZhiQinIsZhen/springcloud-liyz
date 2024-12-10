@@ -2,7 +2,7 @@ package com.liyz.cloud.common.api.user;
 
 import com.google.common.base.Joiner;
 import com.liyz.cloud.common.api.context.AuthContext;
-import com.liyz.cloud.common.base.constant.AuthExceptionCodeEnum;
+import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
 import com.liyz.cloud.common.feign.constant.Device;
 import com.liyz.cloud.common.util.constant.CommonConstant;
@@ -33,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         AuthUserBO authUserBO = AuthContext.AuthService.loadByUsername(username.substring(index + 1),
                 Device.getByType(Integer.parseInt(username.substring(0, index))));
         if (Objects.isNull(authUserBO)) {
-            throw new UsernameNotFoundException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL.getMessage());
+            throw new UsernameNotFoundException(CommonExceptionCodeEnum.AUTHORIZATION_FAIL.getMessage());
         }
         return AuthUserDetails.build(authUserBO);
     }

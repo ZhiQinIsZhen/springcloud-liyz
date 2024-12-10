@@ -1,7 +1,7 @@
 package com.liyz.cloud.common.api.handler;
 
 import com.google.common.base.Charsets;
-import com.liyz.cloud.common.base.constant.AuthExceptionCodeEnum;
+import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.feign.result.Result;
 import com.liyz.cloud.common.util.JsonUtil;
 import jakarta.servlet.ServletException;
@@ -26,7 +26,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setCharacterEncoding(String.valueOf(Charsets.UTF_8));
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().println(JsonUtil.toJSONString(Result.error(AuthExceptionCodeEnum.NO_RIGHT)));
+        response.getWriter().println(JsonUtil.toJSONString(Result.error(CommonExceptionCodeEnum.NO_RIGHT)));
         response.getWriter().flush();
     }
 }

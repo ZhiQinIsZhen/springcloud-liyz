@@ -15,13 +15,14 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Desc:
+ * Desc:全局异常处理器
  *
  * @author lyz
  * @version 1.0.0
@@ -74,5 +75,10 @@ public class GlobalControllerExceptionAdvice {
         return optional
                 .<Result<String>>map(cv -> Result.error(CommonExceptionCodeEnum.PARAMS_VALIDATED.getCode(), cv.getMessageTemplate()))
                 .orElseGet(() -> Result.error(CommonExceptionCodeEnum.PARAMS_VALIDATED));
+    }
+
+    @ExceptionHandler({NoResourceFoundException.class})
+    public Result<String> noResourceFoundException(NoResourceFoundException exception) {
+        return Result.error(CommonExceptionCodeEnum.NOT_FOUND);
     }
 }

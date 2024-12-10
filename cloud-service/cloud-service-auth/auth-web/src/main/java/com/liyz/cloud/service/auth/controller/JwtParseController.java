@@ -3,12 +3,13 @@ package com.liyz.cloud.service.auth.controller;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.liyz.cloud.common.api.annotation.Anonymous;
-import com.liyz.cloud.common.feign.bo.jwt.AuthJwtBO;
-import com.liyz.cloud.common.base.constant.AuthExceptionCodeEnum;
 import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.exception.RemoteServiceException;
+import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
+import com.liyz.cloud.common.feign.bo.jwt.AuthJwtBO;
 import com.liyz.cloud.common.feign.constant.Device;
 import com.liyz.cloud.common.feign.constant.LoginType;
+import com.liyz.cloud.common.feign.dto.auth.AuthUserDTO;
 import com.liyz.cloud.common.feign.result.Result;
 import com.liyz.cloud.common.util.DateUtil;
 import com.liyz.cloud.common.util.PatternUtil;
@@ -17,8 +18,6 @@ import com.liyz.cloud.service.auth.model.AuthJwtDO;
 import com.liyz.cloud.service.auth.service.AuthJwtService;
 import com.liyz.cloud.service.auth.util.JwtUtil;
 import com.liyz.cloud.service.staff.feign.StaffAuthFeignService;
-import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
-import com.liyz.cloud.common.feign.dto.auth.AuthUserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClaims;
@@ -62,10 +61,10 @@ public class JwtParseController {
         AuthJwtDO authJwtDO = authJwtService.getByClientId(clientId);
         if (Objects.isNull(authJwtDO)) {
             log.error("解析token失败, 没有找到该应用下jwt配置信息，clientId：{}", clientId);
-            throw new RemoteServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+            throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         if (StringUtils.isBlank(token) || !token.startsWith(authJwtDO.getJwtPrefix())) {
-            throw new RemoteServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+            throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         final String authToken = token.substring(authJwtDO.getJwtPrefix().length()).trim();
         Claims unSignClaims;
@@ -73,7 +72,7 @@ public class JwtParseController {
             unSignClaims = this.parseClaimsJws(authToken);
         } catch (Exception e) {
             log.error("解析token失败", e);
-            throw new RemoteServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+            throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         AuthUserDTO authUserDTO = new AuthUserDTO();
         authUserDTO.setUsername(unSignClaims.getSubject());
@@ -84,19 +83,19 @@ public class JwtParseController {
         }
         AuthUserBO authUser = result.getData();
         if (Objects.isNull(authUser)) {
-            throw new RemoteServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+            throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         Claims claims = this.parseClaimsJws(authToken,
                 Joiner.on(CommonConstant.DEFAULT_PADDING).join(authJwtDO.getSigningKey(), authUser.getSalt()));
         if (authJwtDO.getOneOnline() && Objects.nonNull(authUser.getCheckTime())
                 && claims.getNotBefore().compareTo(authUser.getCheckTime()) < 0) {
-            throw new RemoteServiceException(AuthExceptionCodeEnum.OTHERS_LOGIN);
+            throw new RemoteServiceException(CommonExceptionCodeEnum.OTHERS_LOGIN);
         }
         if (!clientId.equals(claims.getAudience().stream().findFirst().orElse(StringUtils.EMPTY))) {
-            throw new RemoteServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+            throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         if (DateUtil.date().compareTo(claims.getExpiration()) > 0) {
-            throw new RemoteServiceException(AuthExceptionCodeEnum.AUTHORIZATION_TIMEOUT);
+            throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_TIMEOUT);
         }
         Result<List<AuthUserBO.AuthGrantedAuthorityBO>> resultAuthority = staffAuthFeignService.authorities(authUserDTO);
         if (!CommonExceptionCodeEnum.SUCCESS.getCode().equals(resultAuthority.getCode())) {
@@ -124,12 +123,12 @@ public class JwtParseController {
     public Result<AuthJwtBO> generateToken(@RequestBody AuthUserBO authUser) {
         if (StringUtils.isBlank(authUser.getClientId())) {
             log.error("创建token失败，原因 : clientId is blank");
-            throw new RemoteServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
+            throw new RemoteServiceException(CommonExceptionCodeEnum.LOGIN_ERROR);
         }
         AuthJwtDO authJwtDO = authJwtService.getByClientId(authUser.getClientId());
         if (Objects.isNull(authJwtDO)) {
             log.error("生成token失败, 没有找到该应用下jwt配置信息，clientId : {}", authUser.getClientId());
-            throw new RemoteServiceException(AuthExceptionCodeEnum.LOGIN_ERROR);
+            throw new RemoteServiceException(CommonExceptionCodeEnum.LOGIN_ERROR);
         }
 
         return Result.success(
@@ -172,7 +171,7 @@ public class JwtParseController {
         try {
             claims = JwtUtil.parser().setSigningKey(signingKey).build().parseClaimsJws(token).getBody();
         } catch (Exception e) {
-            throw new RemoteServiceException(AuthExceptionCodeEnum.AUTHORIZATION_FAIL);
+            throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
         return claims;
     }

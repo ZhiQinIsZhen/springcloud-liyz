@@ -1,7 +1,7 @@
 package com.liyz.cloud.common.api.handler;
 
 import com.google.common.base.Charsets;
-import com.liyz.cloud.common.base.constant.AuthExceptionCodeEnum;
+import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.feign.result.Result;
 import com.liyz.cloud.common.util.JsonUtil;
 import jakarta.servlet.ServletException;
@@ -27,6 +27,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setCharacterEncoding(Charsets.UTF_8.name());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write(Objects.requireNonNull(JsonUtil.toJSONString(Result.error(AuthExceptionCodeEnum.AUTHORIZATION_FAIL))));
+        response.getWriter().write(Objects.requireNonNull(JsonUtil.toJSONString(Result.error(CommonExceptionCodeEnum.AUTHORIZATION_FAIL))));
     }
 }

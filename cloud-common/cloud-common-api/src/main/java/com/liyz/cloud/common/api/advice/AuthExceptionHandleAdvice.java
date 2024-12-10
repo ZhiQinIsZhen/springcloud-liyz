@@ -1,7 +1,7 @@
 package com.liyz.cloud.common.api.advice;
 
 import com.liyz.cloud.common.api.properties.AuthSecurityClientProperties;
-import com.liyz.cloud.common.base.constant.AuthExceptionCodeEnum;
+import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.feign.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -30,11 +30,11 @@ public class AuthExceptionHandleAdvice {
 
     @ExceptionHandler({BadCredentialsException.class, UsernameNotFoundException.class})
     public Result<String> badCredentialsException(Exception exception) {
-        return Result.error(AuthExceptionCodeEnum.LOGIN_FAIL);
+        return Result.error(CommonExceptionCodeEnum.LOGIN_FAIL);
     }
 
     @ExceptionHandler({AccessDeniedException.class})
     public Result<String> accessDeniedException(Exception exception) {
-        return Result.error(AuthExceptionCodeEnum.NO_RIGHT);
+        return Result.error(CommonExceptionCodeEnum.NO_RIGHT);
     }
 }

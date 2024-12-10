@@ -1,18 +1,18 @@
 package com.liyz.cloud.service.staff.biz;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.liyz.cloud.common.base.constant.AuthExceptionCodeEnum;
 import com.liyz.cloud.common.base.util.BeanUtil;
+import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.exception.RemoteServiceException;
+import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
 import com.liyz.cloud.common.feign.constant.Device;
 import com.liyz.cloud.common.feign.constant.LoginType;
-import com.liyz.cloud.common.util.DateUtil;
-import com.liyz.cloud.common.util.PatternUtil;
-import com.liyz.cloud.common.feign.dto.auth.AuthUserLogoutDTO;
-import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserDTO;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserLoginDTO;
+import com.liyz.cloud.common.feign.dto.auth.AuthUserLogoutDTO;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserRegisterDTO;
+import com.liyz.cloud.common.util.DateUtil;
+import com.liyz.cloud.common.util.PatternUtil;
 import com.liyz.cloud.service.staff.model.*;
 import com.liyz.cloud.service.staff.model.base.StaffAuthBaseDO;
 import com.liyz.cloud.service.staff.service.*;
@@ -71,7 +71,7 @@ public class FeignAuthBiz {
                 staffAuthEmailService.lambdaQuery().eq(StaffAuthEmailDO::getEmail, authUserRegister.getUsername()).exists() :
                 staffAuthMobileService.lambdaQuery().eq(StaffAuthMobileDO::getMobile, authUserRegister.getUsername()).exists();
         if (userNameExist) {
-            throw new RemoteServiceException(isEmail ? AuthExceptionCodeEnum.EMAIL_EXIST : AuthExceptionCodeEnum.MOBILE_EXIST);
+            throw new RemoteServiceException(isEmail ? CommonExceptionCodeEnum.EMAIL_EXIST : CommonExceptionCodeEnum.MOBILE_EXIST);
         }
         StaffInfoDO staffInfoDO = BeanUtil.copyProperties(authUserRegister, StaffInfoDO::new, (s, t) -> {
             if (isEmail) {

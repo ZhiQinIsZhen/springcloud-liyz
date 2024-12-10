@@ -8,6 +8,7 @@ server:
 spring:
   main:
     web-application-type: reactive
+    allow-circular-references: true
   application:
     name: cloud-gateway
   threads:
@@ -30,6 +31,11 @@ spring:
           uri: lb://cloud-api-staff
           predicates:
             - Path=/staff/**
+          filters:
+            - name: GlobalAuthIdHeaderFilter
+              args:
+                name: AUTH_ID
+                value: -1
   # redis
   data:
     redis:
@@ -61,8 +67,6 @@ anonymous:
         - /staff/auth/login
         - /staff/test/**
       cloud-api-user:
-        - /user/doc.html
-        - /user/webjars/**
         - /user/v3/api-docs/**
         - /user/user/register
         - /user/user/login
