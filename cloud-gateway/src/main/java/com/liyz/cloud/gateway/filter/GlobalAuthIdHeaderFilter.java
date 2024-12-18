@@ -1,5 +1,8 @@
 package com.liyz.cloud.gateway.filter;
 
+import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
+import com.liyz.cloud.common.util.CryptoUtil;
+import com.liyz.cloud.common.util.JsonUtil;
 import com.liyz.cloud.gateway.constant.GatewayConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -27,13 +30,15 @@ import static org.springframework.cloud.gateway.support.GatewayToStringStyler.fi
 @Component
 public class GlobalAuthIdHeaderFilter extends AddRequestHeaderGatewayFilterFactory implements Ordered {
 
+    private static final String AES_KEY = "BdbGFURCLfHFgg3qmhaBxG0LG6rYuhST";
+
     @Override
     public GatewayFilter apply(NameValueConfig config) {
         return new GatewayFilter() {
             @Override
             public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-                Long authId = exchange.getAttribute(GatewayConstant.AUTH_ID);
-                String value = authId == null ? config.getValue() : authId.toString();
+                AuthUserBO authUserBO = exchange.getAttribute(GatewayConstant.AUTH_ID);
+                String value = authUserBO == null ? null : CryptoUtil.Symmetric.encryptAES(JsonUtil.toJSONString(authUserBO), AES_KEY);
                 ServerHttpRequest request = exchange
                         .getRequest()
                         .mutate()

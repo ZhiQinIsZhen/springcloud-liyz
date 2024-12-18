@@ -20,6 +20,8 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -123,7 +125,7 @@ public class FeignAuthBiz {
         Date lastLogoutTime = staffLogoutLogService.lastLogoutTime(staffId, device);
         authUser.setCheckTime(ObjectUtils.max(lastLoginTime, lastLogoutTime));
         //查询角色信息
-        List<StaffRoleDO> roles = staffRoleService.list(Wrappers.query(StaffRoleDO.builder().staffId(staffId).build()));
+        List<StaffRoleDO> roles = staffRoleService.listByStaffId(staffId);
         authUser.setRoleIds(CollectionUtils.isEmpty(roles) ? null : roles.stream().map(StaffRoleDO::getRoleId).collect(Collectors.toList()));
         return authUser;
     }
@@ -135,6 +137,7 @@ public class FeignAuthBiz {
      * @return 当前登录时间
      */
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(cacheNames = {"auth"}, key = "'lastLoginTime:' + #p0.authId + ':' + #p0.device.name()")
     public Date login(AuthUserLoginDTO authUserLogin) {
         StaffLoginLogDO staffLoginLogDO = BeanUtil.copyProperties(authUserLogin, StaffLoginLogDO::new, (s, t) -> {
             t.setStaffId(s.getAuthId());
@@ -154,6 +157,7 @@ public class FeignAuthBiz {
      * @return True：登出成功；false：登出失败
      */
     @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(cacheNames = {"auth"}, key = "'lastLogoutTime:' + #p0.authId + ':' + #p0.device.name()")
     public Boolean logout(AuthUserLogoutDTO authUserLogout) {
         StaffLogoutLogDO staffLogoutLogDO = BeanUtil.copyProperties(authUserLogout, StaffLogoutLogDO::new, (s, t) -> {
             t.setStaffId(s.getAuthId());
@@ -170,6 +174,7 @@ public class FeignAuthBiz {
      * @param authUser 认证用户信息
      * @return 权限列表
      */
+    @Cacheable(cacheNames = {"auth"}, key = "'authorities:' + #p0.authId", unless = "#result == null")
     public List<AuthUserBO.AuthGrantedAuthorityBO> authorities(AuthUserDTO authUser) {
         Set<Integer> authorityIdSet = new HashSet<>();
         //查询角色拥有的权限

@@ -23,6 +23,17 @@ spring:
       enabled: true
   lifecycle:
     timeout-per-shutdown-phase: 60s
+  # cache
+  cache:
+    cache-names: auth,bug
+    type: redis
+
+    redis:
+      time-to-live: 300000
+      key-prefix: 'staff:'
+      cache-null-values: true
+      enable-statistics: true
+      use-key-prefix: true
   data:
     # redis
     redis:
@@ -69,7 +80,7 @@ logging:
   file:
     name: '\srv\logs\${spring.application.name}\${spring.application.name}.log'
   level:
-    com.liyz.cloud.service.staff.dao: debug
+    com.liyz.cloud.service.staff.dao: info
 # springdoc
 springdoc:
   default-flat-param-object: true

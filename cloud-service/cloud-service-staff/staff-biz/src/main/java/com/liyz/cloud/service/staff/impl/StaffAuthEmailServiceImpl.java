@@ -7,6 +7,7 @@ import com.liyz.cloud.service.staff.dao.StaffAuthEmailMapper;
 import com.liyz.cloud.service.staff.model.StaffAuthEmailDO;
 import com.liyz.cloud.service.staff.model.base.StaffAuthBaseDO;
 import com.liyz.cloud.service.staff.service.StaffAuthEmailService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class StaffAuthEmailServiceImpl extends ServiceImpl<StaffAuthEmailMapper, StaffAuthEmailDO> implements StaffAuthEmailService {
 
     @Override
+    @Cacheable(cacheNames = {"auth"}, key = "'staffAuthEmail:' + #p0", unless = "#result == null")
     public StaffAuthBaseDO getByUsername(String username) {
         return getOne(Wrappers.lambdaQuery(StaffAuthEmailDO.builder().email(username).build()));
     }

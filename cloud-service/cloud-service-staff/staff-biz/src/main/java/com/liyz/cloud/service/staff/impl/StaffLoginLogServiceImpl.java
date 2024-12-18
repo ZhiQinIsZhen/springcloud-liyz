@@ -7,6 +7,7 @@ import com.liyz.cloud.common.feign.constant.Device;
 import com.liyz.cloud.service.staff.dao.StaffLoginLogMapper;
 import com.liyz.cloud.service.staff.model.StaffLoginLogDO;
 import com.liyz.cloud.service.staff.service.StaffLoginLogService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -31,6 +32,7 @@ public class StaffLoginLogServiceImpl extends ServiceImpl<StaffLoginLogMapper, S
      * @return 上次登录时间
      */
     @Override
+    @Cacheable(cacheNames = {"auth"}, key = "'lastLoginTime:' + #p0 + ':' + #p1.name()", unless = "#result == null")
     public Date lastLoginTime(Long staffId, Device device) {
         Page<StaffLoginLogDO> page = page(
                 new Page<>(1, 1),

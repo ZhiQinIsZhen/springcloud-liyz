@@ -8,6 +8,7 @@ import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
 import com.liyz.cloud.common.feign.dto.PageDTO;
 import com.liyz.cloud.common.feign.result.PageResult;
 import com.liyz.cloud.common.feign.result.Result;
+import com.liyz.cloud.common.util.RandomUtil;
 import com.liyz.cloud.service.staff.dto.log.StaffLogPageDTO;
 import com.liyz.cloud.service.staff.feign.StaffInfoFeignService;
 import com.liyz.cloud.service.staff.vo.info.StaffInfoVO;
@@ -22,6 +23,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -48,15 +50,10 @@ public class StaffInfoController {
     @GetMapping("/current")
     public Result<StaffInfoApiVO> userInfo() {
         AuthUserBO authUser = AuthContext.getAuthUser();
-        Result<StaffInfoVO> result = staffInfoFeignService.getByStaffId(authUser.getAuthId());
-        return Result.result(result, BeanUtil.copyProperties(result.getData(), StaffInfoApiVO::new));
-    }
-
-    @Operation(summary = "分页查询员工信息")
-    @GetMapping("/page")
-    public PageResult<StaffInfoApiVO> page(PageDTO page) {
-        Result<RemotePage<StaffInfoVO>> pageResult = staffInfoFeignService.page(page);
-        return PageResult.result(pageResult, BeanUtil.copyRemotePage(pageResult.getData(), StaffInfoApiVO::new));
+        return Result.success(BeanUtil.copyProperties(authUser, StaffInfoApiVO::new, (s, t) -> {
+            t.setStaffId(authUser.getAuthId());
+            t.setMobile(authUser.getUsername());
+        }));
     }
 
     @Operation(summary = "分页查询员工登录信息")
@@ -77,5 +74,19 @@ public class StaffInfoController {
         });
         Result<RemotePage<StaffLogoutLogVO>> pageResult = staffInfoFeignService.logoutPage(pageDTO);
         return PageResult.result(pageResult, pageResult.getData());
+    }
+
+    @Operation(summary = "通过staffId查询员工信息")
+    @GetMapping("/getByStaffId")
+    public Result<StaffInfoApiVO> getByStaffId(@RequestParam("staffId") Long staffId) {
+        Result<StaffInfoVO> result = staffInfoFeignService.getByStaffId(staffId);
+        return Result.result(result, BeanUtil.copyProperties(result.getData(), StaffInfoApiVO::new));
+    }
+
+    @Operation(summary = "分页查询员工信息")
+    @GetMapping("/page")
+    public PageResult<StaffInfoApiVO> page(PageDTO page) {
+        Result<RemotePage<StaffInfoVO>> pageResult = staffInfoFeignService.page(page);
+        return PageResult.result(pageResult, BeanUtil.copyRemotePage(pageResult.getData(), StaffInfoApiVO::new));
     }
 }

@@ -4,7 +4,6 @@ import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.exception.RemoteServiceException;
 import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
 import com.liyz.cloud.common.feign.result.Result;
-import com.liyz.cloud.common.util.JsonUtil;
 import com.liyz.cloud.common.util.PatternUtil;
 import com.liyz.cloud.gateway.constant.GatewayConstant;
 import com.liyz.cloud.gateway.properties.AnonymousMappingProperties;
@@ -89,8 +88,7 @@ public class GlobalJWTFilter implements GlobalFilter, Ordered {
             if (!CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
                 return ResponseUtil.response(response, result.getCode(), result.getMessage());
             }
-            AuthUserBO authUserBO = result.getData();
-            exchange.getAttributes().put(GatewayConstant.AUTH_ID, authUserBO.getAuthId());
+            exchange.getAttributes().put(GatewayConstant.AUTH_ID, result.getData());
         } catch (RemoteServiceException e) {
             return ResponseUtil.response(response, e.getCode(), e.getMessage());
         } catch (Exception e) {

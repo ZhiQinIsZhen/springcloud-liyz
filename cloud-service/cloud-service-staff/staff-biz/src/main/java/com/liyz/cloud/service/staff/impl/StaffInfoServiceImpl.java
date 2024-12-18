@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.liyz.cloud.service.staff.dao.StaffInfoMapper;
 import com.liyz.cloud.service.staff.model.StaffInfoDO;
 import com.liyz.cloud.service.staff.service.StaffInfoService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
 
 /**
  * Desc:
@@ -15,4 +18,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class StaffInfoServiceImpl extends ServiceImpl<StaffInfoMapper, StaffInfoDO> implements StaffInfoService {
+
+    @Override
+    @Cacheable(cacheNames = {"auth"}, key = "'staffInfo:' + #p0", unless = "#result == null")
+    public StaffInfoDO getById(Serializable id) {
+        return super.getById(id);
+    }
 }

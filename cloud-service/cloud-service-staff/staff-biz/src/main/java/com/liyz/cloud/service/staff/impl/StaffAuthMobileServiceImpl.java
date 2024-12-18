@@ -7,6 +7,7 @@ import com.liyz.cloud.service.staff.dao.StaffAuthMobileMapper;
 import com.liyz.cloud.service.staff.model.StaffAuthMobileDO;
 import com.liyz.cloud.service.staff.model.base.StaffAuthBaseDO;
 import com.liyz.cloud.service.staff.service.StaffAuthMobileService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class StaffAuthMobileServiceImpl extends ServiceImpl<StaffAuthMobileMapper, StaffAuthMobileDO> implements StaffAuthMobileService {
 
     @Override
+    @Cacheable(cacheNames = {"auth"}, key = "'staffAuthMobile:' + #p0", unless = "#result == null")
     public StaffAuthBaseDO getByUsername(String username) {
         return getOne(Wrappers.lambdaQuery(StaffAuthMobileDO.builder().mobile(username).build()));
     }
