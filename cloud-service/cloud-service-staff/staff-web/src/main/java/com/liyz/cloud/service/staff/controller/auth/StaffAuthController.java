@@ -1,13 +1,13 @@
 package com.liyz.cloud.service.staff.controller.auth;
 
-import com.liyz.cloud.common.feign.result.Result;
-import com.liyz.cloud.service.staff.biz.FeignAuthBiz;
 import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
-import com.liyz.cloud.service.staff.constants.StaffConstants;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserDTO;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserLoginDTO;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserLogoutDTO;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserRegisterDTO;
+import com.liyz.cloud.common.feign.result.Result;
+import com.liyz.cloud.service.staff.biz.FeignAuthBiz;
+import com.liyz.cloud.service.staff.constants.StaffConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,15 +40,9 @@ public class StaffAuthController {
         return Result.success(feignAuthBiz.registry(authUserRegister));
     }
 
-    @Operation(summary = "根据用户名查询用户信息")
-    @PostMapping("/loadByUsername")
-    public Result<AuthUserBO> loadByUsername(@Validated({AuthUserDTO.Load.class}) @RequestBody AuthUserDTO authUserDTO) {
-        return Result.success(feignAuthBiz.loadByUsername(authUserDTO.getUsername(), authUserDTO.getDevice()));
-    }
-
     @Operation(summary = "登录")
     @PostMapping("/login")
-    public Result<Date> login(@RequestBody AuthUserLoginDTO authUserLogin) {
+    public Result<AuthUserBO> login(@RequestBody AuthUserLoginDTO authUserLogin) {
         return Result.success(feignAuthBiz.login(authUserLogin));
     }
 

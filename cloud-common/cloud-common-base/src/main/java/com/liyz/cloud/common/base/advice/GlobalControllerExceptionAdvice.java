@@ -34,6 +34,9 @@ public class GlobalControllerExceptionAdvice {
 
     @ExceptionHandler({Exception.class})
     public Result<String> exception(Exception exception) {
+        if (exception.getCause() instanceof RemoteServiceException) {
+            return remoteServiceException((RemoteServiceException) exception.getCause());
+        }
         log.error("未知异常", exception);
         return Result.error(CommonExceptionCodeEnum.REMOTE_SERVICE_FAIL);
     }

@@ -12,7 +12,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,13 +29,9 @@ public interface AuthFeignService {
     @PostMapping("/register")
     Result<Boolean> registry(@RequestBody AuthUserRegisterDTO authUserRegister);
 
-    @Operation(summary = "根据用户名查询用户信息")
-    @PostMapping("/loadByUsername")
-    Result<AuthUserBO> loadByUsername(@RequestBody AuthUserDTO authUserDTO);
-
     @Operation(summary = "登录")
     @PostMapping("/login")
-    Result<Date> login(@RequestBody AuthUserLoginDTO authUserLogin);
+    Result<AuthUserBO> login(@RequestBody AuthUserLoginDTO authUserLogin);
 
     @Operation(summary = "登出")
     @PostMapping("/logout")

@@ -52,4 +52,7 @@ public class AuthUserLoginDTO implements Serializable {
 
     @Schema(description = "客户端ID")
     private String clientId;
+
+    @Schema(description = "重定向路劲")
+    private String redirect;
 }

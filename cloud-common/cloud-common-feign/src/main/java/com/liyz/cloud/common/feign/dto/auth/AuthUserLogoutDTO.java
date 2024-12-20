@@ -44,4 +44,7 @@ public class AuthUserLogoutDTO implements Serializable {
 
     @Schema(description = "客户端ID")
     private String clientId;
+
+    @Schema(description = "登录验证key")
+    private String loginKey;
 }

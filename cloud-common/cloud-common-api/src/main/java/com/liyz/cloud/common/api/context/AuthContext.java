@@ -1,6 +1,5 @@
 package com.liyz.cloud.common.api.context;
 
-import com.google.common.base.Joiner;
 import com.liyz.cloud.common.api.constant.SecurityClientConstant;
 import com.liyz.cloud.common.api.user.AuthUserDetails;
 import com.liyz.cloud.common.api.util.CookieUtil;
@@ -10,17 +9,16 @@ import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.exception.RemoteServiceException;
 import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
 import com.liyz.cloud.common.feign.bo.jwt.AuthJwtBO;
-import com.liyz.cloud.common.feign.constant.Device;
 import com.liyz.cloud.common.feign.constant.LoginType;
-import com.liyz.cloud.common.feign.dto.auth.AuthUserDTO;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserLoginDTO;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserLogoutDTO;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserRegisterDTO;
 import com.liyz.cloud.common.feign.result.Result;
 import com.liyz.cloud.common.util.PatternUtil;
-import com.liyz.cloud.common.util.constant.CommonConstant;
 import com.liyz.cloud.service.auth.feign.AuthFeignService;
 import com.liyz.cloud.service.auth.feign.JwtParseFeignService;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -33,7 +31,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -105,41 +103,21 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
          * @param authUserLoginDTO 登录参数
          * @return 登录用户信息
          */
-        public static AuthUserBO login(AuthUserLoginDTO authUserLoginDTO) {
+        public static AuthUserBO login(AuthUserLoginDTO authUserLoginDTO) throws IOException {
             authUserLoginDTO.setClientId(clientId);
             authUserLoginDTO.setDevice(DeviceContext.getDevice(HttpServletContext.getRequest()));
             authUserLoginDTO.setLoginType(LoginType.getByType(PatternUtil.checkMobileEmail(authUserLoginDTO.getUsername())));
             authUserLoginDTO.setIp(HttpServletContext.getIpAddress());
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    Joiner.on(CommonConstant.DEFAULT_JOINER).join(
-                            authUserLoginDTO.getDevice().getType(),
-                            authUserLoginDTO.getClientId(),
-                            authUserLoginDTO.getUsername()),
-                    authUserLoginDTO.getPassword());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(authUserLoginDTO.getUsername(), authUserLoginDTO.getPassword());
             SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authentication));
             AuthUserDetails authUserDetails = (AuthUserDetails) SecurityContextHolder
                     .getContext().getAuthentication().getPrincipal();
-            Result<Date> result = authFeignService.login(
-                    authUserLoginDTO.builder()
-                            .clientId(authUserLoginDTO.getClientId())
-                            .authId(authUserDetails.getAuthUser().getAuthId())
-                            .loginType(authUserLoginDTO.getLoginType())
-                            .device(authUserLoginDTO.getDevice())
-                            .ip(authUserLoginDTO.getIp())
-                            .build());
-            Date checkTime;
-            if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
-                checkTime = result.getData();
-            } else {
-                throw new RemoteServiceException(result.getCode(), result.getMessage());
-            }
             AuthUserBO authUser = authUserDetails.getAuthUser();
-            authUser.setCheckTime(checkTime);
             AuthJwtBO authJwtBO = JwtService.generateToken(authUser);
             AuthUserBO authUserBO = BeanUtil.copyProperties(authUserDetails.getAuthUser(), AuthUserBO::new, (s, t) -> {
                 t.setPassword(null);
                 t.setSalt(null);
-                s.setCheckTime(checkTime);
+                s.setLoginKey(null);
                 t.setToken(authJwtBO.getToken());
             });
             CookieUtil.addCookie(
@@ -148,24 +126,12 @@ public class AuthContext implements EnvironmentAware, ApplicationContextAware, I
                     30 * 60,
                     null
             );
-            return authUserBO;
-        }
-
-        /**
-         * 根据登录名查询用户信息
-         *
-         * @param username 用户名
-         * @return 用户信息
-         */
-        public static AuthUserBO loadByUsername(String username, Device device) {
-            AuthUserDTO authUserDTO = new AuthUserDTO();
-            authUserDTO.setUsername(username);
-            authUserDTO.setDevice(device);
-            Result<AuthUserBO> result = authFeignService.loadByUsername(authUserDTO);
-            if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
-                return result.getData();
+            if (StringUtils.isNotBlank(authUserLoginDTO.getRedirect())) {
+                HttpServletResponse response = HttpServletContext.getResponse();
+                response.setHeader(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY, authUserBO.getToken());
+                response.sendRedirect(authUserLoginDTO.getRedirect());
             }
-            throw new RemoteServiceException(result.getCode(), result.getMessage());
+            return authUserBO;
         }
 
         /**

@@ -17,6 +17,7 @@ import com.liyz.cloud.common.util.constant.CommonConstant;
 import com.liyz.cloud.service.auth.model.AuthJwtDO;
 import com.liyz.cloud.service.auth.service.AuthJwtService;
 import com.liyz.cloud.service.auth.util.JwtUtil;
+import com.liyz.cloud.service.auth.util.RedisUtil;
 import com.liyz.cloud.service.staff.feign.StaffAuthFeignService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,11 +29,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RSet;
+import org.redisson.api.RedissonClient;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Desc:
@@ -54,6 +59,8 @@ public class JwtParseController {
     private AuthJwtService authJwtService;
     @Resource
     private StaffAuthFeignService staffAuthFeignService;
+    @Resource
+    private RedissonClient redissonClient;
 
     @Operation(summary = "解析token")
     @GetMapping("/parseToken")
@@ -74,32 +81,33 @@ public class JwtParseController {
             log.error("解析token失败", e);
             throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
-        AuthUserDTO authUserDTO = new AuthUserDTO();
-        authUserDTO.setUsername(unSignClaims.getSubject());
-        authUserDTO.setDevice(Device.getByType(unSignClaims.get(CLAIM_DEVICE, Integer.class)));
-        Result<AuthUserBO> result = staffAuthFeignService.loadByUsername(authUserDTO);
-        if (!CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
-            return Result.error(result.getCode(), result.getMessage());
-        }
-        AuthUserBO authUser = result.getData();
-        if (Objects.isNull(authUser)) {
+        Set<String> audience = unSignClaims.getAudience();
+        if (CollectionUtils.isEmpty(audience) || audience.size() != 3) {
             throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
-        Claims claims = this.parseClaimsJws(authToken,
-                Joiner.on(CommonConstant.DEFAULT_PADDING).join(authJwtDO.getSigningKey(), authUser.getSalt()));
-        if (authJwtDO.getOneOnline() && Objects.nonNull(authUser.getCheckTime())
-                && claims.getNotBefore().compareTo(authUser.getCheckTime()) < 0) {
+        List<String> audienceList = audience.stream().toList();
+        if (!clientId.equals(audienceList.stream().findFirst().orElse(StringUtils.EMPTY))) {
+            throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_FAIL);
+        }
+        Claims claims = this.parseClaimsJws(authToken, Joiner.on(CommonConstant.DEFAULT_PADDING)
+                .join(authJwtDO.getSigningKey(), CollectionUtils.lastElement(audienceList)));
+        RSet<Object> set = redissonClient.getSet(RedisUtil.getRedisKey(clientId, claims.getId()));
+        if (DateUtil.date().compareTo(claims.getExpiration()) > 0 || !set.isExists()) {
+            throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_TIMEOUT);
+        }
+        if (authJwtDO.getOneOnline() && !set.contains(audienceList.get(1))) {
             throw new RemoteServiceException(CommonExceptionCodeEnum.OTHERS_LOGIN);
         }
         if (!clientId.equals(claims.getAudience().stream().findFirst().orElse(StringUtils.EMPTY))) {
             throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_FAIL);
         }
-        if (DateUtil.date().compareTo(claims.getExpiration()) > 0) {
-            throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_TIMEOUT);
-        }
+        //查询权限列表
+        AuthUserDTO authUserDTO = new AuthUserDTO();
+        authUserDTO.setUsername(unSignClaims.getSubject());
+        authUserDTO.setDevice(Device.getByType(unSignClaims.get(CLAIM_DEVICE, Integer.class)));
         Result<List<AuthUserBO.AuthGrantedAuthorityBO>> resultAuthority = staffAuthFeignService.authorities(authUserDTO);
         if (!CommonExceptionCodeEnum.SUCCESS.getCode().equals(resultAuthority.getCode())) {
-            return Result.error(result.getCode(), result.getMessage());
+            return Result.error(resultAuthority.getCode(), resultAuthority.getMessage());
         }
         return Result.success(
                 AuthUserBO.builder()
@@ -109,7 +117,7 @@ public class JwtParseController {
                         .loginType(LoginType.getByType(PatternUtil.checkMobileEmail(claims.getSubject())))
                         .device(Device.getByType(unSignClaims.get(CLAIM_DEVICE, Integer.class)))
                         .authId(Long.valueOf(claims.getId()))
-                        .checkTime(claims.getNotBefore())
+                        .loginKey(audienceList.get(1))
                         .roleIds(Lists.newArrayList())
                         .token(authToken)
                         .clientId(claims.getAudience().stream().findFirst().orElse(StringUtils.EMPTY))
@@ -138,9 +146,8 @@ public class JwtParseController {
                         .token(JwtUtil.builder()
                                 .id(authUser.getAuthId().toString())
                                 .subject(authUser.getUsername())
-                                .audience().add(authUser.getClientId()).and()
+                                .audience().add(authUser.getClientId()).add(authUser.getLoginKey()).add(authUser.getSalt()).and()
                                 .expiration(new Date(System.currentTimeMillis() + authJwtDO.getExpiration() * 1000))
-                                .notBefore(authUser.getCheckTime())
                                 .claim(CLAIM_DEVICE, authUser.getDevice().getType())
                                 .signWith(
                                         SignatureAlgorithm.forName(authJwtDO.getSignatureAlgorithm()),

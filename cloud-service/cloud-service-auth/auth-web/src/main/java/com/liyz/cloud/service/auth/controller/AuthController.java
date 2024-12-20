@@ -1,8 +1,6 @@
 package com.liyz.cloud.service.auth.controller;
 
-import com.google.common.base.Splitter;
 import com.liyz.cloud.common.api.annotation.Anonymous;
-import com.liyz.cloud.common.base.util.BeanUtil;
 import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.exception.RemoteServiceException;
 import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
@@ -12,23 +10,28 @@ import com.liyz.cloud.common.feign.dto.auth.AuthUserLogoutDTO;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserRegisterDTO;
 import com.liyz.cloud.common.feign.result.Result;
 import com.liyz.cloud.common.util.RandomUtil;
-import com.liyz.cloud.common.util.constant.CommonConstant;
+import com.liyz.cloud.service.auth.model.AuthJwtDO;
 import com.liyz.cloud.service.auth.model.AuthSourceDO;
+import com.liyz.cloud.service.auth.service.AuthJwtService;
 import com.liyz.cloud.service.auth.service.AuthSourceService;
+import com.liyz.cloud.service.auth.util.RedisUtil;
 import com.liyz.cloud.service.staff.feign.StaffAuthFeignService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RSet;
+import org.redisson.api.RedissonClient;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,7 +54,11 @@ public class AuthController {
     @Resource
     private AuthSourceService authSourceService;
     @Resource
+    private AuthJwtService authJwtService;
+    @Resource
     private StaffAuthFeignService staffAuthFeignService;
+    @Resource
+    private RedissonClient redissonClient;
 
     @Operation(summary = "用户注册")
     @PostMapping("/register")
@@ -68,44 +75,36 @@ public class AuthController {
         return staffAuthFeignService.registry(authUserRegister);
     }
 
-    @Operation(summary = "根据用户名查询用户信息")
-    @PostMapping("/loadByUsername")
-    public Result<AuthUserBO> loadByUsername(@RequestBody AuthUserDTO authUserDTO) {
-        List<String> names = Splitter.on(CommonConstant.DEFAULT_JOINER).splitToList(authUserDTO.getUsername());
-        AuthSourceDO authSourceDO = authSourceService.getByClientId(names.get(0));
-        if (Objects.isNull(authSourceDO)) {
-            log.warn("查询资源客户端ID失败，原因没有找到对应的配置信息，clientId : {}", names.get(0));
-            throw new RemoteServiceException(CommonExceptionCodeEnum.LOGIN_ERROR);
-        }
-        Result<AuthUserBO> result = staffAuthFeignService.loadByUsername(BeanUtil.copyProperties(
-                authUserDTO,
-                AuthUserDTO::new,
-                (s, t) -> t.setUsername(names.get(1)))
-        );
-        if (!CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
-            return Result.error(result.getCode(), result.getMessage());
-        }
-        AuthUserBO resultData = result.getData();
-        if (Objects.nonNull(resultData)) {
-            resultData.setDevice(authUserDTO.getDevice());
-            resultData.setClientId(names.get(0));
-        }
-        return Result.success(resultData);
-    }
-
     @Operation(summary = "登录")
     @PostMapping("/login")
-    public Result<Date> login(@RequestBody AuthUserLoginDTO authUserLogin) {
-        if (StringUtils.isBlank(authUserLogin.getClientId())) {
+    public Result<AuthUserBO> login(@RequestBody AuthUserLoginDTO authUserLogin) {
+        final String clientId = authUserLogin.getClientId();
+        if (StringUtils.isBlank(clientId)) {
             log.warn("用户登录错误，原因 : clientId is blank");
             throw new RemoteServiceException(CommonExceptionCodeEnum.LOGIN_ERROR);
         }
-        AuthSourceDO authSourceDO = authSourceService.getByClientId(authUserLogin.getClientId());
+        AuthSourceDO authSourceDO = authSourceService.getByClientId(clientId);
         if (Objects.isNull(authSourceDO)) {
-            log.warn("查询资源客户端ID失败，原因没有找到对应的配置信息，clientId : {}", authUserLogin.getClientId());
+            log.warn("查询资源客户端ID失败，原因没有找到对应的配置信息，clientId : {}", clientId);
             throw new RemoteServiceException(CommonExceptionCodeEnum.LOGIN_ERROR);
         }
-        return staffAuthFeignService.login(authUserLogin);
+        AuthJwtDO authJwtDO = authJwtService.getByClientId(clientId);
+        if (Objects.isNull(authJwtDO)) {
+            log.error("解析token失败, 没有找到该应用下jwt配置信息，clientId：{}", clientId);
+            throw new RemoteServiceException(CommonExceptionCodeEnum.AUTHORIZATION_FAIL);
+        }
+        Result<AuthUserBO> result = staffAuthFeignService.login(authUserLogin);
+        if (CommonExceptionCodeEnum.SUCCESS.getCode().equals(result.getCode())) {
+            String loginKey = RandomUtil.randomChars(32);
+            RSet<String> set = redissonClient.getSet(RedisUtil.getRedisKey(clientId, result.getData().getAuthId().toString()));
+            if (set.isExists() && authJwtDO.getOneOnline()) {
+                set.clear();
+            }
+            set.add(loginKey);
+            set.expire(Duration.of(7, ChronoUnit.DAYS));
+            result.getData().setLoginKey(loginKey);
+        }
+        return result;
     }
 
     @Operation(summary = "登出")
@@ -117,6 +116,10 @@ public class AuthController {
         AuthSourceDO authSourceDO = authSourceService.getByClientId(authUserLogout.getClientId());
         if (Objects.isNull(authSourceDO)) {
             return Result.success(Boolean.FALSE);
+        }
+        RSet<String> set = redissonClient.getSet(RedisUtil.getRedisKey(authSourceDO.getClientId(), authUserLogout.getAuthId().toString()));
+        if (set.isExists()) {
+            set.remove(authUserLogout.getLoginKey());
         }
         return staffAuthFeignService.logout(authUserLogout);
     }

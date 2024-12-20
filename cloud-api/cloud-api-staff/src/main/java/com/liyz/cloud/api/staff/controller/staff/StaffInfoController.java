@@ -4,11 +4,9 @@ import com.liyz.cloud.api.staff.vo.staff.StaffInfoApiVO;
 import com.liyz.cloud.common.api.context.AuthContext;
 import com.liyz.cloud.common.base.util.BeanUtil;
 import com.liyz.cloud.common.feign.bo.RemotePage;
-import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
 import com.liyz.cloud.common.feign.dto.PageDTO;
 import com.liyz.cloud.common.feign.result.PageResult;
 import com.liyz.cloud.common.feign.result.Result;
-import com.liyz.cloud.common.util.RandomUtil;
 import com.liyz.cloud.service.staff.dto.log.StaffLogPageDTO;
 import com.liyz.cloud.service.staff.feign.StaffInfoFeignService;
 import com.liyz.cloud.service.staff.vo.info.StaffInfoVO;
@@ -49,11 +47,8 @@ public class StaffInfoController {
     @Operation(summary = "查询当前登录员工信息")
     @GetMapping("/current")
     public Result<StaffInfoApiVO> userInfo() {
-        AuthUserBO authUser = AuthContext.getAuthUser();
-        return Result.success(BeanUtil.copyProperties(authUser, StaffInfoApiVO::new, (s, t) -> {
-            t.setStaffId(authUser.getAuthId());
-            t.setMobile(authUser.getUsername());
-        }));
+        Result<StaffInfoVO> result = staffInfoFeignService.getByStaffId(AuthContext.getAuthUser().getAuthId());
+        return Result.result(result, BeanUtil.copyProperties(result.getData(), StaffInfoApiVO::new));
     }
 
     @Operation(summary = "分页查询员工登录信息")

@@ -4,9 +4,7 @@ import com.liyz.cloud.api.staff.dto.auth.StaffLoginDTO;
 import com.liyz.cloud.api.staff.dto.auth.StaffRegisterDTO;
 import com.liyz.cloud.api.staff.vo.auth.AuthLoginVO;
 import com.liyz.cloud.common.api.annotation.Anonymous;
-import com.liyz.cloud.common.api.constant.SecurityClientConstant;
 import com.liyz.cloud.common.api.context.AuthContext;
-import com.liyz.cloud.common.api.util.HttpServletContext;
 import com.liyz.cloud.common.base.util.BeanUtil;
 import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserLoginDTO;
@@ -16,9 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,11 +55,6 @@ public class AuthenticationController {
         AuthLoginVO authLoginVO = new AuthLoginVO();
         authLoginVO.setToken(authUserBO.getToken());
         authLoginVO.setExpiration(AuthContext.JwtService.getExpiration(authUserBO.getToken()));
-        if (StringUtils.isNotBlank(loginDTO.getRedirect())) {
-            HttpServletResponse response = HttpServletContext.getResponse();
-            response.setHeader(SecurityClientConstant.DEFAULT_TOKEN_HEADER_KEY, authLoginVO.getToken());
-            response.sendRedirect(loginDTO.getRedirect());
-        }
         return Result.success(authLoginVO);
     }
 

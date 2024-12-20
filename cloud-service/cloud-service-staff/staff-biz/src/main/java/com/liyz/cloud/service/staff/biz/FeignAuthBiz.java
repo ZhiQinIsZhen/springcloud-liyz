@@ -5,7 +5,6 @@ import com.liyz.cloud.common.base.util.BeanUtil;
 import com.liyz.cloud.common.exception.CommonExceptionCodeEnum;
 import com.liyz.cloud.common.exception.RemoteServiceException;
 import com.liyz.cloud.common.feign.bo.auth.AuthUserBO;
-import com.liyz.cloud.common.feign.constant.Device;
 import com.liyz.cloud.common.feign.constant.LoginType;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserDTO;
 import com.liyz.cloud.common.feign.dto.auth.AuthUserLoginDTO;
@@ -18,7 +17,6 @@ import com.liyz.cloud.service.staff.model.base.StaffAuthBaseDO;
 import com.liyz.cloud.service.staff.service.*;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -100,37 +98,6 @@ public class FeignAuthBiz {
     }
 
     /**
-     * 根据用户名查询用户信息
-     *
-     * @param username 用户名
-     * @param device 登录设备
-     * @return 登录用户信息
-     */
-    public AuthUserBO loadByUsername(String username, Device device) {
-        AuthUserBO authUser = AuthUserBO.builder()
-                .username(username)
-                .loginType(LoginType.getByType(PatternUtil.checkMobileEmail(username)))
-                .authorities(List.of())
-                .build();
-        Long staffId = this.getStaffId(username, authUser);
-        if (Objects.isNull(staffId)) {
-            return null;
-        }
-        StaffInfoDO staffInfoDO = staffInfoService.getById(staffId);
-        authUser.setAuthId(staffId);
-        authUser.setUsername(username);
-        authUser.setSalt(staffInfoDO.getSalt());
-        authUser.setDevice(device);
-        Date lastLoginTime = staffLoginLogService.lastLoginTime(staffId, device);
-        Date lastLogoutTime = staffLogoutLogService.lastLogoutTime(staffId, device);
-        authUser.setCheckTime(ObjectUtils.max(lastLoginTime, lastLogoutTime));
-        //查询角色信息
-        List<StaffRoleDO> roles = staffRoleService.listByStaffId(staffId);
-        authUser.setRoleIds(CollectionUtils.isEmpty(roles) ? null : roles.stream().map(StaffRoleDO::getRoleId).collect(Collectors.toList()));
-        return authUser;
-    }
-
-    /**
      * 登录
      *
      * @param authUserLogin 登录参数
@@ -138,16 +105,35 @@ public class FeignAuthBiz {
      */
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(cacheNames = {"auth"}, key = "'lastLoginTime:' + #p0.authId + ':' + #p0.device.name()")
-    public Date login(AuthUserLoginDTO authUserLogin) {
+    public AuthUserBO login(AuthUserLoginDTO authUserLogin) {
+        AuthUserBO authUser = AuthUserBO.builder()
+                .clientId(authUserLogin.getClientId())
+                .username(authUserLogin.getUsername())
+                .loginType(authUserLogin.getLoginType())
+                .device(authUserLogin.getDevice())
+                .authorities(List.of())
+                .build();
+        Long staffId = this.getStaffId(authUserLogin.getUsername(), authUser);
+        if (Objects.isNull(staffId)) {
+            throw new RemoteServiceException(CommonExceptionCodeEnum.USER_NOT_EXIST);
+        }
+        StaffInfoDO staffInfoDO = staffInfoService.getById(staffId);
+        if (Objects.isNull(staffInfoDO)) {
+            throw new RemoteServiceException(CommonExceptionCodeEnum.USER_NOT_EXIST);
+        }
+        authUser.setAuthId(staffId);
+        authUser.setSalt(staffInfoDO.getSalt());
+        //查询角色信息
+        List<StaffRoleDO> roles = staffRoleService.list(Wrappers.query(StaffRoleDO.builder().staffId(staffId).build()));
+        authUser.setRoleIds(CollectionUtils.isEmpty(roles) ? null : roles.stream().map(StaffRoleDO::getRoleId).collect(Collectors.toList()));
         StaffLoginLogDO staffLoginLogDO = BeanUtil.copyProperties(authUserLogin, StaffLoginLogDO::new, (s, t) -> {
-            t.setStaffId(s.getAuthId());
+            t.setStaffId(staffId);
             t.setLoginTime(DateUtil.date());
             t.setLoginType(s.getLoginType().getType());
             t.setDevice(s.getDevice().getType());
         });
         staffLoginLogService.save(staffLoginLogDO);
-        //可能会有时间误差
-        return staffLoginLogService.getById(staffLoginLogDO.getId()).getLoginTime();
+        return authUser;
     }
 
     /**
